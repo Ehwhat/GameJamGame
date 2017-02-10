@@ -2,23 +2,25 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class ObjectPool<T> where T : PooledObject<T>  {
+// Deleting and creating objects in unity is a potentially expensive operation, think back to
+// our C++ stuff with how we were told to initalise everything at the beginning of our programs and not to delete stuff til closing.
+// Same deal here, although unity is more lenient, it's still expensive if the objects are being created in large amounts very quickly.
+//
+// The ObjectPool a generic solution to this issue, as instead of creating the objects, we reuse objects stored in the pool instead.
+
+
+public class ObjectPool<T> where T : PooledObject<T>  { 
+    // Non-monobehavior pools REQUIRE the use of OnSpawn and OnDespawn to make it anymore efficent, as you'll need to disable it's functionality yourself, rather than using GameObject.SetActive
 
     List<T> availableObjects = new List<T>();
 
-    public ObjectPool()
-    {
-
-    }
-
-    public T GetPooledObject(T obj)
+    public T GetPooledObject(T obj) // Get Object from pool if possible, otherwise add to pool.
     {
         T result;
         int lastIndex = availableObjects.Count - 1;
-        if(lastIndex >= 0)
+        if(lastIndex >= 0) 
         {
             result = availableObjects[lastIndex];
-            result.OnDespawn();
             availableObjects.RemoveAt(lastIndex);
             result = obj;
         }
@@ -31,8 +33,9 @@ public class ObjectPool<T> where T : PooledObject<T>  {
         return result;
     }
 
-    public void returnPooledObject(T obj)
+    public void returnPooledObject(T obj) //Return spawned object to it's pool
     {
+        obj.OnDespawn();
         availableObjects.Add(obj);
     }
 }
