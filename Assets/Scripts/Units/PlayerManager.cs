@@ -17,8 +17,8 @@ public class PlayerManager : UnitManager {
         inputY = Input.GetAxisRaw("Vertical");
         inputXR = Input.GetAxisRaw("HorizontalR");
         inputYR = Input.GetAxisRaw("VerticalR");
-        aimTowardsLocal(new Vector3(inputXR,0,inputYR));
-        aimIndicator.transform.localPosition = new Vector3(aimDirection.x,0,aimDirection.y); 
+        AimTowardsLocal(new Vector3(inputXR,0,-inputYR));
+        aimIndicator.transform.forward = new Vector3(aimDirection.x,0,aimDirection.y); 
 	}
 
     void FixedUpdate()

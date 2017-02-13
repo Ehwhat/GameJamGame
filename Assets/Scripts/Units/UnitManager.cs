@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
-public abstract class UnitManager : MonoBehaviour {
+public abstract class UnitManager : MonoBehaviour, IHitTarget {
 
     public float health;
     public float maxHealth;
@@ -27,15 +28,28 @@ public abstract class UnitManager : MonoBehaviour {
         transform.position += vector.normalized * movementSpeed * timeStep;
     }
 
-    public void aimTowards(Vector3 position)
+    public void AimTowards(Vector3 position)
     {
         Vector3 diff = (position - transform.position).normalized;
         aimDirection = new Vector2(diff.x, diff.z);
     }
 
-    public void aimTowardsLocal(Vector3 localPosition)
+    public void AimTowardsLocal(Vector3 localPosition)
     {
         aimDirection = new Vector2(localPosition.x, localPosition.z);
     }
+
+    public virtual void OnDamageHit(HitData hit)
+    {
+        health -= hit.damage;
+        OnHit(hit);
+        if (health <= 0)
+        {
+            OnDeath();
+        }
+    }
+
+    public virtual void OnDeath() { }
+    public virtual void OnHit(HitData hit) { }
 
 }
