@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: f85f72ba10810da429ebb6b52285d9d7
 timeCreated: 1486554373
+=======
+guid: 7951b8a3384c14e4d876f8e8c5d3bbaf
+timeCreated: 1486640058
+>>>>>>> TomsBranch
 licenseType: Pro
 DefaultImporter:
   userData: 
