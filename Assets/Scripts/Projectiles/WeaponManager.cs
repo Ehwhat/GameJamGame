@@ -21,6 +21,8 @@ public class WeaponManager : ProjectileManager {
 
     public Weapon currentWeapon;
 
+    public float currentFiringAngle;
+
     private Dictionary<AmmoTypes, int> ammoCountDictonary = new Dictionary<AmmoTypes, int>();
     private bool isReloading = false;
     private float lastFire = 0;
@@ -51,8 +53,6 @@ public class WeaponManager : ProjectileManager {
             currentWeapon.currentAmmoInClip = int.MaxValue;
         }
 
-        FireWeapon();
-
     }
 
     public void SetWeapon(Weapon w)
@@ -63,21 +63,25 @@ public class WeaponManager : ProjectileManager {
 
     public void FireWeapon()
     {
-        if (currentWeapon.tryFire())
+        if (Time.time - lastFire > 1 / currentWeapon.fireRatePerSecond)
         {
-            if (Time.time - lastFire > 1 / currentWeapon.fireRatePerSecond)
+            if (currentWeapon.tryFire(currentWeapon.bulletsPerShot))
             {
                 lastFire = Time.time;
-                FireProjectile(currentWeapon.weaponProjectile, firePoint.transform.forward, currentWeapon.possibleSpread);
-                currentWeapon.currentAmmoInClip -= 1;
-                if(currentWeapon.ammoSystem == AmmoSystem.Clipless)
+                for (int i = 0; i < currentWeapon.bulletsPerShot; i++)
                 {
-                    ammoCountDictonary[currentWeapon.ammoType] -= 1;
+                    Vector3 direction = Quaternion.AngleAxis(currentFiringAngle, Vector3.up) * Vector3.forward;
+                    FireProjectile(currentWeapon.weaponProjectile, direction, currentWeapon.possibleSpread + currentWeapon.weaponProjectile.possibleSpreadModifier);
+                    if (currentWeapon.ammoSystem == AmmoSystem.Clipless)
+                    {
+                        ammoCountDictonary[currentWeapon.ammoType] -= 1;
+                    }
                 }
             }
-        }else if(!isReloading)
-        {
-            ReloadWeapon();
+            else if (!isReloading)
+            {
+                ReloadWeapon();
+            }
         }
     }
 

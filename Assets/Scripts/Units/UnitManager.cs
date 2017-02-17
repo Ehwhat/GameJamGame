@@ -10,7 +10,7 @@ public abstract class UnitManager : MonoBehaviour, IHitTarget {
 
     public float isoAngleOffset = 45;
 
-    protected Vector2 aimDirection = new Vector2(0,0);
+    protected Vector3 aimDirection = new Vector3(0,0,0);
 
     public enum TimeStepType
     {
@@ -28,15 +28,10 @@ public abstract class UnitManager : MonoBehaviour, IHitTarget {
         transform.position += vector.normalized * movementSpeed * timeStep;
     }
 
-    public void AimTowards(Vector3 position)
+    public void AimAtAngle(float angle)
     {
-        Vector3 diff = (position - transform.position).normalized;
-        aimDirection = new Vector2(diff.x, diff.z);
-    }
-
-    public void AimTowardsLocal(Vector3 localPosition)
-    {
-        aimDirection = new Vector2(localPosition.x, localPosition.z);
+        aimDirection = Quaternion.AngleAxis(angle+isoAngleOffset, Vector3.up) * Vector3.forward;
+        Debug.Log(aimDirection);
     }
 
     public virtual void OnDamageHit(HitData hit)

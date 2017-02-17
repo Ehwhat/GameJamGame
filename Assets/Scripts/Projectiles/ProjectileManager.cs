@@ -3,13 +3,15 @@ using System.Collections;
 
 public class ProjectileManager : MonoBehaviour {
 
-    public Transform firePoint;
+    public float firingDistance = 1;
+    public float firingHeight = 1.5f;
 
     public void FireProjectile(Projectile p, Vector3 direction, Vector2 posSpread)
     {
-        Vector3 fireDirection = firePoint.transform.forward + GetSpread(posSpread);
+        Vector3 fireDirection = direction + GetSpread(posSpread);
+        Vector3 fireOrigin = transform.position + direction * firingDistance + transform.up * firingHeight;
         Projectile projectile = p.GetInstanceFromPool();
-        projectile.Fire(firePoint.transform.position,fireDirection, p.projectileHitLayers, Projectile.ProjectileUpdateType.Update);
+        projectile.Fire(fireOrigin, fireDirection, p.projectileHitLayers, Projectile.ProjectileUpdateType.Update, this);
     }
 
     protected virtual Vector3 GetSpread(Vector2 pS)

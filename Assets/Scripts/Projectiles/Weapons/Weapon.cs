@@ -6,7 +6,8 @@ public class Weapon {
 
     public Projectile weaponProjectile;
     public Vector2 possibleSpread;
-    public float fireRatePerSecond;
+    public float fireRatePerSecond = 1;
+    public int bulletsPerShot = 1;
 
     public WeaponManager.AmmoSystem ammoSystem;
     public WeaponManager.AmmoTypes ammoType;
@@ -32,8 +33,9 @@ public class Weapon {
         needsReloading = true;
     }
 
-    public bool tryFire()
+    public bool tryFire(int ammoUse)
     {
+        currentAmmoInClip -= ammoUse;
         return !needsReloading;
     }
 

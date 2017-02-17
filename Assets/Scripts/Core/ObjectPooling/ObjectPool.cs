@@ -9,7 +9,7 @@ using System.Collections.Generic;
 // The ObjectPool a generic solution to this issue, as instead of creating the objects, we reuse objects stored in the pool instead.
 
 
-public class ObjectPool<T> where T : PooledObject<T>  { 
+public class ObjectPool<T> where T : PooledObject<T>  {
     // Non-monobehavior pools REQUIRE the use of OnSpawn and OnDespawn to make it anymore efficent, as you'll need to disable it's functionality yourself, rather than using GameObject.SetActive
 
     List<T> availableObjects = new List<T>();
@@ -43,13 +43,16 @@ public class ObjectPool<T> where T : PooledObject<T>  {
 public class MonoBehaviourPool<T> where T : PooledMonoBehaviour<T>
 {
 
+    bool parented;
     List<T> availableObjects = new List<T>();
 
     PooledMonoBehaviour<T> poolPrefab;
+    GameObject poolContainer;
 
     public MonoBehaviourPool(PooledMonoBehaviour<T> prefab)
     {
         poolPrefab = prefab;
+        poolContainer = new GameObject(poolPrefab.name + " Pool");
     }
 
     public T GetPooledObject(Transform parent = null)
@@ -64,7 +67,7 @@ public class MonoBehaviourPool<T> where T : PooledMonoBehaviour<T>
         }
         else
         {
-            result = (T)((parent != null ) ? Object.Instantiate(poolPrefab, parent) : Object.Instantiate(poolPrefab));
+            result = (T)((parent != null ) ? Object.Instantiate(poolPrefab, parent) : Object.Instantiate(poolPrefab, poolContainer.transform));
             result.pool = this;
         }
         result.OnSpawn();
@@ -77,4 +80,5 @@ public class MonoBehaviourPool<T> where T : PooledMonoBehaviour<T>
         obj.gameObject.SetActive(false);
         availableObjects.Add(obj);
     }
+
 }
