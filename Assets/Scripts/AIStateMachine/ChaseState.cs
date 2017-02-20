@@ -21,7 +21,6 @@ public class ChaseState : IEnemyState
         //Unused
     }
 
-
     public void ToPatrolState()
     {
         Debug.Log("Can't transition to smae state");
@@ -34,7 +33,7 @@ public class ChaseState : IEnemyState
 
     public void ToChaseState()
     {
-        Debug.Log("Can't transition to smae state");
+        Debug.Log("Can't transition to same state");
     }
 
     private void Look()
@@ -42,8 +41,11 @@ public class ChaseState : IEnemyState
         RaycastHit hit;
         Vector3 enemyToTarget = (enemy.chaseTarget.position + enemy.offset) - enemy.eyes.transform.position;
         //instead of raycasting foraward, it will be towards the player as the enemy has found the player
+
+        //Debug.DrawRay(enemy.eyes.transform.position, enemy.transform.forward * enemy.sightRange, Color.yellow, 500);
         if (Physics.Raycast(enemy.eyes.transform.position, enemyToTarget, out hit, enemy.sightRange) && hit.collider.CompareTag("Player"))
         {
+            enemy.transform.LookAt(enemy.chaseTarget.position);
             enemy.chaseTarget = hit.transform;
         }
         else
@@ -55,7 +57,13 @@ public class ChaseState : IEnemyState
     private void Chase()
     {
         enemy.meshrendererFlag.material.color = Color.red;
-        enemy.navMeshAgent.destination = enemy.chaseTarget.position;
-        enemy.navMeshAgent.Resume();
+
+        //enemy.transform.LookAt(enemy.chaseTarget.position);
+        
+        
+        //movement?
+
+        //enemy.navMeshAgent.destination = enemy.chaseTarget.position;
+        //enemy.navMeshAgent.Resume();
     }
 }

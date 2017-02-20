@@ -16,7 +16,7 @@ public class AlertState : IEnemyState
     public void UpdateState()
     {
         Look();
-        Search();
+       Search();
     }
 
     public void OnTriggerEnter(Collider other)
@@ -45,15 +45,23 @@ public class AlertState : IEnemyState
     {
         RaycastHit hit;
 
+        //Debug.Log("Alert Looking");
+
         //raycast to try and find the player
         //Line for Debuging, raycast is broken.
-        Debug.DrawLine(enemy.eyes.transform.position, enemy.eyes.transform.forward, Color.yellow, 500);
-        if (Physics.Raycast(enemy.eyes.transform.position, enemy.eyes.transform.forward, out hit, enemy.sightRange) && hit.collider.CompareTag("Player"))
+        //Debug.DrawRay(enemy.eyes.transform.position, enemy.transform.forward* enemy.sightRange, Color.yellow, 500);
+        if (Physics.Raycast(enemy.eyes.transform.position, enemy.transform.forward, out hit, enemy.sightRange))
         {
-
-            enemy.chaseTarget = hit.transform;
-            ToChaseState();
+           // Debug.Log("I saw something!");
+            if(hit.collider.CompareTag("Player"))
+            {
+              //  Debug.Log(" ALERT SEARCH HIT");
+                enemy.chaseTarget = hit.transform;
+                ToChaseState();
+            }
+            
         }
+        
     }
 
     private void Search()
@@ -61,11 +69,15 @@ public class AlertState : IEnemyState
         //sets flag to be yellow to indicate state change.
         enemy.meshrendererFlag.material.color = Color.yellow;
         //stops the enemy moving(if it did)
-        enemy.navMeshAgent.Stop();
+        //enemy.navMeshAgent.Stop();
         enemy.transform.Rotate(0, enemy.searchingTurnSpeed * Time.deltaTime, 0);
         searchTimer += Time.deltaTime;
 
         if (searchTimer >= enemy.searchingDuration)
+        {
+            Debug.Log("going back to patroling");
             ToPatrolState();
+        }
+           
     }
 }
