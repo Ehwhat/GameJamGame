@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
-public class ChaseState : IEnemyState
-{ 
+public class AttackState : IEnemyState
+{
     private readonly StatePatternEnemy enemy;
 
-    RaycastHit hit;
-
-    public ChaseState(StatePatternEnemy statePatternEnemy)
+    public AttackState(StatePatternEnemy statePatternEnemy)
     {
         enemy = statePatternEnemy;
     }
@@ -16,6 +15,7 @@ public class ChaseState : IEnemyState
     {
         Look();
         Chase();
+        Attack();
     }
 
     public void OnTriggerEnter(Collider other)
@@ -25,7 +25,7 @@ public class ChaseState : IEnemyState
 
     public void ToPatrolState()
     {
-        Debug.Log("Can't transition to same state");
+        enemy.currentState = enemy.patrolState;
     }
 
     public void ToAlertState()
@@ -35,16 +35,21 @@ public class ChaseState : IEnemyState
 
     public void ToChaseState()
     {
-        Debug.Log("Can't transition to same state");
+        enemy.currentState = enemy.chaseState;
     }
-
+    
     public void ToAttackState()
     {
-        enemy.currentState = enemy.attackState;
+        Debug.Log("Can't transition to same state");
     }
-    private void Look()
+    public void Chase()
     {
-        
+        enemy.meshrendererFlag.material.color = Color.cyan;
+    }
+
+    public void Look()
+    {
+        RaycastHit hit;
         Vector3 enemyToTarget = (enemy.chaseTarget.position + enemy.offset) - enemy.eyes.transform.position;
         //instead of raycasting foraward, it will be towards the player as the enemy has found the player
 
@@ -59,27 +64,8 @@ public class ChaseState : IEnemyState
             ToAlertState();
         }
     }
-
-    private void Chase()
+    public void Attack()
     {
-        enemy.meshrendererFlag.material.color = Color.red;
 
-        if(Vector3.Distance(hit.transform.position, enemy.transform.position) > enemy.attackRange)
-        {
-               //path towards the player 
-        }
-        else
-        {
-            ToAttackTimer();
-        }
-
-        Debug.Log(Vector3.Distance(hit.transform.position, enemy.transform.position));
-        
-    }
-
-    private IEnumerator ToAttackTimer()
-    {
-        yield return new WaitForSeconds(5f);
-        ToAttackState();
     }
 }

@@ -29,7 +29,7 @@ public class PatrolState : IEnemyState {
 
     public void ToPatrolState()
     {
-        Debug.Log("Can't transition to smae state");
+        Debug.Log("Can't transition to same state");
     }
 
     public void ToAlertState()
@@ -40,6 +40,11 @@ public class PatrolState : IEnemyState {
     public void ToChaseState()
     {
         enemy.currentState = enemy.chaseState;
+    }
+
+    public void ToAttackState()
+    {
+        Debug.Log("This should never be possible");
     }
 
     private void Look()

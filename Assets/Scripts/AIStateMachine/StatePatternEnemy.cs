@@ -6,6 +6,7 @@ public class StatePatternEnemy : MonoBehaviour
     public float searchingTurnSpeed = 120f;
     public float searchingDuration = 4f;
     public float sightRange = 20f;
+    public float attackRange = 10f;
 
     //where the enemy will path to in patrol state, can be changed later as enemy doesnt actually move
     public Transform[] wayPoints;
@@ -24,6 +25,8 @@ public class StatePatternEnemy : MonoBehaviour
     [HideInInspector]
     public ChaseState chaseState;
     [HideInInspector]
+    public AttackState attackState;
+    [HideInInspector]
     public AlertState alertState;
     [HideInInspector]
     public PatrolState patrolState;
@@ -36,7 +39,8 @@ public class StatePatternEnemy : MonoBehaviour
         chaseState = new ChaseState (this);
         alertState = new AlertState(this);
         patrolState = new PatrolState(this);
-
+        attackState = new AttackState(this);
+        
         navMeshAgent = GetComponent<NavMeshAgent>();
     }
 

@@ -32,13 +32,17 @@ public class AlertState : IEnemyState
 
     public void ToAlertState()
     {
-        Debug.Log("Can't transition to smae state");
+        Debug.Log("Can't transition to same state");
     }
 
     public void ToChaseState()
     {
         enemy.currentState = enemy.chaseState;
         searchTimer = 0f;
+    }
+    public void ToAttackState()
+    {
+        Debug.Log("this should never be possible.");
     }
 
     private void Look()
