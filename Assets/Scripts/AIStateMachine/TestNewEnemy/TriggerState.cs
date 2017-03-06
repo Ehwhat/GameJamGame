@@ -3,7 +3,7 @@ using System.Collections;
 using FSM;
 using System;
 
-public abstract class TriggerState<T> : State<T> {
+public abstract class TriggerState<T> : State<T, TriggerState<T>> {
     public TriggerState(string key) : base(key)
     {
     }

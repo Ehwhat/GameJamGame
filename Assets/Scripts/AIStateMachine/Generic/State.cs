@@ -3,18 +3,18 @@ using System.Collections;
 
 namespace FSM
 {
-    public abstract class State<T>
+    public abstract class State<T,StateType> where StateType : State<T,StateType>
     {
 
         public string stateKey;
-        public FSM<T,State<T>> ownerMachine;
+        public FSM<T, StateType> ownerMachine;
         public T instance;
 
         public State (string key) {
             stateKey = key;
         }
 
-        public void InitState(T inst, FSM<T,State<T>> owner) {
+        public void InitState(T inst, FSM<T, StateType> owner) {
             instance = inst;
             ownerMachine = owner;
             StartState();

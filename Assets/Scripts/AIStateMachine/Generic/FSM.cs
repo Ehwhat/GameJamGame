@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using FSM;
 
-public class FSM<T,StateType>where StateType:State<T> {
+public class FSM<T,StateType> where StateType : State<T, StateType> {
 
     public StateType currentState;
 
@@ -49,7 +49,7 @@ public class FSM<T,StateType>where StateType:State<T> {
         return null;
     }*/
 
-    private State<T> GetStateFromKey(string stateKey) {
+    private StateType GetStateFromKey(string stateKey) {
         int hash = stateKey.GetHashCode();
         if (stateDict.ContainsKey(hash))
             return stateDict[hash];

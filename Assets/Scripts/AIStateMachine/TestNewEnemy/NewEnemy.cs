@@ -22,11 +22,11 @@ public class NewEnemy : MonoBehaviour {
         
     public NavMeshAgent navMeshAgent;
 
-    private FSM<NewEnemy> stateMachine;
+    private FSM<NewEnemy, TriggerState<NewEnemy>> stateMachine;
 
     public void Start()
     {
-        stateMachine = new FSM<NewEnemy>("Patrol", this, new NewEnemy_Patrol("Patrol", this), new NewEnemy_Alert("Alert", this));
+        stateMachine = new FSM<NewEnemy, TriggerState<NewEnemy>>("Patrol", this, new NewEnemy_Patrol("Patrol", this), new NewEnemy_Alert("Alert", this));
     }
 
     public void Update()
@@ -37,8 +37,7 @@ public class NewEnemy : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        //Not monobehaviour OnTriggerEnter
-        stateMachine.InvokeOnState<TriggerState<NewEnemy>>("OnTriggerEnter", other);
+        stateMachine.currentState.OnTriggerEnter(other);
     }
 
 }
