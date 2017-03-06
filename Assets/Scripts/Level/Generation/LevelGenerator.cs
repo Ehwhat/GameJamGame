@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 
 public class LevelGenerator : MonoBehaviour {
@@ -21,6 +22,9 @@ public class LevelGenerator : MonoBehaviour {
 
     [Range(2, 6)]
     public int smoothGridSize = 3;
+
+    public int minIslandTileSize = 50;
+    public int maxConnections = 2;
 
     public string seed;
     public bool useRandomSeed;
@@ -56,6 +60,8 @@ public class LevelGenerator : MonoBehaviour {
         {
             SmoothLevel();
         }
+
+        ProcessLevel();
 
         int borderSize = 1;
         int[,] borderedLevel = new int[width + borderSize * 2, height + borderSize * 2];
@@ -107,7 +113,7 @@ public class LevelGenerator : MonoBehaviour {
         {
             for (int nY = gridY - size; nY <= gridY + size; nY++)
             {
-                if (nX >= 0 && nX < width && nY >= 0 && nY < height)
+                if (IsInLevel(nX, nY))
                 {
                     if (nX != gridX || nY != gridY)
                         wallAmount += level[nX, nY];
@@ -118,6 +124,276 @@ public class LevelGenerator : MonoBehaviour {
             }
         }
         return wallAmount;
+    }
+
+    void ProcessLevel()
+    {
+        List<List<Coord>> islandRegions = GetRegions(1);
+        List<Island> survivingIslands = new List<Island>();
+        foreach (List<Coord> region in islandRegions)
+        {
+            if(region.Count < minIslandTileSize)
+            {
+                foreach(Coord tile in region)
+                {
+                    level[tile.tileX, tile.tileY] = 0;
+                }
+            }else
+            {
+                survivingIslands.Add(new Island(region, level));
+            }
+        }
+
+        survivingIslands.Sort();
+        survivingIslands[0].isMainIsland = true;
+        survivingIslands[0].isAccessibleFromMainIsland = true;
+        ConnectClosestIslands(survivingIslands);
+
+    }
+
+
+
+    void ConnectClosestIslands(List<Island> islands, bool forceAccessibilityToTheMainIsland = false)
+    {
+
+        List<Island> islandListA = new List<Island>();
+        List<Island> islandListB = new List<Island>();
+
+        if (forceAccessibilityToTheMainIsland)
+        {
+            foreach (Island island in islands)
+            {
+                if (island.isAccessibleFromMainIsland) {
+                    islandListB.Add(island);
+                }
+                else
+                {
+                    islandListA.Add(island);
+                }
+            }
+        }else
+        {
+            islandListA = islands;
+            islandListB = islands;
+        }
+
+        int bestDistance = 0;
+
+        Coord bestTileA = new Coord();
+        Coord bestTileB = new Coord();
+        Island bestIslandA = new Island();
+        Island bestIslandB = new Island();
+
+        bool posConnectionFound = false;
+
+        foreach (Island islandA in islandListA)
+        {
+            if (!forceAccessibilityToTheMainIsland)
+            {
+                posConnectionFound = false;
+                if(islandA.connectedIslands.Count > 0) {
+                    continue;
+                }
+            }
+            foreach (Island islandB in islandListB)
+            {
+                if (islandB == islandA || islandA.IsConnected(islandB))
+                    continue;
+
+                for(int tileIndexA = 0; tileIndexA < islandA.edgeTiles.Count; tileIndexA++)
+                {
+                    for (int tileIndexB = 0; tileIndexB < islandB.edgeTiles.Count; tileIndexB++)
+                    {
+                        Coord tileA = islandA.edgeTiles[tileIndexA];
+                        Coord tileB = islandB.edgeTiles[tileIndexB];
+
+                        int distanceBetweenIslands = (int)(Mathf.Pow(tileA.tileX - tileB.tileX, 2) + Mathf.Pow(tileA.tileY - tileB.tileY, 2));
+
+                        if (distanceBetweenIslands < bestDistance || !posConnectionFound)
+                        {
+                            bestDistance = distanceBetweenIslands;
+                            posConnectionFound = true;
+                            bestTileA = tileA;
+                            bestTileB = tileB;
+                            bestIslandA = islandA;
+                            bestIslandB = islandB;
+                        }
+
+                    }
+                }
+            }
+
+            if (posConnectionFound && !forceAccessibilityToTheMainIsland)
+            {
+                CreatePassage(bestIslandA, bestIslandB, bestTileA, bestTileB);
+            }
+        }
+
+        if (posConnectionFound && forceAccessibilityToTheMainIsland)
+        {
+            CreatePassage(bestIslandA, bestIslandB, bestTileA, bestTileB);
+            ConnectClosestIslands(islands, true);
+        }
+
+        if (!forceAccessibilityToTheMainIsland)
+        {
+            ConnectClosestIslands(islands, true);
+        }
+    }
+
+    void CreatePassage(Island islandA, Island islandB, Coord tileA, Coord tileB)
+    {
+        Island.ConnectIslands(islandA, islandB);
+        Debug.DrawLine(CoordToWorldPoint(tileA), CoordToWorldPoint(tileB),Color.red);
+
+        List<Coord> line = GetPassageLine(tileA, tileB);
+        foreach(Coord c in line)
+        {
+            DrawCircle(c, UnityEngine.Random.Range(2,5));
+        }
+
+    }
+
+    void DrawCircle(Coord c, int r)
+    {
+        for (int x = -r; x <= r; x++)
+        {
+            for (int y = -r; y <= r; y++)
+            {
+                if(x*x + y*y <= r * r)
+                {
+                    int realX = c.tileX + x;
+                    int realY = c.tileY + y;
+                    if(IsInLevel(realX, realY))
+                    {
+                        level[realX, realY] = 1;
+                    }
+                }
+            }
+        }
+    }
+
+    List<Coord> GetPassageLine(Coord from, Coord to)
+    {
+        List<Coord> line = new List<Coord>();
+
+        int x = from.tileX;
+        int y = from.tileY;
+
+        int dx = to.tileX - from.tileX;
+        int dy = to.tileY - from.tileY;
+
+        bool inverted = false;
+        int step = Math.Sign(dx);
+        int gradientStep = Math.Sign(dy);
+
+        int longest = Mathf.Abs(dx);
+        int shortest = Mathf.Abs(dy);
+
+        if(longest < shortest)
+        {
+            inverted = true;
+            longest = Mathf.Abs(dy);
+            shortest = Mathf.Abs(dx);
+
+            step = Math.Sign(dy);
+            gradientStep = Math.Sign(dx);
+        }
+
+        int gradientAcc = longest / 2;
+        for (int i = 0; i < longest; i++)
+        {
+            line.Add(new Coord(x, y));
+            if (inverted)
+            {
+                y += step;
+            }else
+            {
+                x += step;
+            }
+
+            gradientAcc += shortest;
+            if (gradientAcc >= longest)
+            {
+                if (inverted)
+                {
+                    x += gradientStep;
+                }
+                else
+                {
+                    y += gradientStep;
+                }
+                gradientAcc -= longest;
+            }
+        }
+
+        return line;
+
+    }
+
+    Vector3 CoordToWorldPoint(Coord tile)
+    {
+        return new Vector3(-width / 2 + .5f + tile.tileX, 2, -height / 2 + .5f + tile.tileY)*sizeMultiplier;
+    }
+
+    List<List<Coord>> GetRegions(int tileType)
+    {
+        List<List<Coord>> regions = new List<List<Coord>>();
+        int[,] mapflags = new int[width, height];
+        for (int x = padding; x < width - padding; x++)
+        {
+            for (int y = padding; y < height - padding; y++)
+            {
+                if(mapflags[x,y] == 0 && level[x,y] == tileType)
+                {
+                    List<Coord> newRegion = GetRegionTiles(x, y);
+                    regions.Add(newRegion);
+                    foreach(Coord tile in newRegion)
+                    {
+                        mapflags[tile.tileX, tile.tileY] = 1;
+                    }
+                }
+            }
+        }
+
+        return regions;
+
+    }
+
+    List<Coord> GetRegionTiles(int startX, int startY)
+    {
+        List<Coord> tiles = new List<Coord>();
+        int[,] mapflags = new int[width, height];
+        int tileType = level[startX, startY];
+
+        Queue<Coord> queue = new Queue<Coord>();
+        queue.Enqueue(new Coord(startX, startY));
+        mapflags[startX, startY] = 1;
+        while(queue.Count > 0)
+        {
+            Coord tile = queue.Dequeue();
+            tiles.Add(tile);
+            for(int x = tile.tileX-1; x <= tile.tileX+1; x++)
+            {
+                for (int y = tile.tileY - 1; y <= tile.tileY + 1; y++)
+                {
+                    if (IsInLevel(x, y) && (y == tile.tileY || x == tile.tileX))
+                    {
+                        if(mapflags[x,y] == 0 && level[x,y] == tileType)
+                        {
+                            mapflags[x, y] = 1;
+                            queue.Enqueue(new Coord(x, y));
+                        }
+                    }
+                }
+            }
+        }
+        return tiles;
+    }
+
+    bool IsInLevel(int x, int y)
+    {
+        return (x >= 0 && x < width && y >= 0 && y < height);
     }
 
     void RandomFillLevel()
@@ -133,6 +409,90 @@ public class LevelGenerator : MonoBehaviour {
             {
                 level[x, y] = (randGen.Next(0, 100) < fillAmount) ? 1 : 0;
             }
+        }
+    }
+
+    struct Coord
+    {
+        public int tileX;
+        public int tileY;
+
+        public Coord(int x, int y)
+        {
+            tileX = x;
+            tileY = y;
+        }
+    }
+
+    class Island : IComparable<Island>
+    {
+        public List<Coord> tiles;
+        public List<Coord> edgeTiles;
+
+        public List<Island> connectedIslands;
+        public int islandSize;
+        public bool isAccessibleFromMainIsland;
+        public bool isMainIsland;
+
+        public Island()
+        {
+
+        }
+
+        public Island(List<Coord> islandTiles, int[,] level)
+        {
+            tiles = islandTiles;
+            islandSize = tiles.Count;
+            connectedIslands = new List<Island>();
+            edgeTiles = new List<Coord>();
+            foreach (Coord tile in tiles)
+            {
+                for (int x = tile.tileX - 1; x <= tile.tileX + 1; x++)
+                {
+                    for (int y = tile.tileY - 1; y <= tile.tileY + 1; y++)
+                    {
+                        if (level[x, y] == 0)
+                        {
+                            edgeTiles.Add(tile);
+                        }
+                    }
+                }
+            }
+        }
+
+        public void forceAccessibilityToTheMainIsland()
+        {
+            if (!isAccessibleFromMainIsland)
+            {
+                isAccessibleFromMainIsland = true;
+                foreach(Island island in connectedIslands)
+                {
+                    island.forceAccessibilityToTheMainIsland();
+                }
+            }
+        }
+
+        public static void ConnectIslands(Island a, Island b)
+        {
+            if (a.isAccessibleFromMainIsland)
+            {
+                b.forceAccessibilityToTheMainIsland();
+            }else if (b.isAccessibleFromMainIsland)
+            {
+                a.forceAccessibilityToTheMainIsland();
+            }
+            a.connectedIslands.Add(b);
+            b.connectedIslands.Add(a);
+        }
+
+        public bool IsConnected(Island other)
+        {
+            return connectedIslands.Contains(other);
+        }
+
+        public int CompareTo(Island other)
+        {
+            return other.islandSize.CompareTo(islandSize);
         }
     }
 
