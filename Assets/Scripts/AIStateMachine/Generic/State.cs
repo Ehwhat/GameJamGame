@@ -7,14 +7,14 @@ namespace FSM
     {
 
         public string stateKey;
-        public FSM<T> ownerMachine;
+        public FSM<T,State<T>> ownerMachine;
         public T instance;
 
         public State (string key) {
             stateKey = key;
         }
 
-        public void InitState(T inst, FSM<T> owner) {
+        public void InitState(T inst, FSM<T,State<T>> owner) {
             instance = inst;
             ownerMachine = owner;
             StartState();
