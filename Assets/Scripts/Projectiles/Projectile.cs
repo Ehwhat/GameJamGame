@@ -44,6 +44,9 @@ public abstract class Projectile : PooledMonoBehaviour<Projectile> {
     public float speedModifier = 1;
     public Vector2 possibleSpreadModifier;
 
+    public ProjectileUpdateType projectileUpdateType = ProjectileUpdateType.Update;
+    public float possibleTimeStep;
+
     public float knockbackForce;
     public Vector3 knockbackModifier;
     public DamageInflictionType damageInflictionWhenDirectHit = DamageInflictionType.Bullet;
@@ -67,6 +70,7 @@ public abstract class Projectile : PooledMonoBehaviour<Projectile> {
 
     public ProjectileDeathType projectileDeathType = ProjectileDeathType.Lifetime;
 
+    public bool placeHitMark = true;
     public ProjectileHitMark hitMark;
     public float hitMarkLifetime;
 
@@ -78,14 +82,12 @@ public abstract class Projectile : PooledMonoBehaviour<Projectile> {
     private float distanceTravelled;
     private float currentLifetime;
     private Vector3 oldPos;
-    private float m_timeStep;
-    public float timeStep
+    
+    private float timeStep
     {
-        private set { m_timeStep = value; }
-        get { return (projectileUpdateType == ProjectileUpdateType.None) ? m_timeStep : (projectileUpdateType == ProjectileUpdateType.Update) ? Time.deltaTime : Time.fixedDeltaTime;  }
+        set { possibleTimeStep = value; }
+        get { return ((projectileUpdateType == ProjectileUpdateType.None) ? possibleTimeStep : ((projectileUpdateType == ProjectileUpdateType.Update) ? Time.deltaTime : Time.fixedDeltaTime));  }
     }
-
-    private ProjectileUpdateType projectileUpdateType = ProjectileUpdateType.None;
 
 	public void Fire(Vector3 origin, Vector3 direction, LayerMask hitLayers, ProjectileUpdateType updateType, ProjectileManager own){
         owner = own;
@@ -109,17 +111,25 @@ public abstract class Projectile : PooledMonoBehaviour<Projectile> {
     {
         oldPos = position;
         Vector3 velocity = StepProjectileVelocity();
-        distanceTravelled += velocity.magnitude;
+        float velocityMag = velocity.magnitude;
+        distanceTravelled += velocityMag;
+        if (velocityMag > maxDistance)
+        {
+            velocity = velocity.normalized * maxDistance;
+        }
         currentLifetime += timeStep;
         Ray bulletRay = new Ray(position, velocity);
         RaycastHit hit;
-        bool didHit = (useRadius)? Physics.SphereCast(bulletRay,bulletRadius,out hit, velocity.magnitude, projectileHitLayers) : Physics.Raycast(bulletRay, out hit, velocity.magnitude, projectileHitLayers);
+        bool didHit = (useRadius)? Physics.SphereCast(bulletRay,bulletRadius,out hit, velocityMag, projectileHitLayers) : Physics.Raycast(bulletRay, out hit, velocityMag, projectileHitLayers);
         if (didHit)
         {
             position = hit.point;
             transform.position = hit.point;
             OnHit();
-            PlaceHitMark(hit);
+            if (placeHitMark)
+            {
+                PlaceHitMark(hit);
+            }
             HandleDamage(hit);
             Death(true);
             return true;
@@ -144,12 +154,13 @@ public abstract class Projectile : PooledMonoBehaviour<Projectile> {
         {
             Debug.DrawLine(oldPos, position, Color.yellow, 10);
         }
+        
         return false;
     }
 
     virtual protected Vector3 StepProjectileVelocity() {
         float speed = (speedPerSecond * speedModifier * timeStep);
-        return directionVector * speed + Physics.gravity*timeStep*gravityModifier;
+        return directionVector * speed + (Physics.gravity*timeStep*gravityModifier);
     }
 
     virtual protected void PlaceHitMark(RaycastHit hit)

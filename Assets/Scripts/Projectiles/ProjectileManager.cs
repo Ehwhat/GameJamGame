@@ -8,10 +8,10 @@ public class ProjectileManager : MonoBehaviour {
 
     public void FireProjectile(Projectile p, Vector3 direction, Vector2 posSpread)
     {
-        Vector3 fireDirection = direction + GetSpread(posSpread);
+        Vector3 fireDirection = direction + Quaternion.FromToRotation(Vector3.forward, direction) * GetSpread(posSpread);
         Vector3 fireOrigin = transform.position + direction * firingDistance + transform.up * firingHeight;
         Projectile projectile = p.GetInstanceFromPool();
-        projectile.Fire(fireOrigin, fireDirection, p.projectileHitLayers, Projectile.ProjectileUpdateType.Update, this);
+        projectile.Fire(fireOrigin, fireDirection, p.projectileHitLayers, p.projectileUpdateType, this);
     }
 
     protected virtual Vector3 GetSpread(Vector2 pS)
@@ -20,9 +20,6 @@ public class ProjectileManager : MonoBehaviour {
         return circle;
     }
 
-    void Update()
-    {
-
-    }
+   
 	
 }

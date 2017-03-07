@@ -39,6 +39,7 @@ public class WeaponManager : ProjectileManager {
     {
         SetWeapon(currentWeapon);
         lastFire = -(1/currentWeapon.fireRatePerSecond);
+        
     }
 
 
@@ -52,7 +53,6 @@ public class WeaponManager : ProjectileManager {
         {
             currentWeapon.currentAmmoInClip = int.MaxValue;
         }
-
     }
 
     public void SetWeapon(Weapon w)
@@ -72,10 +72,10 @@ public class WeaponManager : ProjectileManager {
                 {
                     Vector3 direction = Quaternion.AngleAxis(currentFiringAngle, Vector3.up) * Vector3.forward;
                     FireProjectile(currentWeapon.weaponProjectile, direction, currentWeapon.possibleSpread + currentWeapon.weaponProjectile.possibleSpreadModifier);
-                    if (currentWeapon.ammoSystem == AmmoSystem.Clipless)
-                    {
-                        ammoCountDictonary[currentWeapon.ammoType] -= 1;
-                    }
+                }
+                if (currentWeapon.ammoSystem == AmmoSystem.Clipless)
+                {
+                    ammoCountDictonary[currentWeapon.ammoType] -= currentWeapon.bulletsPerShot;
                 }
             }
             else if (!isReloading)
