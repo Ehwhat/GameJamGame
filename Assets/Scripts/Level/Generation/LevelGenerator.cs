@@ -31,6 +31,8 @@ public class LevelGenerator : MonoBehaviour {
 
     public bool constantGeneration = false;
 
+    LevelMeshData levelMeshData;
+
     int[,] level;
 
     void Start()
@@ -48,7 +50,7 @@ public class LevelGenerator : MonoBehaviour {
                 GenerateLevel();
                 
             }
-            yield return new WaitForSeconds(.5f);
+            yield return new WaitForSeconds(2f);
         }
     }
 
@@ -82,7 +84,11 @@ public class LevelGenerator : MonoBehaviour {
         }
 
         LevelMeshGenerator meshGen = GetComponent<LevelMeshGenerator>();
-        meshGen.GenerateMesh(borderedLevel, sizeMultiplier);
+        levelMeshData = meshGen.GenerateMesh(borderedLevel, sizeMultiplier);
+
+        LevelPopulation popGen = GetComponent<LevelPopulation>();
+        popGen.PopulateLevel(borderedLevel, sizeMultiplier, levelMeshData);
+
     }
 
     private void SmoothLevel()
@@ -129,6 +135,19 @@ public class LevelGenerator : MonoBehaviour {
     void ProcessLevel()
     {
         List<List<Coord>> islandRegions = GetRegions(1);
+        List<List<Coord>> waterRegions = GetRegions(0);
+
+        foreach (List<Coord> region in waterRegions)
+        {
+            if (region.Count < 5)
+            {
+                foreach (Coord tile in region)
+                {
+                    level[tile.tileX, tile.tileY] = 1;
+                }
+            }
+        }
+
         List<Island> survivingIslands = new List<Island>();
         foreach (List<Coord> region in islandRegions)
         {
@@ -143,6 +162,8 @@ public class LevelGenerator : MonoBehaviour {
                 survivingIslands.Add(new Island(region, level));
             }
         }
+
+        
 
         survivingIslands.Sort();
         survivingIslands[0].isMainIsland = true;
@@ -249,7 +270,7 @@ public class LevelGenerator : MonoBehaviour {
         List<Coord> line = GetPassageLine(tileA, tileB);
         foreach(Coord c in line)
         {
-            DrawCircle(c, UnityEngine.Random.Range(2,5));
+            DrawCircle(c, UnityEngine.Random.Range(3,5));
         }
 
     }

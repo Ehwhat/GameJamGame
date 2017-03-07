@@ -2,6 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 
+public struct LevelMeshData
+{
+    public List<Vector3> vertices;
+    public List<Vector3> solidVertices;
+    public List<Vector3> solidEdgeVertices;
+    public List<Vector3> edgeVertices;
+}
+
 public class LevelMeshGenerator : MonoBehaviour {
 
     public SquareGrid squareGrid;
@@ -15,6 +23,7 @@ public class LevelMeshGenerator : MonoBehaviour {
     List<int> triangles;
 
     List<int> solidVertices;
+    List<int> solidEdgeVertices;
     List<int> edgeTriangles;
 
     Dictionary<int, List<Triangle>> triangleDict = new Dictionary<int, List<Triangle>>();
@@ -23,7 +32,7 @@ public class LevelMeshGenerator : MonoBehaviour {
 
     //18:45 EP4
 
-    public void GenerateMesh(int[,] level, float squareSize)
+    public LevelMeshData GenerateMesh(int[,] level, float squareSize)
     {
 
         triangleDict.Clear();
@@ -34,6 +43,7 @@ public class LevelMeshGenerator : MonoBehaviour {
         vertices = new List<Vector3>();
         triangles = new List<int>();
         solidVertices = new List<int>();
+        solidEdgeVertices = new List<int>();
         edgeTriangles = new List<int>();
 
         for (int x = 0; x < squareGrid.squares.GetLength(0); x++)
@@ -82,7 +92,7 @@ public class LevelMeshGenerator : MonoBehaviour {
                     
                     edgeVertices.Add(outline[i]);
                 }
-                
+
                 //uvs[outline[i]] = new Vector2(0, 0);
             }
         }
@@ -96,6 +106,36 @@ public class LevelMeshGenerator : MonoBehaviour {
         edgeMesh.uv2 = edgeUVs;
 
         CreateWallMesh(level, squareSize);
+
+        LevelMeshData levelData = new LevelMeshData();
+        levelData.vertices = vertices;
+
+        List<Vector3> solidVerts = new List<Vector3>();
+        foreach (int i in solidVertices)
+        {
+            solidVerts.Add(vertices[i]);
+        }
+
+        levelData.solidVertices = solidVerts;
+
+        List<Vector3> edgeVerts = new List<Vector3>();
+        foreach (int i in edgeVertices)
+        {
+            edgeVerts.Add(vertices[i]);
+        }
+
+        List<Vector3> solidEdgeVerts = new List<Vector3>();
+        foreach (int i in solidEdgeVertices)
+        {
+            solidEdgeVerts.Add(vertices[i]);
+        }
+
+
+        levelData.solidEdgeVertices = solidEdgeVerts;
+
+        levelData.edgeVertices = edgeVerts;
+
+        return levelData;
 
     }
 
@@ -162,55 +202,72 @@ public class LevelMeshGenerator : MonoBehaviour {
                 // 1 point cases
             case 1:
                 MeshFromPoints(false,square.centreLeft, square.centreBottom, square.bottomLeft);
+                solidEdgeVertices.Add(square.bottomLeft.vertexIndex);
                 break;
             case 2:
                 MeshFromPoints(false, square.bottomRight, square.centreBottom, square.centreRight);
+                solidEdgeVertices.Add(square.bottomRight.vertexIndex);
                 break;
             case 4:
                 MeshFromPoints(false, square.topRight, square.centreRight, square.centreTop);
+                solidEdgeVertices.Add(square.topRight.vertexIndex);
                 break;
             case 8:
                 MeshFromPoints(false, square.topLeft, square.centreTop, square.centreLeft);
+                solidEdgeVertices.Add(square.topLeft.vertexIndex);
                 break;
 
             // 2 point cases
 
             case 3:
                 MeshFromPoints(false,square.centreRight, square.bottomRight, square.bottomLeft, square.centreLeft);
+                solidEdgeVertices.Add(square.bottomLeft.vertexIndex);
+                solidEdgeVertices.Add(square.bottomRight.vertexIndex);
                 break;
             case 6:
                 MeshFromPoints(false, square.centreTop, square.topRight, square.bottomRight, square.centreBottom);
+                solidEdgeVertices.Add(square.topRight.vertexIndex);
+                solidEdgeVertices.Add(square.bottomRight.vertexIndex);
                 break;
             case 9:
                 MeshFromPoints(false, square.topLeft, square.centreTop, square.centreBottom, square.bottomLeft);
+                solidEdgeVertices.Add(square.topLeft.vertexIndex);
+                solidEdgeVertices.Add(square.bottomLeft.vertexIndex);
                 break;
             case 12:
                 MeshFromPoints(false, square.topLeft, square.topRight, square.centreRight, square.centreLeft);
+                solidEdgeVertices.Add(square.topRight.vertexIndex);
+                solidEdgeVertices.Add(square.topLeft.vertexIndex);
                 break;
             case 5:
                 MeshFromPoints(false, square.topRight, square.centreRight, square.centreBottom, square.bottomLeft, square.centreLeft, square.centreTop);
-                //solidVertices.Add(square.bottomLeft.vertexIndex);
-                //solidVertices.Add(square.topRight.vertexIndex);
                 break;
             case 10:
                 MeshFromPoints(false, square.topLeft, square.centreTop, square.centreRight, square.bottomRight, square.centreBottom, square.centreLeft);
-                //solidVertices.Add(square.bottomRight.vertexIndex);
-                //solidVertices.Add(square.topLeft.vertexIndex);
                 break;
 
             // 3 point cases
 
             case 7:
                 MeshFromPoints(false, square.topRight, square.bottomRight, square.bottomLeft, square.centreLeft, square.centreTop);
+                solidEdgeVertices.Add(square.topRight.vertexIndex);
+                solidEdgeVertices.Add(square.bottomLeft.vertexIndex);
                 break;
             case 11:
                 MeshFromPoints(false, square.topLeft, square.centreTop, square.centreRight, square.bottomRight, square.bottomLeft);
+                solidEdgeVertices.Add(square.topLeft.vertexIndex);
+                solidEdgeVertices.Add(square.bottomRight.vertexIndex);
                 break;
             case 13:
                 MeshFromPoints(false, square.topRight, square.centreRight, square.centreBottom, square.bottomLeft,square.topLeft);
+                solidEdgeVertices.Add(square.bottomLeft.vertexIndex);
+                solidEdgeVertices.Add(square.topRight.vertexIndex);
                 break;
             case 14:
                 MeshFromPoints(false, square.topLeft, square.topRight, square.bottomRight, square.centreBottom, square.centreLeft);
+                solidEdgeVertices.Add(square.topLeft.vertexIndex);
+                solidEdgeVertices.Add(square.bottomRight.vertexIndex);
+
                 break;
 
             //4 Point case
@@ -257,7 +314,6 @@ public class LevelMeshGenerator : MonoBehaviour {
             if(points[i].vertexIndex == -1)
             {
                 points[i].vertexIndex = vertices.Count;
-                points[i].pos += new Vector3(Random.Range(-0.3f, 0.6f), Random.Range(-0.3f, 0.6f), Random.Range(-0.3f, 0.6f));
                 vertices.Add(points[i].pos);
                 if (!nonEdge)
                 {
@@ -481,6 +537,7 @@ public class LevelMeshGenerator : MonoBehaviour {
         public Node (Vector3 p)
         {
             pos = p;
+            pos += new Vector3(Random.Range(-0.3f, 0.6f), Random.Range(-0.3f, 0.6f), Random.Range(-0.3f, 0.6f));
             vertexIndex = -1;
         }
     }
