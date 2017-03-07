@@ -16,9 +16,9 @@ public class FSM<T,StateType> where StateType : State<T, StateType> {
     }
 
     public void Initialise(string startState, T owner, params StateType[] initalStates) {
+        machineOwner = owner;
         RegisterStates(initalStates);
         ChangeCurrentState(startState);
-        machineOwner = owner;
     }
 
     public void UpdateCurrentState() {
