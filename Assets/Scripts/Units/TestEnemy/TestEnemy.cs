@@ -23,6 +23,6 @@ public class TestEnemy : AIUnitManager<TestEnemy> {
 	
 	// Update is called once per frame
 	void Update () {
-        //stateMachine.UpdateCurrentState();
+        stateMachine.UpdateCurrentState();
 	}
 }
