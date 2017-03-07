@@ -1,26 +1,44 @@
 ﻿using UnityEngine;
 using System.Collections;
-using FSM;
 using System;
 
-[System.Serializable]
-public class TestEnemy_Patrol : State<TestEnemy>
-{
+public class TestEnemy_Patrol : UnitState<TestEnemy> {
 
-    public new string stateKey = "Patrol";
 
-    public override void EndState(TestEnemy instance)
+
+    public TestEnemy_Patrol(string key) : base(key)
     {
-        Debug.Log("End State");
     }
 
-    public override void StartState(TestEnemy instance)
+
+    public override void EndState()
     {
-        Debug.Log("Start State");
+        
     }
 
-    public override void UpdateState(TestEnemy instance)
+    public override void FixedUpdateState()
     {
-        Debug.Log("Update State");
+        
     }
+
+    public override void OnTriggerEnter(Collider other)
+    {
+        
+    }
+
+    public override void OnTriggerExit(Collider other)
+    {
+        
+    }
+
+    public override void StartState()
+    {
+        
+    }
+
+    public override void UpdateState()
+    {
+        
+    }
+
 }

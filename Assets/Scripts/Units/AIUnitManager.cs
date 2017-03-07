@@ -4,7 +4,9 @@ using System.Collections;
 [System.Serializable]
 public abstract class AIUnitManager<T> : UnitManager {
 
-    public FiniteStateMachine<T> aiStateMachine;
+    protected FSM<T, UnitState<T>> stateMachine;
+
+
 
 
 }

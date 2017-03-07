@@ -1,7 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 55bbe5fbb6b1fd146906094ff4eafd06
 folderAsset: yes
 timeCreated: 1487328105
+=======
+guid: 0e6c08d215fba8640831fb3e6c36fdb6
+folderAsset: yes
+timeCreated: 1488860538
+>>>>>>> LevelGeneration
 licenseType: Free
 DefaultImporter:
   userData: 

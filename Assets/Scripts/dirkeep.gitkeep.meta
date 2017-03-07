@@ -1,11 +1,16 @@
 fileFormatVersion: 2
 <<<<<<< HEAD
+<<<<<<< HEAD
 guid: e39e9a3f53c62ef4ab7a8231a942fe46
 timeCreated: 1486554373
 =======
 guid: 33f9410b1e204e6448f48a8604dc1515
 timeCreated: 1486640058
 >>>>>>> TomsBranch
+=======
+guid: 33f9410b1e204e6448f48a8604dc1515
+timeCreated: 1486640058
+>>>>>>> LevelGeneration
 licenseType: Pro
 DefaultImporter:
   userData: 
