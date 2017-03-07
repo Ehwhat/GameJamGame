@@ -33,11 +33,13 @@ public class LevelGenerator : MonoBehaviour {
 
     LevelMeshData levelMeshData;
 
+
     int[,] level;
 
     void Start()
     {
         GenerateLevel();
+        
         StartCoroutine(GenLevel());
     }
 
@@ -88,6 +90,9 @@ public class LevelGenerator : MonoBehaviour {
 
         LevelPopulation popGen = GetComponent<LevelPopulation>();
         popGen.PopulateLevel(borderedLevel, sizeMultiplier, levelMeshData);
+
+        Grid pathfindingGrid = GetComponent<Grid>();
+        pathfindingGrid.CreateGrid();
 
     }
 

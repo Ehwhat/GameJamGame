@@ -7,6 +7,10 @@ public class Grid : MonoBehaviour
 
     //public bool onlyDisplayPathGizmos;
     public bool displayGridGizmos;
+    public bool createGridAutomatically = false;
+    public bool createGrid = false;
+
+    public float GridInitalHeight = 5;
     public Transform player;
     public LayerMask unwalkableMask;
     public Vector2 gridWorldSize;
@@ -30,7 +34,17 @@ public class Grid : MonoBehaviour
             walkableRegionsDictionary.Add((int)Mathf.Log(region.terrainMask.value, 2), region.terrainPenalty);
         }
 
-        CreateGrid();
+        if(createGridAutomatically)
+            CreateGrid();
+    }
+
+    void Update()
+    {
+        if (createGrid)
+        {
+            createGrid = false;
+            CreateGrid();
+        }
     }
 
     public int MaxSize
@@ -41,10 +55,10 @@ public class Grid : MonoBehaviour
         }
     }
 
-    void CreateGrid()
+    public void CreateGrid()
     {
         grid = new Node[gridSizeX, gridSizeY];
-        Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
+        Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2 + Vector3.up * GridInitalHeight;
 
         for (int x = 0; x < gridSizeX; x++)
         {
@@ -61,6 +75,9 @@ public class Grid : MonoBehaviour
                     if (Physics.Raycast(ray, out hit, 100, walkableMask))
                     {
                         walkableRegionsDictionary.TryGetValue(hit.collider.gameObject.layer, out movementPenalty);
+                    }else
+                    {
+                        walkable = false;
                     }
                 }
 
@@ -107,7 +124,7 @@ public class Grid : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
+        Gizmos.DrawWireCube(transform.position + Vector3.up * GridInitalHeight, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
 
         //if (onlyDisplayPathGizmos)
         //{
