@@ -54,6 +54,42 @@ public class PlayerControlManager : MonoBehaviour {
         }
     }
 
+    private static Dictionary<KeyCode, RebindableControl<KeyCode>>[] keyBindings = new Dictionary<KeyCode, RebindableControl<KeyCode>>[4]
+    {
+        new Dictionary<KeyCode, RebindableControl<KeyCode>>()
+        {
+            {KeyCode.W, new RebindableControl<KeyCode>(KeyCode.W) },
+            {KeyCode.A, new RebindableControl<KeyCode>(KeyCode.A) },
+            {KeyCode.S, new RebindableControl<KeyCode>(KeyCode.S) },
+            {KeyCode.D, new RebindableControl<KeyCode>(KeyCode.D) },
+            {KeyCode.E, new RebindableControl<KeyCode>(KeyCode.E) }
+        },
+        new Dictionary<KeyCode, RebindableControl<KeyCode>>()
+        {
+            {KeyCode.W, new RebindableControl<KeyCode>(KeyCode.W) },
+            {KeyCode.A, new RebindableControl<KeyCode>(KeyCode.A) },
+            {KeyCode.S, new RebindableControl<KeyCode>(KeyCode.S) },
+            {KeyCode.D, new RebindableControl<KeyCode>(KeyCode.D) },
+            {KeyCode.E, new RebindableControl<KeyCode>(KeyCode.E) }
+        },
+        new Dictionary<KeyCode, RebindableControl<KeyCode>>()
+        {
+            {KeyCode.W, new RebindableControl<KeyCode>(KeyCode.W) },
+            {KeyCode.A, new RebindableControl<KeyCode>(KeyCode.A) },
+            {KeyCode.S, new RebindableControl<KeyCode>(KeyCode.S) },
+            {KeyCode.D, new RebindableControl<KeyCode>(KeyCode.D) },
+            {KeyCode.E, new RebindableControl<KeyCode>(KeyCode.E) }
+        },
+        new Dictionary<KeyCode, RebindableControl<KeyCode>>()
+        {
+            {KeyCode.W, new RebindableControl<KeyCode>(KeyCode.W) },
+            {KeyCode.A, new RebindableControl<KeyCode>(KeyCode.A) },
+            {KeyCode.S, new RebindableControl<KeyCode>(KeyCode.S) },
+            {KeyCode.D, new RebindableControl<KeyCode>(KeyCode.D) },
+            {KeyCode.E, new RebindableControl<KeyCode>(KeyCode.E) }
+        }
+    };
+
     private static Dictionary<XboxDigitalButtons, RebindableControl<XboxDigitalButtons>>[] xboxDigitalBindings = new Dictionary<XboxDigitalButtons, RebindableControl<XboxDigitalButtons>>[4] {
         new Dictionary<XboxDigitalButtons, RebindableControl<XboxDigitalButtons>>() {
             {XboxDigitalButtons.A, new RebindableControl<XboxDigitalButtons>(XboxDigitalButtons.A)},
@@ -125,6 +161,13 @@ public class PlayerControlManager : MonoBehaviour {
         },
     };
 
+    public enum MouseButton : int
+    {
+        Left,
+        Right,
+        Middle
+    }
+
     static private PlayerController[] playerControllers = {
         new PlayerController(PlayerIndex.One),
         new PlayerController(PlayerIndex.Two),
@@ -152,6 +195,44 @@ public class PlayerControlManager : MonoBehaviour {
         }
     }
 
+    public static bool IsKeyPressed(KeyCode key)
+    {
+        key = RawKeyControlToReboundControl(0,key);
+        return Input.GetKeyDown(key);
+    }
+
+    public static bool IsKeyHeld(KeyCode key)
+    {
+        key = RawKeyControlToReboundControl(0, key);
+        return Input.GetKey(key);
+    }
+
+    public static bool IsKeyReleased(KeyCode key)
+    {
+        key = RawKeyControlToReboundControl(0, key);
+        return Input.GetKeyUp(key);
+    }
+
+    public static Vector2 GetMousePosition()
+    {
+        return Input.mousePosition;
+    }
+
+    public static bool IsMouseButtonPressed(MouseButton button)
+    {
+        return Input.GetMouseButtonDown((int)button);
+    }
+
+    public static bool IsMouseButtonHeld(MouseButton button)
+    {
+        return Input.GetMouseButton((int)button);
+    }
+
+    public static bool IsMouseButtonReleased(MouseButton button)
+    {
+        return Input.GetMouseButtonUp((int)button);
+    }
+
     public static PlayerController GetController(PlayerIndex player)
     {
         return playerControllers[(int)player];
@@ -161,7 +242,12 @@ public class PlayerControlManager : MonoBehaviour {
         xboxDigitalBindings[(int)player][buttonToRebind].Rebind(rebindToButton);
     }
 
-    static XboxDigitalButtons RawControlToReboundControl(PlayerIndex player, XboxDigitalButtons button)
+    static KeyCode RawKeyControlToReboundControl(PlayerIndex player, KeyCode key)
+    {
+        return keyBindings[(int)player][key].button;
+    }
+
+    static XboxDigitalButtons RawXboxControlToReboundControl(PlayerIndex player, XboxDigitalButtons button)
     {
         return xboxDigitalBindings[(int)player][button].button;
     }
@@ -230,6 +316,7 @@ public class PlayerControlManager : MonoBehaviour {
 
     public class PlayerController
     {
+
         PlayerIndex playerIndex;
         public GamePadState gamePadState;
         public GamePadState prevGamePadState;
@@ -245,25 +332,27 @@ public class PlayerControlManager : MonoBehaviour {
             return gamePadState.IsConnected;
         }
 
+        
+
         public bool IsPressed(XboxDigitalButtons button)
         {
-            button = RawControlToReboundControl(playerIndex, button);
+            button = RawXboxControlToReboundControl(playerIndex, button);
             return (XboxControltoButtonState(prevGamePadState, button) == ButtonState.Released && XboxControltoButtonState(gamePadState, button) == ButtonState.Pressed);
         }
 
         public bool IsReleased(XboxDigitalButtons button)
         {
-            button = RawControlToReboundControl(playerIndex, button);
+            button = RawXboxControlToReboundControl(playerIndex, button);
             return (XboxControltoButtonState(prevGamePadState, button) == ButtonState.Pressed && XboxControltoButtonState(gamePadState, button) == ButtonState.Released);
         }
 
         public bool IsHeld(XboxDigitalButtons button)
         {
-            button = RawControlToReboundControl(playerIndex, button);
+            button = RawXboxControlToReboundControl(playerIndex, button);
             return (XboxControltoButtonState(gamePadState, button) == ButtonState.Pressed);
         }
 
-        public Vector2 GetAxis(XboxControlStick stick)
+        public Vector2 GetStickVector(XboxControlStick stick)
         {
             GamePadThumbSticks.StickValue stickValue = XboxControlSticktoStickValue(gamePadState,stick);
             return new Vector2(stickValue.X, stickValue.Y);

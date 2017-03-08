@@ -15,7 +15,7 @@ public class TestInput : UnitManager {
         Vector3 moveVector = Vector3.zero;
         if (controller.IsConnected())
         {
-            Vector2 inputVector = Quaternion.AngleAxis(-45,Vector3.up)*  controller.GetAxis(XboxControlStick.LeftStick);
+            Vector2 inputVector =  controller.GetStickVector(XboxControlStick.LeftStick);
             moveVector = new Vector3(inputVector.x, 0, inputVector.y);
         }
         MoveAlongVector(moveVector, 40*Time.deltaTime);
