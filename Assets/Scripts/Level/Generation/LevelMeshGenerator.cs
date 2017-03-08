@@ -165,11 +165,6 @@ public class LevelMeshGenerator : MonoBehaviour {
             {
                 int startIndex = wallVerts.Count;
 
-                Vector3 topSide = vertices[outline[i + 1]] - vertices[outline[i]];
-                Vector3 leftSide = vertices[outline[i + 1]] - transform.up * wallHeight;
-
-                Vector3 perp = Vector3.Cross(topSide,leftSide).normalized;
-
 
                 wallVerts.Add(vertices[outline[i]]);
                 wallVerts.Add(vertices[outline[i+1]]);

@@ -67,7 +67,7 @@ public class LevelPopulation : MonoBehaviour {
     private List<Coord> mediumSpots = new List<Coord>();
     private List<Coord> smallSpots = new List<Coord>();
 
-    private List<Coord> edgeSpots = new List<Coord>();
+    //private List<Coord> edgeSpots = new List<Coord>();
 
     private List<Fence> fences = new List<Fence>();
 
@@ -172,40 +172,42 @@ public class LevelPopulation : MonoBehaviour {
         List<Fence> avalibleFences = fences;
         List<List<Fence>> outlines = new List<List<Fence>>();
 
-        List<Fence> outline = new List<Fence>();
-        Fence currentFence = avalibleFences[0];
-
-        while(avalibleFences.Count > 1)
+        if (avalibleFences.Count > 0)
         {
-            avalibleFences.Remove(currentFence);
-            outline.Add(currentFence);
-            if (currentFence.connectedFences.Count > 0)
+            List<Fence> outline = new List<Fence>();
+            Fence currentFence = avalibleFences[0];
+
+            while (avalibleFences.Count > 1)
             {
-                bool fenceFound = false;
-                foreach (Fence connectedFence in currentFence.connectedFences)
+                avalibleFences.Remove(currentFence);
+                outline.Add(currentFence);
+                if (currentFence.connectedFences.Count > 0)
                 {
-                    if (avalibleFences.Contains(connectedFence))
+                    bool fenceFound = false;
+                    foreach (Fence connectedFence in currentFence.connectedFences)
                     {
-                        currentFence = connectedFence;
-                        fenceFound = true;
-                        break;
+                        if (avalibleFences.Contains(connectedFence))
+                        {
+                            currentFence = connectedFence;
+                            fenceFound = true;
+                            break;
+                        }
+                    }
+                    if (!fenceFound)
+                    {
+                        currentFence = avalibleFences[0];
+                        outlines.Add(outline);
+                        outline = new List<Fence>();
                     }
                 }
-                if (!fenceFound)
+                else
                 {
                     currentFence = avalibleFences[0];
                     outlines.Add(outline);
                     outline = new List<Fence>();
                 }
             }
-            else
-            {
-                currentFence = avalibleFences[0];
-                outlines.Add(outline);
-                outline = new List<Fence>();
-            }
         }
-
         return outlines;
         
         
@@ -222,20 +224,23 @@ public class LevelPopulation : MonoBehaviour {
 
     public void FindSpots(PrefabSize size, int passes, ref List<Coord> spotList, Color lineColour)
     {
-        for (int i = 0; i < passes; i++)
+        if (availibleLevel.Count > passes)
         {
-            int randomIdx = Random.Range(0, availibleLevel.Count-1);
-            Coord selectedCoord = availibleLevel[randomIdx];
-
-            Vector3 v = CoordToWorldSpace(selectedCoord);
-            Debug.DrawLine(v, v + Vector3.up * 10, lineColour, 20);
-
-            if(CheckIfFit(selectedCoord.x, selectedCoord.y, (int)size))
+            for (int i = 0; i < passes; i++)
             {
-                spotList.Add(selectedCoord);
-                RemoveSpace(selectedCoord.x, selectedCoord.y, (int)size);
-            }
+                int randomIdx = Random.Range(0, availibleLevel.Count - 1);
+                Coord selectedCoord = availibleLevel[randomIdx];
 
+                Vector3 v = CoordToWorldSpace(selectedCoord);
+                Debug.DrawLine(v, v + Vector3.up * 10, lineColour, 20);
+
+                if (CheckIfFit(selectedCoord.x, selectedCoord.y, (int)size))
+                {
+                    spotList.Add(selectedCoord);
+                    RemoveSpace(selectedCoord.x, selectedCoord.y, (int)size);
+                }
+
+            }
         }
     }
 
@@ -341,10 +346,10 @@ public class LevelPopulation : MonoBehaviour {
         if (levelMeshData.solidEdgeVertices != null)
         {
             Gizmos.color = Color.blue;
-            foreach (Vector3 edgeVert in levelMeshData.solidEdgeVertices)
+            /*foreach (Vector3 edgeVert in levelMeshData.solidEdgeVertices)
             {
                 //Gizmos.DrawCube(edgeVert + Vector3.up + Vector3.left*4 + Vector3.forward *4, Vector3.one * 3);
-            }
+            }*/
             foreach(List<Fence> outline in fenceOutlines)
             {
                 for (int i = 0; i < outline.Count-1; i++)

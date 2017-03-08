@@ -81,7 +81,7 @@ public class TestEnemy_Patrol : UnitState<TestEnemy> {
 
         float speedPercent = 1;
 
-        while (followingPath)
+        while (followingPath && instance.path.turnBoundaries.Length > pathIndex)
         {
             Vector2 pos2D = new Vector2(instance.transform.position.x, instance.transform.position.z);
             while (instance.path.turnBoundaries[pathIndex].HasCrossedLine(pos2D))

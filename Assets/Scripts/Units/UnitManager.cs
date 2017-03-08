@@ -7,4 +7,9 @@ using FSM;
 public abstract class UnitManager : DamageableObject
 {
     
+    public void MoveAlongVector(Vector3 vector, float amount)
+    {
+        transform.position += vector.normalized * amount;
+    }
+
 }
