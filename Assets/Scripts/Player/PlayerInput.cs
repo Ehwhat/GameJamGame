@@ -50,7 +50,7 @@ public class PlayerInput : MonoBehaviour {
         }
 
 
-        Debug.Log(state.ThumbSticks.Left.X);
+        //Debug.Log(state.ThumbSticks.Left.X);
 
         //Calculate movement velocity as a 3d vector
         float _xMov = state.ThumbSticks.Left.X;
