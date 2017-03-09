@@ -287,7 +287,7 @@ public class PlayerControlManager : MonoBehaviour {
             case XboxDigitalButtons.DPadLeft:
                 return state.DPad.Left;
         }
-        return (ButtonState)2;
+        return ButtonState.Released;
     }
 
     static GamePadThumbSticks.StickValue XboxControlSticktoStickValue(GamePadState state, XboxControlStick stick)
