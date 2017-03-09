@@ -6,6 +6,8 @@ public class NewEnemy_Alert : TriggerState<NewEnemy>
 
     NewEnemy currentEnemy;
 
+    RaycastHit hit;
+
     private float searchTimer;
 
     public NewEnemy_Alert(string key, NewEnemy enemy) : base(key)
@@ -36,7 +38,7 @@ public class NewEnemy_Alert : TriggerState<NewEnemy>
 
     private void Look()
     {
-        RaycastHit hit;
+        
 
         //Debug.Log("Alert Looking");
 

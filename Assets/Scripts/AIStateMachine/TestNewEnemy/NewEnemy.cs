@@ -1,12 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class NewEnemy : MonoBehaviour {
+public class NewEnemy : AIUnitManager<TestEnemy>
+{
 
     public float searchingTurnSpeed = 120f;
     public float searchingDuration = 4f;
     public float sightRange = 20f;
     public float attackRange = 10f;
+
+    public float minPathUpdateTime = 0.2f;
+    public float pathUpdateMoveThreshold = 0.5f;
+
+    public float speed = 50;
+    public float turnSpeed = 3;
+    public float turnDst = 5;
+    public float stoppingDst = 10;
+
+    public Path path;
 
     //where the enemy will path to in patrol state, can be changed later as enemy doesnt actually move
     public Transform[] wayPoints;
@@ -26,7 +37,9 @@ public class NewEnemy : MonoBehaviour {
 
     public void Start()
     {
-        stateMachine = new FSM<NewEnemy, TriggerState<NewEnemy>>("Patrol", this, new NewEnemy_Patrol("Patrol", this), new NewEnemy_Alert("Alert", this));
+        stateMachine = new FSM<NewEnemy, TriggerState<NewEnemy>>("Patrol", this, new NewEnemy_Patrol("Patrol", this), new NewEnemy_Alert("Alert", this), new NewEnemy_Chase("Chase", this), new NewEnemy_Attack("Attack", this));
+        if (stateMachine == null)
+            Debug.Log("null");
     }
 
     public void Update()
