@@ -30,8 +30,6 @@ public class NewEnemy : AIUnitManager<TestEnemy>
     public MeshRenderer meshrendererFlag;
 
     public Transform chaseTarget;
-        
-    public NavMeshAgent navMeshAgent;
 
     private FSM<NewEnemy, TriggerState<NewEnemy>> stateMachine;
 
