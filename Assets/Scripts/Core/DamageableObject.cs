@@ -18,7 +18,7 @@ public abstract class DamageableObject : MonoBehaviour, IHitTarget
     public bool clampHealth = true;
     public float maxHealth = 100;
 
-    private float m_health;
+    public float m_health;
 
     public bool applyGeneralModifierFirst = true;
     public float generalDamageModifier = 1;
@@ -45,13 +45,17 @@ public abstract class DamageableObject : MonoBehaviour, IHitTarget
         }
         else if (isDead)
         {
-            HandleResurrection();
+            //HandleResurrection();
         }
     }
 
     public void RefillHealth()
     {
         currentHealth = maxHealth;
+        if (isDead)
+        {
+            HandleResurrection();
+        }
     }
 
     private void HandleResurrection() //and on the third day, he rose!

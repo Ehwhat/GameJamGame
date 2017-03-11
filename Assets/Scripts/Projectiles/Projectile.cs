@@ -120,7 +120,7 @@ public abstract class Projectile : PooledMonoBehaviour<Projectile> {
         currentLifetime += timeStep;
         Ray bulletRay = new Ray(position, velocity);
         RaycastHit hit;
-        bool didHit = (useRadius)? Physics.SphereCast(bulletRay,bulletRadius,out hit, velocityMag, projectileHitLayers) : Physics.Raycast(bulletRay, out hit, velocityMag, projectileHitLayers);
+        bool didHit = (useRadius)? Physics.SphereCast(bulletRay,bulletRadius,out hit, velocityMag, projectileHitLayers) : Physics.Raycast(bulletRay, out hit, velocityMag, projectileHitLayers, QueryTriggerInteraction.Ignore);
         if (didHit)
         {
             position = hit.point;
@@ -202,7 +202,7 @@ public abstract class Projectile : PooledMonoBehaviour<Projectile> {
 
         if (hitTarget != null)
         {
-            hitData = new HitData(owner,damage,knockback,damageType,damageInflictionWhenDirectHit);
+            hitData = new HitData(owner,damage,knockback,damageType,damageInflictionWhenDirectHit, hit.point);
             hitTarget.OnDamageHit(hitData);
         }
         if (useSplash)
@@ -224,7 +224,7 @@ public abstract class Projectile : PooledMonoBehaviour<Projectile> {
                 {
                     float damageModifier = (useFalloffSplashDamage) ? 1 - (c.transform.position - transform.position).magnitude / bulletSplashRadius : 1;
                     knockback = (c.transform.position - transform.position) * knockbackForce * damageModifier + knockbackModifier;
-                    hitData = new HitData(owner, damage*damageModifier, knockback, damageType, damageInflictionWhenSplash);
+                    hitData = new HitData(owner, damage*damageModifier, knockback, damageType, damageInflictionWhenSplash, hit.point);
                     explosionTarget.OnDamageHit(hitData);
                     if (IsDebug)
                     {

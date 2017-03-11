@@ -143,7 +143,7 @@ public class Grid : MonoBehaviour
 
         if (grid != null && displayGridGizmos)
         {
-            Node playerNode = NodeFromWorldPoint(player.position);
+            //Node playerNode = NodeFromWorldPoint(player.position);
             foreach (Node n in grid)
             {
                 Gizmos.color = (n.walkable) ? Color.white : Color.red;

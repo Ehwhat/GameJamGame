@@ -144,7 +144,7 @@ public class LevelGenerator : MonoBehaviour {
 
         foreach (List<Coord> region in waterRegions)
         {
-            if (region.Count < 5)
+            if (region.Count < 10)
             {
                 foreach (Coord tile in region)
                 {
@@ -168,12 +168,17 @@ public class LevelGenerator : MonoBehaviour {
             }
         }
 
-        
 
-        survivingIslands.Sort();
-        survivingIslands[0].isMainIsland = true;
-        survivingIslands[0].isAccessibleFromMainIsland = true;
-        ConnectClosestIslands(survivingIslands);
+        if (survivingIslands.Count > 0)
+        {
+            survivingIslands.Sort();
+            survivingIslands[0].isMainIsland = true;
+            survivingIslands[0].isAccessibleFromMainIsland = true;
+            if (survivingIslands.Count > 1)
+            {
+                ConnectClosestIslands(survivingIslands);
+            }
+        }
 
     }
 

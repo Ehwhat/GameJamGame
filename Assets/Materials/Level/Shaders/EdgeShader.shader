@@ -1,7 +1,8 @@
 ﻿Shader "Custom/EdgeShader" {
 	Properties {
-		_Color ("Color", Color) = (1,1,1,1)
+		_BlendFromTint ("Blend From Tint", Color) = (1,1,1,1)
 		_BlendFrom("Blend From Texture", 2D) = "white" {}
+		_BlendToTint("Blend To Tint", Color) = (1,1,1,1)
 		_BlendTo("Blend To Texture", 2D) = "white" {}
 		_Glossiness ("Smoothness", Range(0,1)) = 0.5
 		_Metallic ("Metallic", Range(0,1)) = 0.0

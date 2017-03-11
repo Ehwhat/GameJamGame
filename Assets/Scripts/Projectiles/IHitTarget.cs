@@ -11,13 +11,16 @@ public class HitData
     public Projectile.DamageTypes damageType;
     public Projectile.DamageInflictionType damageInfliction;
 
-    public HitData(ProjectileManager _owner,float _damage, Vector3 _knockback, Projectile.DamageTypes _damageType, Projectile.DamageInflictionType _damageInfliction)
+    public Vector3 hitPosition;
+
+    public HitData(ProjectileManager _owner,float _damage, Vector3 _knockback, Projectile.DamageTypes _damageType, Projectile.DamageInflictionType _damageInfliction, Vector3 _hitPosition)
     {
         damage = _damage;
         knockback = _knockback;
         owner = _owner;
         damageType = _damageType;
         damageInfliction = _damageInfliction;
+        hitPosition = _hitPosition;
     }
 
     public override string ToString()

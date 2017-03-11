@@ -1,6 +1,7 @@
 fileFormatVersion: 2
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 guid: cb55c85b209c5c8468aadcbf910440d5
 timeCreated: 1486554373
 =======
@@ -11,6 +12,10 @@ timeCreated: 1486640059
 guid: f5799c04e5449d347ab36965b9c47468
 timeCreated: 1486640059
 >>>>>>> LevelGeneration
+=======
+guid: f5799c04e5449d347ab36965b9c47468
+timeCreated: 1486640059
+>>>>>>> JayBranch
 licenseType: Pro
 DefaultImporter:
   userData: 
