@@ -2,24 +2,24 @@
 using System.Collections;
 
 [System.Serializable]
-public class UnitMovement {
+public class UnitMovement{
 
     public bool useRigidbody = false;
 
     protected Transform t;
-    protected Rigidbody rigidbody;
+    protected Rigidbody rb;
 
     protected void Initalise(Transform transform)
     {
         t = transform;
-        rigidbody = transform.GetComponent<Rigidbody>();
+        rb = transform.GetComponent<Rigidbody>();
     }
 
     public void MoveAlongDirection(Vector3 vector, float amount, float isoOffset = 0)
     {
         if (useRigidbody)
         {
-            rigidbody.MovePosition(rigidbody.position + Quaternion.AngleAxis(isoOffset, Vector3.up) * vector.normalized * amount);
+            rb.MovePosition(rb.position + Quaternion.AngleAxis(isoOffset, Vector3.up) * vector.normalized * amount);
         }
         else
         {
@@ -31,7 +31,7 @@ public class UnitMovement {
     {
         if (useRigidbody)
         {
-            rigidbody.MovePosition(rigidbody.position + Quaternion.AngleAxis(isoOffset, Vector3.up) * vector);
+            rb.MovePosition(rb.position + Quaternion.AngleAxis(isoOffset, Vector3.up) * vector);
         }
         else
         {

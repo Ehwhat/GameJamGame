@@ -3,14 +3,17 @@ using System.Collections;
 [System.Serializable]
 public class PlayerMovement : UnitMovement {
 
-    public float movementWalkSpeed = 30;
-    public float movementRunSpeed = 45;
+    public float currentSpeed = 0.0f;
+    
+    public float movementWalkSpeed = 7;
+    public float movementRunSpeed = 10;
 
-    public float movementDeadZone = 0.1f;
+    public float movementDeadZone = 0.10f;
     public float movementWalkZone = 0.65f;
 
     private PlayerControlManager.PlayerController controller;
 
+    private Vector2 movementVector = new Vector2();
     // Use this for initialization
 
     public void Initalise(Transform transform, PlayerControlManager.PlayerController c)
@@ -27,22 +30,57 @@ public class PlayerMovement : UnitMovement {
 
     Vector3 GetMovementVector()
     {
-        Vector2 movementVector = controller.GetStickVector(XboxControlStick.LeftStick);
-        return new Vector3(movementVector.x, 0, movementVector.y) * GetSpeed(movementVector.magnitude) * Time.deltaTime;
+        movementVector = Vector2.Lerp(movementVector,controller.GetStickVector(XboxControlStick.LeftStick), Time.deltaTime * 10);
+        GetSpeed(movementVector.magnitude);
+        return new Vector3(movementVector.x, 0, movementVector.y) * currentSpeed * Time.deltaTime;
     }
 
-    
+    public void OnKill(HitData lastHit)
+    {
+        if (useRigidbody)
+        {
+            Vector3 hitPoint = lastHit.hitPosition;
+            Vector3 forceHit = (rb.position - lastHit.hitPosition).normalized * -100;
+            Debug.Log("ShotHit" + forceHit);
+            //Disable Constraints
+            rb.constraints = RigidbodyConstraints.None;
+            rb.AddForceAtPosition(forceHit, hitPoint);
+        }
+        else
+        {
 
-    float GetSpeed(float mag)
+        }
+    }
+
+    public void OnResurrect()
+    {
+        if (useRigidbody)
+        {
+            rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+            t.localEulerAngles = new Vector3(0,0,0);
+        }
+         
+    }
+
+    void GetSpeed(float mag)
     {
         if(mag <= movementDeadZone)
         {
-            return 0;
-        }else if(mag <= movementWalkZone)
-        {
-            return movementWalkSpeed;
+            currentSpeed =  Mathf.Lerp(currentSpeed, 0, Time.deltaTime * 2);
         }
-        return movementRunSpeed;
+        else if (mag <= movementWalkZone)
+        {
+           currentSpeed = Mathf.Lerp(currentSpeed, movementWalkSpeed, Time.deltaTime * 4);
+        }
+        else
+        {
+            currentSpeed = Mathf.Lerp(currentSpeed, movementRunSpeed, Time.deltaTime * 4);
+        }
+    }
+
+    public void DisableRotation()
+    {
+        rb.constraints = RigidbodyConstraints.FreezeRotationY;
     }
     
 }
