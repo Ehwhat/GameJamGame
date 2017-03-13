@@ -39,6 +39,7 @@ public class NewEnemy_Patrol : TriggerState<NewEnemy> {
     private void Look()
     {
         RaycastHit hit;
+        
         //Debug.Log("patrol Looking");
         if (Physics.Raycast(currentEnemy.eyes.transform.position, currentEnemy.eyes.forward, out hit) && hit.collider.CompareTag("Player"))
         {

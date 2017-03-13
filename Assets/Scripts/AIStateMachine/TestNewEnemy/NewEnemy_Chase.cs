@@ -27,7 +27,7 @@ public class NewEnemy_Chase : TriggerState<NewEnemy>
     public override void StartState()
     {
         searchTimer = 0f;
-        //instance.StartCoroutine(UpdatePath());
+        instance.StartCoroutine(UpdatePath());
     }
 
     public override void UpdateState()
@@ -104,9 +104,17 @@ public class NewEnemy_Chase : TriggerState<NewEnemy>
                         followingPath = false;
                     }
                 }
-                Quaternion targetRotation = Quaternion.LookRotation(instance.path.lookPoints[pathIndex] - instance.transform.position);
-                instance.transform.rotation = Quaternion.Lerp(instance.transform.rotation, targetRotation, Time.deltaTime * instance.turnSpeed);
-                instance.transform.Translate(Vector3.forward * Time.deltaTime * instance.speed * speedPercent, Space.Self);
+                //Quaternion targetRotation = Quaternion.LookRotation(new Vector3(instance.path.lookPoints[pathIndex].x, 0.5f, instance.path.lookPoints[pathIndex].z) - instance.transform.position);
+                // instance.transform.rotation = Quaternion.Lerp(instance.transform.rotation, targetRotation, Time.deltaTime * instance.turnSpeed);
+                //instance.transform.Translate(Vector3.forward * Time.deltaTime * instance.speed * speedPercent, Space.Self);
+
+                //Generate a directional velocity based on the targets location, and the current RB
+                Vector3 velocity = (new Vector3(currentEnemy.rb.position.x, currentEnemy.rb.position.y, currentEnemy.rb.position.z) - new Vector3(instance.chaseTarget.position.x, currentEnemy.rb.position.y, instance.chaseTarget.position.z)).normalized * Time.fixedDeltaTime;
+
+                
+                currentEnemy.rb.MovePosition((currentEnemy.rb.position - velocity));
+                yield return new WaitForFixedUpdate();
+              //  Debug.Log("Enemy Velocity = " + velocity);
             }
 
             yield return null;
@@ -144,10 +152,11 @@ public class NewEnemy_Chase : TriggerState<NewEnemy>
         }
         else
         {
-            instance.StopCoroutine(UpdatePath());
+           // Debug.Log("Path stopped");
+            //instance.StopCoroutine(UpdatePath());
         }
 
-        Debug.Log(Vector3.Distance(hit.transform.position, currentEnemy.transform.position));
+       // Debug.Log(Vector3.Distance(hit.transform.position, currentEnemy.transform.position));
 
     }
 }

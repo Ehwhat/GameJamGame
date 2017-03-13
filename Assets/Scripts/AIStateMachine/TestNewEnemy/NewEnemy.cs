@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
 public class NewEnemy : AIUnitManager<TestEnemy>
 {
 
@@ -33,8 +34,14 @@ public class NewEnemy : AIUnitManager<TestEnemy>
 
     private FSM<NewEnemy, TriggerState<NewEnemy>> stateMachine;
 
+    //Rigidbody additions
+    public Rigidbody rb;
+    public Transform movePoint; // What the enemy moves towards when chasing the player
+
     public void Start()
     {
+        rb = GetComponent<Rigidbody>();
+        movePoint = gameObject.transform.FindChild("MovePoint").transform;
         stateMachine = new FSM<NewEnemy, TriggerState<NewEnemy>>("Patrol", this, new NewEnemy_Patrol("Patrol", this), new NewEnemy_Alert("Alert", this), new NewEnemy_Chase("Chase", this), new NewEnemy_Attack("Attack", this));
         if (stateMachine == null)
             Debug.Log("null");

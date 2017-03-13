@@ -31,7 +31,7 @@ public class PlayerManager : ControlledUnitManager {
             playerAiming.HandleRotation();
             if (controller.GetTrigger(XboxTrigger.RightTrigger) > 0.1f)
             {
-                Debug.Log("Shooting");
+               // Debug.Log("Shooting");
                 playerShooting.Shoot();
             }
         }
