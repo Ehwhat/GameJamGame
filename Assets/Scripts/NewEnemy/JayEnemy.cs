@@ -20,8 +20,8 @@ public class JayEnemy : MonoBehaviour {
 
     //Vision Information
     float visionRange = 10;
-    bool sweepRight = true;
     Transform visionPoint;
+    Transform[] playerTransforms;
 
     //The enemys rigidbody
     private Rigidbody rb;
@@ -40,6 +40,14 @@ public class JayEnemy : MonoBehaviour {
     {
         rb = GetComponent<Rigidbody>();
         visionPoint = gameObject.transform.FindChild("Eyes").transform;//Attatch the eyes
+
+        //Find players and store there Transforms into the transform array
+        GameObject[] g = GameObject.FindGameObjectsWithTag("Player");
+        playerTransforms = new Transform[g.Length];
+        for (int x = 0; x < g.Length; ++x)
+        {
+            playerTransforms[x] = g[x].transform;
+        }
     }
 
     void Update()
@@ -69,6 +77,14 @@ public class JayEnemy : MonoBehaviour {
                     //Back to first point
                     currentPoint = 0;
                 }
+
+                //Temp Fix
+                Vector3 rot = (patrolPoints[currentPoint].location.position - rb.position).normalized;
+
+                rot.y = rb.position.y;
+                Quaternion lookRotation = Quaternion.LookRotation(rot);
+                rb.MoveRotation(Quaternion.Euler(0, lookRotation.eulerAngles.y, 0));
+
                 currentWait = 0;
             }
         }
@@ -86,9 +102,21 @@ public class JayEnemy : MonoBehaviour {
         }
         else if (currentState == EnemyState.ePatroling)
         {
-            Vector3 velocity = (patrolPoints[currentPoint].location.position - rb.position).normalized;
-            velocity.y = 0;//To stop upwards movement;
-            rb.MovePosition(rb.position + velocity * Time.fixedDeltaTime * patrolSpeed);
+            Vector3 distance = (rb.position - patrolPoints[currentPoint].location.position);
+            //To stop upwards movement;
+
+            Vector3 direction = distance.normalized;
+
+            //Debug.Log(Mathf.Abs(distance.x));
+
+            /*if (Mathf.Abs(distance.x) < 1)
+            {
+                direction.y = rb.position.y;
+                Quaternion lookRotation = Quaternion.LookRotation(direction);
+                rb.MoveRotation(Quaternion.Euler(0, lookRotation.eulerAngles.y, 0));
+            }*/
+            direction.y = 0;
+            rb.MovePosition(rb.position - direction * Time.fixedDeltaTime * patrolSpeed);
         }
         else if (currentState == EnemyState.eChasing)
         {
@@ -99,27 +127,20 @@ public class JayEnemy : MonoBehaviour {
 
     void Look()
     {
-        //Rotate the visionPoint
-        if (sweepRight)
-        {
-            visionPoint.localEulerAngles = new Vector3(visionPoint.localEulerAngles.x, Mathf.PingPong(Time.time, 46), visionPoint.localEulerAngles.z);
-            if (visionPoint.localEulerAngles.y >= 45)
-            {
-                sweepRight = !sweepRight;//Switch to sweeping the other way
-            }
-        }
-        else
-        {
-            visionPoint.localEulerAngles = new Vector3(visionPoint.localEulerAngles.x, Mathf.PingPong(Time.time, -46), visionPoint.localEulerAngles.z);
-            if (visionPoint.localEulerAngles.y <= -45)
-            {
-                sweepRight = !sweepRight;//Switch to sweeping the other way
-            }
-        }
-       
-
+        
         RaycastHit hit;
-        Vector3 localForward = transform.worldToLocalMatrix.MultiplyVector(visionPoint.forward);
+
+
+        //For each players transform, check if they are in range, and within the vision cone.
+        for (int playerIndex = 0; playerIndex < playerTransforms.Length; playerIndex++)
+        {
+            Vector3 playerRaycast = (playerTransforms[playerIndex].position - visionPoint.position).normalized;
+            float visionAngle = Vector3.Dot(visionPoint.forward, playerRaycast);
+            //Debug.Log(visionAngle);
+        }
+      
+        
+        /*Vector3 localForward = transform.worldToLocalMatrix.MultiplyVector(visionPoint.forward);
         Debug.DrawLine(visionPoint.position, localForward * 10, Color.red);
         if (Physics.Raycast(visionPoint.position, localForward, out hit, 100))
         {
@@ -130,6 +151,6 @@ public class JayEnemy : MonoBehaviour {
                 Debug.Log("Player Seen");
             }
 
-        }
+        }*/
     }
 }
