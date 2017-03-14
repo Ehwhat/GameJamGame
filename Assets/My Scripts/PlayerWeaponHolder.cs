@@ -16,7 +16,7 @@ public class PlayerWeaponHolder : MonoBehaviour {
     public PlayerHealth healthbar;
 
     private float maxHealth = 100;
-    private float health = 100;
+    public float health = 100;
 
     public void IncreaseHealth(float amount)
     {
@@ -27,10 +27,15 @@ public class PlayerWeaponHolder : MonoBehaviour {
         }
     }
 
+    public void DecreaseHealth(float amount)
+    {
+        health -= amount;
+    }
+
     void Update()
     {
         //Drain Health over time
-        health -= 2 * Time.deltaTime; 
+        //health -= 2 * Time.deltaTime; 
         healthbar.setHealthBar(health/100);
     }
 
