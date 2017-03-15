@@ -17,7 +17,7 @@ public class PlayerManager : ControlledUnitManager {
 	void Start ()
     {
         GetPlayerController(playerIndex);
-        playerMovement.Initalise(transform, controller);
+		playerMovement.Initalise(this, controller);
         playerAiming.Initalise(transform, controller);
         playerShooting.Initalise(playerAiming);
     }
@@ -101,7 +101,9 @@ public class PlayerManager : ControlledUnitManager {
         if (col.CompareTag("Player"))
         {
             numRevivers--;
+            playerShooting.Shoot();
         }
+        
     }
 
 }

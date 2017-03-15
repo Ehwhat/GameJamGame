@@ -120,7 +120,7 @@ public abstract class Projectile : PooledMonoBehaviour<Projectile> {
         currentLifetime += timeStep;
         Ray bulletRay = new Ray(position, velocity);
         RaycastHit hit;
-        bool didHit = (useRadius)? Physics.SphereCast(bulletRay,bulletRadius,out hit, velocityMag, projectileHitLayers) : Physics.Raycast(bulletRay, out hit, velocityMag, projectileHitLayers, QueryTriggerInteraction.Ignore);
+        bool didHit = (useRadius)? Physics.SphereCast(bulletRay,bulletRadius,out hit, velocityMag, projectileHitLayers, QueryTriggerInteraction.Ignore) : Physics.Raycast(bulletRay, out hit, velocityMag, projectileHitLayers, QueryTriggerInteraction.Ignore);
         if (didHit)
         {
             position = hit.point;
@@ -195,7 +195,7 @@ public abstract class Projectile : PooledMonoBehaviour<Projectile> {
 
     public virtual void HandleDamage(RaycastHit hit)
     {
-        IHitTarget hitTarget = hit.collider.gameObject.GetComponent<IHitTarget>();
+		IHitTarget hitTarget = hit.collider.transform.root.gameObject.GetComponent<IHitTarget>();
         HitData hitData;
 
         Vector3 knockback = transform.forward * knockbackForce + knockbackModifier;
