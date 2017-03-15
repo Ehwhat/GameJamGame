@@ -10,7 +10,7 @@ public class PlayerManager : ControlledUnitManager {
 	// Use this for initialization
 	void Start () {
         GetPlayerController(playerIndex);
-        playerMovement.Initalise(transform, controller);
+		playerMovement.Initalise(this, controller);
         playerAiming.Initalise(transform, controller);
         playerShooting.Initalise(playerAiming);
     }
@@ -22,9 +22,9 @@ public class PlayerManager : ControlledUnitManager {
         playerAiming.HandleRotation();
         if(controller.GetTrigger(XboxTrigger.RightTrigger) > 0.1f)
         {
-            Debug.Log("Shooting");
             playerShooting.Shoot();
         }
+        
     }
 
 }

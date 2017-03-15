@@ -51,6 +51,7 @@ public class LevelPopulation : MonoBehaviour {
         }
     }
 
+    public Transform levelObjectHolder;
     public PrefabData[] levelPrefabs;
 
     [Range(0,1000)]
@@ -134,7 +135,7 @@ public class LevelPopulation : MonoBehaviour {
                 }
                 Vector3 position = CoordToWorldSpace(spot) + new Vector3(Random.Range(-prefabChoice.prefabPlacementRandomness/2, prefabChoice.prefabPlacementRandomness / 2), 0, Random.Range(-prefabChoice.prefabPlacementRandomness / 2, prefabChoice.prefabPlacementRandomness / 2)); ;
                 Quaternion rotation = prefabChoice.RandomRotationOnY?Quaternion.Euler(0, Random.Range(0, 360), 0):Quaternion.identity;
-                Instantiate(prefabChoice.prefab, position, rotation);
+                Instantiate(prefabChoice.prefab, position, rotation, levelObjectHolder);
 
             }
         }
@@ -232,7 +233,7 @@ public class LevelPopulation : MonoBehaviour {
                 Coord selectedCoord = availibleLevel[randomIdx];
 
                 Vector3 v = CoordToWorldSpace(selectedCoord);
-                Debug.DrawLine(v, v + Vector3.up * 10, lineColour, 20);
+                //Debug.DrawLine(v, v + Vector3.up * 10, lineColour, 20);
 
                 if (CheckIfFit(selectedCoord.x, selectedCoord.y, (int)size))
                 {
@@ -266,7 +267,13 @@ public class LevelPopulation : MonoBehaviour {
         return true;
     }
 
-
+    public void DepopulateLevel()
+    {
+        for (int i = 0; i < levelObjectHolder.childCount; i++)
+        {
+            Destroy(levelObjectHolder.GetChild(i).gameObject);
+        }
+    }
     bool IsInLevel(int x, int y)
     {
         return ((x >= 0 && x < levelWidth) && (y >= 0 && y < levelHeight));
