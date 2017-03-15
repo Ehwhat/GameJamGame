@@ -11,7 +11,8 @@ public class JayEnemy : MonoBehaviour {
         eStationary,
         ePatroling,
         eChasing,
-        eEngaging
+        eEngaging,
+        ePathTest
     }
 
     //Speeds for movement.
@@ -36,6 +37,13 @@ public class JayEnemy : MonoBehaviour {
 
     //The current state of the enemy
     EnemyState currentState = EnemyState.ePatroling;
+
+
+    //Pathfinding
+    bool tempCalc = false;
+    Vector3[] chasePath;
+    PathRequest pathRequest;
+    //PathRequestManager pathManager;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -48,10 +56,21 @@ public class JayEnemy : MonoBehaviour {
         {
             playerTransforms[x] = g[x].transform;
         }
+
+       // pathManager = GameObject.Find("LevelManager").GetComponent<PathRequestManager>();
     }
 
     void Update()
     {
+        //Path Tests
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            GeneratePath(playerTransforms[0].position);
+        }
+
+        //End tests
+
+
         if (currentState == EnemyState.eStationary)
         {
             //Do animations when staying still perhaps?
@@ -67,7 +86,7 @@ public class JayEnemy : MonoBehaviour {
             }
             else
             {
-                if ( currentPoint + 1 < patrolPoints.Length)
+                if (currentPoint + 1 < patrolPoints.Length)
                 {
                     //Switch to the next point
                     currentPoint++;
@@ -91,6 +110,32 @@ public class JayEnemy : MonoBehaviour {
         else if (currentState == EnemyState.eChasing)
         {
             //Run after the players, shoot them etc. Still need to use Pathfinding
+        }
+        else if (currentState == EnemyState.ePathTest && !tempCalc)
+        {
+            currentPoint = 0;
+            GeneratePath(playerTransforms[0].position);
+        }
+        else if (currentState == EnemyState.ePatroling)
+        {
+           
+                if (currentPoint + 1 < chasePath.Length)
+                {
+                    //Switch to the next point
+                    currentPoint++;
+                }
+                else
+                {
+                    //Back to first point
+                    currentPoint = 0;
+                }
+
+                //Temp Fix
+                Vector3 rot = (chasePath[currentPoint] - rb.position).normalized;
+
+                rot.y = rb.position.y;
+                Quaternion lookRotation = Quaternion.LookRotation(rot);
+                rb.MoveRotation(Quaternion.Euler(0, lookRotation.eulerAngles.y, 0));
         }
     }
 
@@ -122,6 +167,16 @@ public class JayEnemy : MonoBehaviour {
         {
             //Run after the players, shoot them etc. Still need to use Pathfinding
         }
+        else if (currentState == EnemyState.ePathTest)
+        {
+            Vector3 distance = (rb.position - chasePath[currentPoint]);
+            //To stop upwards movement;
+
+            Vector3 direction = distance.normalized;
+
+            direction.y = 0;
+            rb.MovePosition(rb.position - direction * Time.fixedDeltaTime * patrolSpeed);
+        }
 
     }
 
@@ -138,19 +193,30 @@ public class JayEnemy : MonoBehaviour {
             float visionAngle = Vector3.Dot(visionPoint.forward, playerRaycast);
             //Debug.Log(visionAngle);
         }
-      
-        
-        /*Vector3 localForward = transform.worldToLocalMatrix.MultiplyVector(visionPoint.forward);
-        Debug.DrawLine(visionPoint.position, localForward * 10, Color.red);
-        if (Physics.Raycast(visionPoint.position, localForward, out hit, 100))
-        {
-            
-           
-            if (hit.collider.CompareTag("Player"))
-            {
-                Debug.Log("Player Seen");
-            }
 
-        }*/
+    }
+
+
+    void GeneratePath(Vector3 _target)
+    {
+        pathRequest.pathStart = rb.position;
+        pathRequest.pathEnd = _target;
+        System.Action<Vector3[], bool> _callback = new System.Action<Vector3[], bool>(pathCallback);
+        pathRequest.callback = _callback;
+
+        PathRequestManager.RequestPath(pathRequest);
+    }
+
+    void pathCallback(Vector3[] v, bool b)
+    {
+        chasePath = v;
+        currentState = EnemyState.ePathTest;
+    }
+
+    //For in the future when we have to pass the points in from the terrain generator. 
+    public void SetPatrolPoints(JayPatrolPoint[] _points, int _currentPoint = 0)
+    {
+        currentPoint = _currentPoint;
+        patrolPoints = _points;
     }
 }
