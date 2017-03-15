@@ -14,13 +14,15 @@ public class PlayerManager : ControlledUnitManager {
     public PlayerShooting playerShooting = new PlayerShooting();
 
 	// Use this for initialization
-	void Start ()
+	public void Start ()
     {
         GetPlayerController(playerIndex);
 		playerMovement.Initalise(this, controller);
         playerAiming.Initalise(transform, controller);
         playerShooting.Initalise(playerAiming);
     }
+
+    
 
     // Update is called once per frame
     void Update()
@@ -31,7 +33,6 @@ public class PlayerManager : ControlledUnitManager {
             playerAiming.HandleRotation();
             if (controller.GetTrigger(XboxTrigger.RightTrigger) > 0.1f)
             {
-                Debug.Log("Shooting");
                 playerShooting.Shoot();
             }
         }

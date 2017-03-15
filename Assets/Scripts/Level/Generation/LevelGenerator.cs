@@ -39,12 +39,12 @@ public class LevelGenerator : MonoBehaviour {
 
     int[,] level;
 
-    void Start()
+    /*void Start()
     {
         GenerateLevel();
         
         StartCoroutine(GenLevel());
-    }
+    }*/
 
     IEnumerator GenLevel()
     {
@@ -59,7 +59,7 @@ public class LevelGenerator : MonoBehaviour {
         }
     }
 
-    void GenerateLevel()
+    public bool GenerateLevel()
     {
         
         level = new int[width, height];
@@ -96,7 +96,11 @@ public class LevelGenerator : MonoBehaviour {
         popGen.DepopulateLevel();
         if (populateLevel)
         {
-            popGen.PopulateLevel(borderedLevel, sizeMultiplier, levelMeshData);
+            if(!popGen.PopulateLevel(borderedLevel, sizeMultiplier, levelMeshData))
+            {
+                fillAmount++;
+                GenerateLevel();
+            }
         }
 
         if (generateGrid)
@@ -104,7 +108,7 @@ public class LevelGenerator : MonoBehaviour {
             Grid pathfindingGrid = GetComponent<Grid>();
             pathfindingGrid.CreateGrid();
         }
-
+        return true;
     }
 
     private void SmoothLevel()

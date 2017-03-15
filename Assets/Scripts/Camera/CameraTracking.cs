@@ -39,18 +39,23 @@ public class CameraTracking : MonoBehaviour {
     {
         Vector3 distProduct = Vector3.zero;
 
-        if (trackedTransforms.Count > 1)
+        if (trackedTransforms.Count > 0)
         {
-            for (int i = 0; i < trackedTransforms.Count; i++)
+            distProduct = trackedTransforms[0].position;
+
+            if (trackedTransforms.Count > 1)
             {
-                distProduct += trackedTransforms[i].position;
+                for (int i = 1; i < trackedTransforms.Count; i++)
+                {
+                    distProduct += trackedTransforms[i].position;
 
+                }
             }
+
+            distProduct /= trackedTransforms.Count;
+            distProduct += Quaternion.AngleAxis(isoOffset, Vector3.up) * cameraOffset;
+
         }
-
-        distProduct /= trackedTransforms.Count;
-        distProduct += Quaternion.AngleAxis(isoOffset, Vector3.up) * cameraOffset;
-
 		currentCameraTarget = distProduct;
 
         return distProduct;
@@ -78,6 +83,16 @@ public class CameraTracking : MonoBehaviour {
 
         return zoomResult;
 
+    }
+
+    public void RegisterTransform(Transform t)
+    {
+        trackedTransforms.Add(t);
+    }
+
+    public void DeregisterTransform(Transform t)
+    {
+        trackedTransforms.Remove(t);
     }
 
 }

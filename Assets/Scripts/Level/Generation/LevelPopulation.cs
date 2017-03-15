@@ -23,6 +23,16 @@ public class LevelPopulation : MonoBehaviour {
         public float levelDensity = 0.2f;
     }
 
+    [System.Serializable]
+    public class EssentialPrefabData
+    {
+        public GameObject prefab;
+        public PrefabSize prefabSize = PrefabSize.Small;
+        public float prefabPlacementRandomness = 2;
+        public bool RandomRotationOnY = true;
+    }
+
+
     public class Fence
     {
         public Vector3 position;
@@ -53,11 +63,17 @@ public class LevelPopulation : MonoBehaviour {
 
     public Transform levelObjectHolder;
     public PrefabData[] levelPrefabs;
+    public EssentialPrefabData[] essentialLevelPrefabs;
 
+    public int requiredSmallPasses = 0;
     [Range(0,1000)]
     public int smallPasses = 200;
+
+    public int requiredMediumPasses = 0;
     [Range(0, 1000)]
     public int mediumPasses = 80;
+
+    public int requiredBigPasses = 0;
     [Range(0, 1000)]
     public int bigPasses = 30;
 
@@ -80,7 +96,7 @@ public class LevelPopulation : MonoBehaviour {
 
     LevelMeshData levelMeshData;
 
-    public void PopulateLevel(int[,] level, float size, LevelMeshData data)
+    public bool PopulateLevel(int[,] level, float size, LevelMeshData data)
     {
         levelPrefabMap = level;
 
@@ -97,18 +113,38 @@ public class LevelPopulation : MonoBehaviour {
         smallSpots.Clear();
         fences.Clear();
 
-        FindSpots();
+        if (!FindSpots())
+        {
+            return false;
+        }
         PlaceFences();
 
         PopulateSpot(smallSpots, PrefabSize.Small);
+        PopulateSpot(mediumSpots, PrefabSize.Medium);
+        PopulateSpot(bigSpots, PrefabSize.Large);
 
+        return true;
     }
 
 
     public void PopulateSpot(List<Coord> spots, PrefabSize size)
     {
         List<PrefabData> prefabsAvaliable = new List<PrefabData>();
+        List<EssentialPrefabData> essentials = new List<EssentialPrefabData>();
         float combinedDensity = 0;
+
+        foreach (EssentialPrefabData prefab in essentialLevelPrefabs)
+        {
+            if (prefab.prefabSize == size && spots.Count > 0)
+            {
+                int randomChoice = Random.Range(0, spots.Count-1);
+                Vector3 position = CoordToWorldSpace(spots[randomChoice]) + new Vector3(Random.Range(-prefab.prefabPlacementRandomness / 2, prefab.prefabPlacementRandomness / 2), 0, Random.Range(-prefab.prefabPlacementRandomness / 2, prefab.prefabPlacementRandomness / 2));
+                Quaternion rotation = prefab.RandomRotationOnY ? Quaternion.Euler(0, Random.Range(0, 360), 0) : Quaternion.identity;
+                Instantiate(prefab.prefab, position, rotation, levelObjectHolder);
+                spots.RemoveAt(randomChoice);
+            }
+        }
+
         foreach (PrefabData prefab in levelPrefabs)
         {
             if(prefab.prefabSize == size)
@@ -214,13 +250,15 @@ public class LevelPopulation : MonoBehaviour {
         
     }
 
-    public void FindSpots()
+    public bool FindSpots()
     {
         FindAvailableSpaces();
         FindSpots(PrefabSize.Large, bigPasses, ref bigSpots, Color.red);
         FindSpots(PrefabSize.Medium, mediumPasses, ref mediumSpots, Color.yellow);
         FindSpots(PrefabSize.Small, smallPasses, ref smallSpots, Color.green);
-        
+
+        return (bigSpots.Count > requiredBigPasses && mediumSpots.Count > requiredMediumPasses && smallSpots.Count > requiredSmallPasses);
+
     }
 
     public void FindSpots(PrefabSize size, int passes, ref List<Coord> spotList, Color lineColour)
