@@ -12,6 +12,7 @@ public class CameraTracking : MonoBehaviour {
     public Vector3 cameraOffset = new Vector3(-7, 10, 0);
 
     Vector3 currentCameraTarget;
+	float lastZoom;
     new Camera camera;
 
 	// Use this for initialization
@@ -25,6 +26,14 @@ public class CameraTracking : MonoBehaviour {
         camera.orthographicSize = CalculateCameraZoom();
 
     }
+
+	public float GetLastZoomResult(){
+		return lastZoom;
+	}
+
+	public Vector3 GetLastPosition(){
+		return transform.InverseTransformPoint(currentCameraTarget);
+	}
 
     Vector3 CalculateCameraPosition()
     {
@@ -42,7 +51,7 @@ public class CameraTracking : MonoBehaviour {
         distProduct /= trackedTransforms.Count;
         distProduct += Quaternion.AngleAxis(isoOffset, Vector3.up) * cameraOffset;
 
-        currentCameraTarget = distProduct;
+		currentCameraTarget = distProduct;
 
         return distProduct;
 
@@ -65,6 +74,7 @@ public class CameraTracking : MonoBehaviour {
         }
 
         zoomResult += zoomOffset;
+		lastZoom = zoomResult;
 
         return zoomResult;
 

@@ -29,7 +29,10 @@ public class LevelGenerator : MonoBehaviour {
     public string seed;
     public bool useRandomSeed;
 
+    public bool populateLevel = true;
+    public bool generateGrid = false;
     public bool constantGeneration = false;
+    public float timeBetweenGeneration = .5f;
 
     LevelMeshData levelMeshData;
 
@@ -52,12 +55,13 @@ public class LevelGenerator : MonoBehaviour {
                 GenerateLevel();
                 
             }
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(timeBetweenGeneration);
         }
     }
 
     void GenerateLevel()
     {
+        
         level = new int[width, height];
         RandomFillLevel();
         for (int i = 0; i < smoothAmount; i++)
@@ -89,10 +93,17 @@ public class LevelGenerator : MonoBehaviour {
         levelMeshData = meshGen.GenerateMesh(borderedLevel, sizeMultiplier);
 
         LevelPopulation popGen = GetComponent<LevelPopulation>();
-        popGen.PopulateLevel(borderedLevel, sizeMultiplier, levelMeshData);
+        popGen.DepopulateLevel();
+        if (populateLevel)
+        {
+            popGen.PopulateLevel(borderedLevel, sizeMultiplier, levelMeshData);
+        }
 
-        Grid pathfindingGrid = GetComponent<Grid>();
-        pathfindingGrid.CreateGrid();
+        if (generateGrid)
+        {
+            Grid pathfindingGrid = GetComponent<Grid>();
+            pathfindingGrid.CreateGrid();
+        }
 
     }
 

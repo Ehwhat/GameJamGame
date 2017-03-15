@@ -14,14 +14,24 @@ namespace FSM
             stateKey = key;
         }
 
-        public void InitState(T inst, FSM<T, StateType> owner) {
+        public virtual void InitState(T inst, FSM<T, StateType> owner) {
             instance = inst;
             ownerMachine = owner;
+            StartStateInternal();
+        }
+
+        public virtual void StartStateInternal()
+        {
             StartState();
         }
 
-        public void RequestStateChange(string state) {
+        public virtual void EndStateInternal()
+        {
             EndState();
+        }
+
+        public void RequestStateChange(string state) {
+            EndStateInternal();
             ownerMachine.ChangeCurrentState(state);
         }
         

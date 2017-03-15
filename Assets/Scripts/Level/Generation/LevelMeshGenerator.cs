@@ -16,6 +16,9 @@ public class LevelMeshGenerator : MonoBehaviour {
     public MeshFilter walls;
     public MeshFilter edges;
     public MeshFilter floor;
+
+    public bool generateColliders = true;
+
     public float wallHeight = 20;
     public int tileAmountX = 10;
     public int tileAmountY = 10;
@@ -75,8 +78,11 @@ public class LevelMeshGenerator : MonoBehaviour {
 
         mesh.uv = uvs;
 
-        floor.GetComponent<MeshCollider>().sharedMesh = null;
-        floor.GetComponent<MeshCollider>().sharedMesh = mesh;
+        if (generateColliders)
+        {
+            floor.GetComponent<MeshCollider>().sharedMesh = null;
+            floor.GetComponent<MeshCollider>().sharedMesh = mesh;
+        }
 
         Mesh edgeMesh = new Mesh();
         edges.mesh = edgeMesh;
@@ -113,8 +119,11 @@ public class LevelMeshGenerator : MonoBehaviour {
         edgeMesh.uv = uvs;
         edgeMesh.uv2 = edgeUVs;
 
-        edges.GetComponent<MeshCollider>().sharedMesh = null;
-        edges.GetComponent<MeshCollider>().sharedMesh = edgeMesh;
+        if (generateColliders)
+        {
+            edges.GetComponent<MeshCollider>().sharedMesh = null;
+            edges.GetComponent<MeshCollider>().sharedMesh = edgeMesh;
+        }
 
         CreateWallMesh(level, squareSize);
 
