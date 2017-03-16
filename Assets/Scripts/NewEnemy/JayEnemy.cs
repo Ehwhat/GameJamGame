@@ -23,6 +23,9 @@ public class JayEnemy : MonoBehaviour {
     public float chaseSpeed = 4;
     public float patrolSpeed = 2;
 
+    //Movement Vectors
+    Vector3 distance;
+
     //Vision Information
     float visionRange = 10;
     Transform visionPoint;
@@ -31,6 +34,7 @@ public class JayEnemy : MonoBehaviour {
 
     //The enemys rigidbody
     private Rigidbody rb;
+    private Vector3 rb_pos;
 
     //The location of where the Enemy is moving to
     //public Transform target;
@@ -53,10 +57,14 @@ public class JayEnemy : MonoBehaviour {
     public GameObject nodePrefab;
     GameObject[] nodes;
 
+    //Fixing Speed tests
+    WaitForSeconds wait = new WaitForSeconds(0.1f);
+    WaitForFixedUpdate f_wait = new WaitForFixedUpdate();
     //PathRequestManager pathManager;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        rb_pos = rb.position;
         visionPoint = gameObject.transform.FindChild("Eyes").transform;//Attatch the eyes
 
         //Find players and store there Transforms into the transform array
@@ -72,13 +80,9 @@ public class JayEnemy : MonoBehaviour {
 
     void Update()
     {
-        //Path Tests
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            GeneratePath(playerTransforms[0].position);
-        }
+        
 
-        //End tests
+        rb_pos = rb.position;//Might have to move this to fixed
 
 
         if (currentState == EnemyState.eStationary)
@@ -108,7 +112,7 @@ public class JayEnemy : MonoBehaviour {
                 }
 
                 //Temp Fix
-                Vector3 rot = (patrolPoints[currentPoint].location.position - rb.position).normalized;
+                Vector3 rot = (patrolPoints[currentPoint].location.position - rb_pos).normalized;
 
                 rot.y = rb.position.y;
                 Quaternion lookRotation = Quaternion.LookRotation(rot);
@@ -132,7 +136,7 @@ public class JayEnemy : MonoBehaviour {
             }
 
             //Temp Fix
-            Vector3 rot = (chasePath[currentPoint] - rb.position).normalized;
+            Vector3 rot = (chasePath[currentPoint] - rb_pos).normalized;
 
             rot.y = rb.position.y;
             Quaternion lookRotation = Quaternion.LookRotation(rot);
@@ -148,8 +152,9 @@ public class JayEnemy : MonoBehaviour {
         else if (currentState == EnemyState.eChasing && chasePath != null)
         {
             //Check if we are on the current chase Point, then increment.
-            if ((rb.position - chasePath[currentPoint]).magnitude <= 1 && currentPoint + 1 < chasePath.Length)//1 should be the engagement distance
+            if (currentPoint + 1 < chasePath.Length && (rb.position - chasePath[currentPoint]).magnitude <= 1)//1 should be the engagement distance
             {
+                
                 currentPoint++;
             }
 
@@ -171,33 +176,24 @@ public class JayEnemy : MonoBehaviour {
         }
         else if (currentState == EnemyState.ePatroling)
         {
-            Vector3 distance = (rb.position - patrolPoints[currentPoint].location.position);
+            distance = (rb.position - patrolPoints[currentPoint].location.position).normalized;
 
-            Vector3 direction = distance.normalized;
-
-            direction.y = 0;
-            rb.MovePosition(rb.position - direction * Time.fixedDeltaTime * patrolSpeed);
+            distance.y = 0;
+            rb.MovePosition(rb.position - distance * Time.fixedDeltaTime * patrolSpeed);
         }
         else if (currentState == EnemyState.eChasing && chasePath != null)
         {
             //Run after the players, shoot them etc. Still need to use Pathfinding
-            Vector3 distance = (rb.position - chasePath[currentPoint]);
-
-            Vector3 direction = distance.normalized;
-
-            direction.y = 0;
-            rb.MovePosition(rb.position - direction * Time.fixedDeltaTime * chaseSpeed);
+            distance = (rb.position - chasePath[currentPoint]).normalized;
+            distance.y = 0;
+            rb.MovePosition(rb.position - distance * Time.fixedDeltaTime * chaseSpeed);
 
         }
         else if (currentState == EnemyState.ePathTest)
         {
-            Vector3 distance = (rb.position - chasePath[currentPoint]);
-            //To stop upwards movement;
-
-            Vector3 direction = distance.normalized;
-
-            direction.y = 0;
-            rb.MovePosition(rb.position - direction * Time.fixedDeltaTime * patrolSpeed);
+            distance = (rb.position - chasePath[currentPoint]).normalized;
+            distance.y = 0;
+            rb.MovePosition(rb.position - distance * Time.fixedDeltaTime * patrolSpeed);
         }
 
     }
@@ -205,8 +201,6 @@ public class JayEnemy : MonoBehaviour {
     void Look()
     {
        
-
-
         //For each players transform, check if they are in range, and within the vision cone.
         for (int playerIndex = 0; playerIndex < playerTransforms.Length; playerIndex++)
         {
@@ -228,6 +222,7 @@ public class JayEnemy : MonoBehaviour {
 
     void GeneratePath(Vector3 _target)
     {
+        
         pathRequest.pathStart = rb.position;
         pathRequest.pathEnd = _target;
         System.Action<Vector3[], bool> _callback = new System.Action<Vector3[], bool>(PathCallback);
@@ -236,16 +231,27 @@ public class JayEnemy : MonoBehaviour {
         PathRequestManager.RequestPath(pathRequest);
     }
 
-    void PathCallback(Vector3[] v, bool b)
+    void PathCallback(Vector3[] v, bool _success)
     {
-        chasePath = v;
-        //currentState = EnemyState.ePathTest;
-
-        nodes = new GameObject[v.Length];
-        //Generate display
-        for (int x = 0; x < v.Length; x++)
+        currentPoint = 0;
+        if (_success)
         {
-            nodes[x] = Instantiate(nodePrefab, v[x], Quaternion.identity) as GameObject;
+            chasePath = v;
+
+            //currentState = EnemyState.ePathTest;
+
+           /* nodes = new GameObject[v.Length];
+            //Generate display
+            for (int x = 0; x < v.Length; x++)
+            {
+                nodes[x] = Instantiate(nodePrefab, v[x], Quaternion.identity) as GameObject;
+            }*/
+        }
+        else
+        {
+            //Failed, so we have to do something to help the enemy get a path, for now  we can just remove the old path
+            chasePath = null;
+            StopCoroutine(UpdatePath());
         }
     }
 
@@ -266,13 +272,13 @@ public class JayEnemy : MonoBehaviour {
     {
         while (true)
         {
-            yield return new WaitForSeconds(0.1f);
-            yield return new WaitForFixedUpdate();
+            yield return wait;
+            yield return f_wait;
 
-            for (int x = 0; x < nodes.Length; x++)
+           /* for (int x = 0; x < nodes.Length; x++)
             {
                 Destroy(nodes[x]);
-            }
+            }*/
 
            // Debug.Log("Update Path");
             GeneratePath(playerTransforms[chaseTarget].position);
