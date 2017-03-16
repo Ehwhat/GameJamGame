@@ -58,6 +58,7 @@ public class JayEnemy : MonoBehaviour {
     GameObject[] nodes;
 
     //Fixing Speed tests
+    float pathFindWaitTime = 0.0f;
     WaitForSeconds wait = new WaitForSeconds(0.1f);
     WaitForFixedUpdate f_wait = new WaitForFixedUpdate();
     //PathRequestManager pathManager;
@@ -147,7 +148,6 @@ public class JayEnemy : MonoBehaviour {
             currentPoint = 0;
             GeneratePath(playerTransforms[chaseTarget].position);
             tempCalc = true;
-            StartCoroutine(UpdatePath());
         }
         else if (currentState == EnemyState.eChasing && chasePath != null)
         {
@@ -183,11 +183,18 @@ public class JayEnemy : MonoBehaviour {
         }
         else if (currentState == EnemyState.eChasing && chasePath != null)
         {
+            pathFindWaitTime += Time.fixedDeltaTime;
             //Run after the players, shoot them etc. Still need to use Pathfinding
             distance = (rb.position - chasePath[currentPoint]).normalized;
             distance.y = 0;
             rb.MovePosition(rb.position - distance * Time.fixedDeltaTime * chaseSpeed);
 
+            //Path Update
+            if (pathFindWaitTime >= 0.1f)
+            {
+                pathFindWaitTime = 0.0f;
+                GeneratePath(playerTransforms[chaseTarget].position);
+            }
         }
         else if (currentState == EnemyState.ePathTest)
         {
@@ -251,7 +258,7 @@ public class JayEnemy : MonoBehaviour {
         {
             //Failed, so we have to do something to help the enemy get a path, for now  we can just remove the old path
             chasePath = null;
-            StopCoroutine(UpdatePath());
+            //StopCoroutine(UpdatePath());
         }
     }
 
@@ -266,22 +273,5 @@ public class JayEnemy : MonoBehaviour {
     {
         currentPoint = _currentPoint;
         patrolPoints = _points;
-    }
-
-    IEnumerator UpdatePath()
-    {
-        while (true)
-        {
-            yield return wait;
-            yield return f_wait;
-
-           /* for (int x = 0; x < nodes.Length; x++)
-            {
-                Destroy(nodes[x]);
-            }*/
-
-           // Debug.Log("Update Path");
-            GeneratePath(playerTransforms[chaseTarget].position);
-        }
     }
 }
