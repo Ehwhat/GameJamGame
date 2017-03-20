@@ -23,4 +23,13 @@ public class PlayerShooting  {
         }
     }
 
+    public void SetWeapon(Weapon weapon)
+    {
+
+        if (weaponManager != null)
+        {
+            weaponManager.SetWeapon(weapon);
+        }
+    }
+
 }
