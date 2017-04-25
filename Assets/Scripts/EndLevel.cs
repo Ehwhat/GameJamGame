@@ -8,7 +8,7 @@ public class EndLevel : MonoBehaviour
 
     void Update()
     {
-        if (players == 2)
+        if (players == 1)
         {
             Application.Quit();
         }
