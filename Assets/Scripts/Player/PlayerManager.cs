@@ -13,6 +13,10 @@ public class PlayerManager : ControlledUnitManager {
     public PlayerAiming playerAiming = new PlayerAiming();
     public PlayerShooting playerShooting = new PlayerShooting();
 
+    //Additions for demo
+    public bool isP1 = false;
+    Objective ob;
+    Transform obArrow;
 	// Use this for initialization
 	public void Start ()
     {
@@ -20,6 +24,23 @@ public class PlayerManager : ControlledUnitManager {
 		playerMovement.Initalise(this, controller);
         playerAiming.Initalise(transform, controller);
         playerShooting.Initalise(playerAiming);
+
+    }
+
+    void Awake()
+    {
+
+        if (playerIndex == PlayerIndex.One)
+        {
+            isP1 = true;
+
+
+            //Spawn in objArrow
+            ob = GameObject.FindGameObjectWithTag("Objective").GetComponent<Objective>();
+            obArrow = GameObject.Find("Arrow").transform;
+            obArrow.transform.parent = transform;
+            obArrow.localPosition = new Vector3(0, 5.0f, 0);
+        }
     }
 
     
@@ -52,6 +73,18 @@ public class PlayerManager : ControlledUnitManager {
 
             
         }
+
+
+        //If P1, Calculate position of objective arrow.
+            if (isP1 && !ob.complete)
+            {
+                Vector3 directionVector = transform.position - ob.transform.position;
+                directionVector.Normalize();
+                float headingAngle = Mathf.Atan2(directionVector.z, directionVector.z);
+            //obArrow.LookAt(ob.transform, Vector3.up);
+            obArrow.rotation = Quaternion.AngleAxis(Time.time * 2.0f, Vector3.up);
+            }
+
     }
 
     public override void OnDeath()
