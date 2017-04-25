@@ -6,6 +6,7 @@ public class PlayerSpawnPoint : MonoBehaviour {
     public float safeRadius = 4;
     public Transform setSpawn;
 	void Awake () {
+        setSpawn = GameObject.FindGameObjectWithTag("Spawn").transform; ;
         GameManager.SetSpawnPoint(this);
 	}
 
