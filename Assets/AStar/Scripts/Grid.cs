@@ -16,6 +16,7 @@ public class Grid : MonoBehaviour
     public Vector2 gridWorldSize;
     public float nodeRadius;
     public TerrainType[] walkableRegions;
+    public float creationDelay = 0.0f;
     LayerMask walkableMask;
     Dictionary<int, int> walkableRegionsDictionary = new Dictionary<int, int>();
     Node[,] grid;
@@ -34,8 +35,21 @@ public class Grid : MonoBehaviour
             walkableRegionsDictionary.Add((int)Mathf.Log(region.terrainMask.value, 2), region.terrainPenalty);
         }
 
-        if(createGridAutomatically)
+        if (createGridAutomatically && creationDelay == 0.0f)
+        {
             CreateGrid();
+        }
+        else if (createGridAutomatically)
+        {
+            StartCoroutine(GridDelay());
+        }
+    }
+
+    IEnumerator GridDelay()
+    {
+        yield return new WaitForSeconds(creationDelay);
+
+        CreateGrid();
     }
 
     void Update()

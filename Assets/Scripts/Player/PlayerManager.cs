@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 
@@ -17,14 +18,20 @@ public class PlayerManager : ControlledUnitManager {
     public bool isP1 = false;
     Objective ob;
     Transform obArrow;
-	// Use this for initialization
-	public void Start ()
+    public Transform healthBar;
+    public Transform energyBar;
+    Image healbarImage;
+    Image energyBarImage;
+
+    // Use this for initialization
+    public void Start ()
     {
         GetPlayerController(playerIndex);
 		playerMovement.Initalise(this, controller);
         playerAiming.Initalise(transform, controller);
         playerShooting.Initalise(playerAiming);
-
+       // healbarImage = healthBar.GetComponent<Image>();
+        //energyBarImage = energyBar.GetComponent<Image>();
     }
 
     void Awake()
@@ -40,6 +47,27 @@ public class PlayerManager : ControlledUnitManager {
             obArrow = GameObject.Find("Arrow").transform;
             obArrow.transform.parent = transform;
             obArrow.localPosition = new Vector3(0, 5.0f, 0);
+
+            healbarImage = GameObject.Find("P1ManaBackDrop").transform.FindChild("HealthBar").GetComponent<Image>();
+            energyBarImage = GameObject.Find("P1ManaBackDrop").transform.FindChild("ManaBar").GetComponent<Image>();
+        }
+        else
+        {
+            switch (playerIndex)
+            {
+                case PlayerIndex.Two:
+                    healbarImage = GameObject.Find("P2ManaBackDrop").transform.FindChild("HealthBar").GetComponent<Image>();
+                    energyBarImage = GameObject.Find("P2ManaBackDrop").transform.FindChild("ManaBar").GetComponent<Image>();
+                    break;
+                case PlayerIndex.Three:
+                    healbarImage = GameObject.Find("P3ManaBackDrop").transform.FindChild("HealthBar").GetComponent<Image>();
+                    energyBarImage = GameObject.Find("P3ManaBackDrop").transform.FindChild("ManaBar").GetComponent<Image>();
+                    break;
+                case PlayerIndex.Four:
+                    healbarImage = GameObject.Find("P4ManaBackDrop").transform.FindChild("HealthBar").GetComponent<Image>();
+                    energyBarImage = GameObject.Find("P4ManaBackDrop").transform.FindChild("ManaBar").GetComponent<Image>();
+                    break;
+            }
         }
     }
 
@@ -73,10 +101,11 @@ public class PlayerManager : ControlledUnitManager {
 
             
         }
-
+        healbarImage.fillAmount = currentHealth / (maxHealth * 4);
+        energyBarImage.fillAmount = reviveTime / (endReviveTime * 4);
 
         //If P1, Calculate position of objective arrow.
-            if (isP1 && !ob.complete)
+        if (isP1 && !ob.complete)
             {
                 Vector3 directionVector = transform.position - ob.transform.position;
                 directionVector.Normalize();
