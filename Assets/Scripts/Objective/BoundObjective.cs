@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class BoundObjective : Objective {
+public abstract class BoundObjective : ObjectiveAbstract {
 
     public enum BoundsType
     {

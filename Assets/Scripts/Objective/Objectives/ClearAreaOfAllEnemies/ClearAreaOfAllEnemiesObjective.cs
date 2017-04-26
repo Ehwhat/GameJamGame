@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ClearAreaOfAllEnemiesObjective : MonoBehaviour {
+public class ClearAreaOfAllEnemiesObjective : BoundObjective {
 
 	// Use this for initialization
 	void Start () {
