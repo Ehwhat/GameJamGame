@@ -8,7 +8,7 @@ public class PlayerManager : ControlledUnitManager {
     HitData lastHit;
     int numRevivers = 0;
     float reviveTime = 0;
-    float endReviveTime = 10;
+    float endReviveTime = 5;
 
     public PlayerMovement playerMovement = new PlayerMovement();
     public PlayerAiming playerAiming = new PlayerAiming();
@@ -50,6 +50,9 @@ public class PlayerManager : ControlledUnitManager {
 
             healbarImage = GameObject.Find("P1ManaBackDrop").transform.FindChild("HealthBar").GetComponent<Image>();
             energyBarImage = GameObject.Find("P1ManaBackDrop").transform.FindChild("ManaBar").GetComponent<Image>();
+
+            //Set Red mat.
+            //transform.FindChild("Mesh/Capsule").GetComponent<MeshRenderer>().material.color = Color.red;
         }
         else
         {
@@ -58,6 +61,7 @@ public class PlayerManager : ControlledUnitManager {
                 case PlayerIndex.Two:
                     healbarImage = GameObject.Find("P2ManaBackDrop").transform.FindChild("HealthBar").GetComponent<Image>();
                     energyBarImage = GameObject.Find("P2ManaBackDrop").transform.FindChild("ManaBar").GetComponent<Image>();
+                   // transform.FindChild("Mesh/Capsule").GetComponent<MeshRenderer>().material.color = Color.blue;
                     break;
                 case PlayerIndex.Three:
                     healbarImage = GameObject.Find("P3ManaBackDrop").transform.FindChild("HealthBar").GetComponent<Image>();
@@ -118,7 +122,7 @@ public class PlayerManager : ControlledUnitManager {
 
     public override void OnDeath()
     {
-        
+        GetComponent<SphereCollider>().enabled = true;
         playerMovement.OnKill(lastHit);
         gameObject.tag = "DeadPlayer";
         StartCoroutine(DisableRotation());
@@ -127,6 +131,7 @@ public class PlayerManager : ControlledUnitManager {
 
     public override void OnResurrect()
     {
+        GetComponent<SphereCollider>().enabled = false;
         playerMovement.OnResurrect();
         gameObject.tag = "Player";
         base.OnResurrect();
