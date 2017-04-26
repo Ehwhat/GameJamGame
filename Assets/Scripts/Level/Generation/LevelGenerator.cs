@@ -35,36 +35,40 @@ public class LevelGenerator : MonoBehaviour {
     public float timeBetweenGeneration = .5f;
 
     LevelMeshData levelMeshData;
+    float startTime;
 
 
     int[,] level;
+    int attempts;
 
-    /*void Start()
+    int realSmoothAmount;
+    int realFillAmount;
+
+    void Start()
     {
-        GenerateLevel();
         
         StartCoroutine(GenLevel());
-    }*/
+        realFillAmount = fillAmount;
+        realSmoothAmount = smoothAmount;
+    }
 
     IEnumerator GenLevel()
     {
         while (true)
         {
-            if (constantGeneration)
-            {
-                GenerateLevel();
-                
-            }
-            yield return new WaitForSeconds(timeBetweenGeneration);
+            yield return new WaitUntil(() => { return constantGeneration; });
+            attempts = 0;
+            bool gen = GenerateLevel();
+			yield return new WaitForSeconds(timeBetweenGeneration); 
         }
     }
 
     public bool GenerateLevel()
     {
-        
+        var watch = System.Diagnostics.Stopwatch.StartNew();
         level = new int[width, height];
         RandomFillLevel();
-        for (int i = 0; i < smoothAmount; i++)
+        for (int i = 0; i < realSmoothAmount; i++)
         {
             SmoothLevel();
         }
@@ -98,16 +102,23 @@ public class LevelGenerator : MonoBehaviour {
         {
             if(!popGen.PopulateLevel(borderedLevel, sizeMultiplier, levelMeshData))
             {
-                fillAmount++;
-                GenerateLevel();
+                attempts++;
+				if (attempts > 4) {
+					return false;
+				}
+				return GenerateLevel();
             }
         }
+        realFillAmount = fillAmount;
+        realSmoothAmount = smoothAmount;
 
         if (generateGrid)
         {
             Grid pathfindingGrid = GetComponent<Grid>();
             pathfindingGrid.CreateGrid();
         }
+        watch.Stop();
+        Debug.Log("Map Generated In " + (watch.ElapsedMilliseconds) +" Seconds");
         return true;
     }
 
@@ -157,29 +168,31 @@ public class LevelGenerator : MonoBehaviour {
         List<List<Coord>> islandRegions = GetRegions(1);
         List<List<Coord>> waterRegions = GetRegions(0);
 
-        foreach (List<Coord> region in waterRegions)
+        for (int i = 0; i < waterRegions.Count; i++)
         {
-            if (region.Count < 10)
+            if (waterRegions[i].Count < 10)
             {
-                foreach (Coord tile in region)
+                for (int j = 0; j < waterRegions[i].Count; j++)//(Coord tile in waterRegions[i])
                 {
+                    Coord tile = waterRegions[i][j];
                     level[tile.tileX, tile.tileY] = 1;
                 }
             }
         }
 
         List<Island> survivingIslands = new List<Island>();
-        foreach (List<Coord> region in islandRegions)
+        for (int i = 0; i < islandRegions.Count; i++)
         {
-            if(region.Count < minIslandTileSize)
+            if (islandRegions[i].Count < minIslandTileSize)
             {
-                foreach(Coord tile in region)
+                for (int j = 0; j < islandRegions[i].Count; j++)//(Coord tile in waterRegions[i])
                 {
+                    Coord tile = islandRegions[i][j];
                     level[tile.tileX, tile.tileY] = 0;
                 }
             }else
             {
-                survivingIslands.Add(new Island(region, level));
+                survivingIslands.Add(new Island(islandRegions[i], level));
             }
         }
 
@@ -207,8 +220,9 @@ public class LevelGenerator : MonoBehaviour {
 
         if (forceAccessibilityToTheMainIsland)
         {
-            foreach (Island island in islands)
+            for (int i = 0; i < islands.Count; i++) //foreach (Island island in islands)
             {
+                Island island = islands[i];
                 if (island.isAccessibleFromMainIsland) {
                     islandListB.Add(island);
                 }
@@ -232,8 +246,9 @@ public class LevelGenerator : MonoBehaviour {
 
         bool posConnectionFound = false;
 
-        foreach (Island islandA in islandListA)
+        for (int i = 0; i < islandListA.Count; i++) //(Island islandA in islandListA)
         {
+            Island islandA = islandListA[i];
             if (!forceAccessibilityToTheMainIsland)
             {
                 posConnectionFound = false;
@@ -241,8 +256,9 @@ public class LevelGenerator : MonoBehaviour {
                     continue;
                 }
             }
-            foreach (Island islandB in islandListB)
+            for (int j = 0; j < islandListB.Count; j++)
             {
+                Island islandB = islandListB[j];
                 if (islandB == islandA || islandA.IsConnected(islandB))
                     continue;
 
@@ -453,7 +469,7 @@ public class LevelGenerator : MonoBehaviour {
         {
             for (int y = padding; y < height-padding; y++)
             {
-                level[x, y] = (randGen.Next(0, 100) < fillAmount) ? 1 : 0;
+                level[x, y] = (randGen.Next(0, 100) < realFillAmount) ? 1 : 0;
             }
         }
     }

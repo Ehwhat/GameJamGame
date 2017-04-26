@@ -4,10 +4,18 @@ using System.Collections;
 
 public class PlayerManager : ControlledUnitManager {
 
+    public PlayerUI playerUI;
+    public Color playerColour = Color.red;
+
     HitData lastHit;
     int numRevivers = 0;
     float reviveTime = 0;
     float endReviveTime = 10;
+
+    public float _activationRadius = 1f;
+    [SerializeField]
+    private IActivatableObject _nearestActivatable;
+    private bool _isActivatePressed;
 
     public PlayerMovement playerMovement = new PlayerMovement();
     public PlayerAiming playerAiming = new PlayerAiming();
@@ -17,6 +25,7 @@ public class PlayerManager : ControlledUnitManager {
 	public void Start ()
     {
         GetPlayerController(playerIndex);
+        
 		playerMovement.Initalise(this, controller);
         playerAiming.Initalise(transform, controller);
         playerShooting.Initalise(playerAiming);
@@ -27,13 +36,24 @@ public class PlayerManager : ControlledUnitManager {
     // Update is called once per frame
     void Update()
     {
+        playerUI.SetPlayerColour(playerColour);
         if (!isDead)
         {
+            CheckObjectInRange(_activationRadius, out _nearestActivatable);
+            
             playerMovement.HandleMovement();
             playerAiming.HandleRotation();
             if (controller.GetTrigger(XboxTrigger.RightTrigger) > 0.1f)
             {
                 playerShooting.Shoot();
+            }
+            if(controller.GetTrigger(XboxTrigger.LeftTrigger) > 0.1f && !_isActivatePressed && _nearestActivatable != null)
+            {
+                _isActivatePressed = true;
+                _nearestActivatable.OnActivate(this);
+            }else
+            {
+                _isActivatePressed = false;
             }
         }
         else
@@ -84,6 +104,32 @@ public class PlayerManager : ControlledUnitManager {
     {
         yield return new WaitForSeconds(1.0f);
         playerMovement.DisableRotation();
+    }
+
+    bool CheckObjectInRange(float range, out IActivatableObject nearestActivatable)
+    {
+        nearestActivatable = null;
+        Collider[] foundColliders = Physics.OverlapSphere(transform.position, range);
+        if (foundColliders.Length > 0) {
+            IActivatableObject targetObject = null;
+            float bestDistance = Mathf.Infinity;
+            for(int i = 0; i < foundColliders.Length; i++)
+            {
+                IActivatableObject activatableObject = foundColliders[i].GetComponent<IActivatableObject>();
+                if (activatableObject != null && Vector3.Distance(transform.position, foundColliders[i].transform.position) < bestDistance)
+                {
+                    
+                    targetObject = activatableObject;
+                    bestDistance = Vector3.Distance(transform.position, foundColliders[i].transform.position);
+                }
+            }
+            nearestActivatable = targetObject;
+            
+            return targetObject != null;
+        }else
+        {
+            return false;
+        }
     }
 
     void OnTriggerEnter(Collider col)

@@ -9,6 +9,12 @@ public class GameManager : MonoBehaviour {
         InGame
     }
 
+	public enum GameMode
+	{
+		DestroyBase,
+		KillUnits
+	}
+
     private static GameManager instance;
 
     public LevelGenerator levelGenerator;
@@ -18,6 +24,8 @@ public class GameManager : MonoBehaviour {
     public GameState currentState = GameState.InGame;
     [Range(1,4)]
     public int amountOfPlayers = 1;
+
+    public Color[] playerColours = new Color[4];
 
     private PlayerManager[] currentPlayers = new PlayerManager[4];
     private PlayerSpawnPoint spawnPoint;
@@ -60,6 +68,7 @@ public class GameManager : MonoBehaviour {
     public static PlayerManager CreatePlayer(PlayerManager.PlayerIndex index)
     {
         PlayerManager newPlayer = Instantiate(instance.playerPrefab);
+        newPlayer.playerColour = instance.playerColours[(int)(index)];
         newPlayer.playerIndex = index;
         newPlayer.name = "Player " + (int)(index+1);
         instance.camera.RegisterTransform(newPlayer.transform);
