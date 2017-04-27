@@ -153,13 +153,13 @@ public class PlayerManager : ControlledUnitManager {
         playerMovement.DisableRotation();
     }
 
+
+    //If a player who is reviving the dead player also gets killed, then the dead player still revivies them
     void OnTriggerEnter(Collider col)
     {
        
         if (col.CompareTag("Player"))
         {
-            
-            //Debug.Log("Reviving");
             numRevivers++;
         }
     }
