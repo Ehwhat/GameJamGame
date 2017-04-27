@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 
@@ -10,7 +11,12 @@ public class PlayerManager : ControlledUnitManager {
     HitData lastHit;
     int numRevivers = 0;
     float reviveTime = 0;
-    float endReviveTime = 10;
+    float endReviveTime = 5;
+
+    public float _activationRadius = 1f;
+    [SerializeField]
+    private IActivatableObject _nearestActivatable;
+    private bool _isActivatePressed;
 
     public float _activationRadius = 1f;
     [SerializeField]
@@ -21,14 +27,66 @@ public class PlayerManager : ControlledUnitManager {
     public PlayerAiming playerAiming = new PlayerAiming();
     public PlayerShooting playerShooting = new PlayerShooting();
 
-	// Use this for initialization
-	public void Start ()
+    //Additions for demo
+    public bool isP1 = false;
+    Objective ob;
+    Transform obArrow;
+    public Transform healthBar;
+    public Transform energyBar;
+    Image healbarImage;
+    Image energyBarImage;
+
+    // Use this for initialization
+    public void Start ()
     {
         GetPlayerController(playerIndex);
         
 		playerMovement.Initalise(this, controller);
         playerAiming.Initalise(transform, controller);
         playerShooting.Initalise(playerAiming);
+       // healbarImage = healthBar.GetComponent<Image>();
+        //energyBarImage = energyBar.GetComponent<Image>();
+    }
+
+    void Awake()
+    {
+
+        if (playerIndex == PlayerIndex.One)
+        {
+            isP1 = true;
+
+
+            //Spawn in objArrow
+            ob = GameObject.FindGameObjectWithTag("Objective").GetComponent<Objective>();
+            obArrow = GameObject.Find("Arrow").transform;
+            obArrow.transform.parent = transform;
+            obArrow.localPosition = new Vector3(0, 5.0f, 0);
+
+            healbarImage = GameObject.Find("P1ManaBackDrop").transform.FindChild("HealthBar").GetComponent<Image>();
+            energyBarImage = GameObject.Find("P1ManaBackDrop").transform.FindChild("ManaBar").GetComponent<Image>();
+
+            //Set Red mat.
+            //transform.FindChild("Mesh/Capsule").GetComponent<MeshRenderer>().material.color = Color.red;
+        }
+        else
+        {
+            switch (playerIndex)
+            {
+                case PlayerIndex.Two:
+                    healbarImage = GameObject.Find("P2ManaBackDrop").transform.FindChild("HealthBar").GetComponent<Image>();
+                    energyBarImage = GameObject.Find("P2ManaBackDrop").transform.FindChild("ManaBar").GetComponent<Image>();
+                   // transform.FindChild("Mesh/Capsule").GetComponent<MeshRenderer>().material.color = Color.blue;
+                    break;
+                case PlayerIndex.Three:
+                    healbarImage = GameObject.Find("P3ManaBackDrop").transform.FindChild("HealthBar").GetComponent<Image>();
+                    energyBarImage = GameObject.Find("P3ManaBackDrop").transform.FindChild("ManaBar").GetComponent<Image>();
+                    break;
+                case PlayerIndex.Four:
+                    healbarImage = GameObject.Find("P4ManaBackDrop").transform.FindChild("HealthBar").GetComponent<Image>();
+                    energyBarImage = GameObject.Find("P4ManaBackDrop").transform.FindChild("ManaBar").GetComponent<Image>();
+                    break;
+            }
+        }
     }
 
     
@@ -72,11 +130,24 @@ public class PlayerManager : ControlledUnitManager {
 
             
         }
+        healbarImage.fillAmount = currentHealth / (maxHealth * 4);
+        energyBarImage.fillAmount = reviveTime / (endReviveTime * 4);
+
+        //If P1, Calculate position of objective arrow.
+        if (isP1 && !ob.complete)
+            {
+                Vector3 directionVector = transform.position - ob.transform.position;
+                directionVector.Normalize();
+                float headingAngle = Mathf.Atan2(directionVector.z, directionVector.z);
+            //obArrow.LookAt(ob.transform, Vector3.up);
+            obArrow.rotation = Quaternion.AngleAxis(Time.time * 2.0f, Vector3.up);
+            }
+
     }
 
     public override void OnDeath()
     {
-        
+        GetComponent<SphereCollider>().enabled = true;
         playerMovement.OnKill(lastHit);
         gameObject.tag = "DeadPlayer";
         StartCoroutine(DisableRotation());
@@ -85,6 +156,7 @@ public class PlayerManager : ControlledUnitManager {
 
     public override void OnResurrect()
     {
+        GetComponent<SphereCollider>().enabled = false;
         playerMovement.OnResurrect();
         gameObject.tag = "Player";
         base.OnResurrect();

@@ -1,7 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+<<<<<<< HEAD
 public abstract class BoundObjective : ObjectiveAbstract {
+=======
+public abstract class BoundObjective : ObjectiveAbstract
+{
+>>>>>>> ObjectiveGeneration
 
     public enum BoundsType
     {

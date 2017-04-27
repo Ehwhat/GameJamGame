@@ -33,6 +33,11 @@ public class BoundObjective_Editor : Objective_Editor  {
             if (boundType == BoundObjective.BoundsType.Box)
             {
                 _objectiveBoundsArea.vector2Value = EditorGUILayout.Vector2Field(new GUIContent("Bounds Area"), _objectiveBoundsArea.vector2Value);
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> ObjectiveGeneration
             }else if(boundType == BoundObjective.BoundsType.Circle)
             {
                 _objectiveBoundsRadius.floatValue = EditorGUILayout.FloatField(new GUIContent("Bounds Radius"), _objectiveBoundsRadius.floatValue);
@@ -43,6 +48,32 @@ public class BoundObjective_Editor : Objective_Editor  {
         }
     }
 
+<<<<<<< HEAD
+    public void OnSceneGUI()
+    {
+        serializedObject.Update();
+        BoundObjective.BoundsType boundType = (BoundObjective.BoundsType)_objectiveBoundsType.enumValueIndex;
+        BoundObjective objective = (BoundObjective)serializedObject.targetObject;
+        if (_objectiveBoundsFoldout)
+        {
+            if (boundType == BoundObjective.BoundsType.Box)
+            {
+                Handles.DrawWireCube(objective.transform.position, new Vector3(_objectiveBoundsArea.vector2Value.x, 1, _objectiveBoundsArea.vector2Value.y));
+                _objectiveBoundsArea.vector2Value = new Vector2(
+                    Handles.ScaleSlider(_objectiveBoundsArea.vector2Value.x, objective.transform.position, Vector3.left, Quaternion.identity, HandleUtility.GetHandleSize(objective.transform.position), 0.5f),
+                    Handles.ScaleSlider(_objectiveBoundsArea.vector2Value.y, objective.transform.position, Vector3.back, Quaternion.identity, HandleUtility.GetHandleSize(objective.transform.position), 0.5f));
+            }
+            else if (boundType == BoundObjective.BoundsType.Circle)
+            {
+                Handles.DrawWireDisc(objective.transform.position,Vector3.up, _objectiveBoundsRadius.floatValue);
+                _objectiveBoundsRadius.floatValue = Handles.ScaleSlider(_objectiveBoundsRadius.floatValue, objective.transform.position, Vector3.left, Quaternion.identity, HandleUtility.GetHandleSize(objective.transform.position), 0.5f);
+            }
+        }
+        serializedObject.ApplyModifiedProperties();
+    }
+
+=======
+>>>>>>> ObjectiveGeneration
     //
 
 }

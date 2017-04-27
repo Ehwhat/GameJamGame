@@ -30,3 +30,5 @@ sysinfo.txt
 *.unitypackage
 
 Assets/Materials/dirkeep\.gitkeep\.meta
+
+Assets/Tree\.prefab
