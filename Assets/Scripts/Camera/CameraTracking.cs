@@ -7,33 +7,35 @@ public class CameraTracking : MonoBehaviour {
 
     public List<Transform> trackedTransforms;
 
+    RaycastHit oldHit;
+
     public float isoOffset = 45;
     public float zoomOffset = 5;
     public Vector3 cameraOffset = new Vector3(-7, 10, 0);
 
     Vector3 currentCameraTarget;
-	float lastZoom;
+    float lastZoom;
     new Camera camera;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start() {
         camera = GetComponent<Camera>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        transform.position = CalculateCameraPosition();
-        camera.orthographicSize = CalculateCameraZoom();
-
     }
 
-	public float GetLastZoomResult(){
-		return lastZoom;
-	}
+    // Update is called once per frame
+    void Update() {
+        transform.position = CalculateCameraPosition();
+        camera.orthographicSize = CalculateCameraZoom();
+        IsPlayerBehind();
+    }
 
-	public Vector3 GetLastPosition(){
-		return transform.InverseTransformPoint(currentCameraTarget);
-	}
+    public float GetLastZoomResult() {
+        return lastZoom;
+    }
+
+    public Vector3 GetLastPosition() {
+        return transform.InverseTransformPoint(currentCameraTarget);
+    }
 
     Vector3 CalculateCameraPosition()
     {
@@ -56,7 +58,7 @@ public class CameraTracking : MonoBehaviour {
             distProduct += Quaternion.AngleAxis(isoOffset, Vector3.up) * cameraOffset;
 
         }
-		currentCameraTarget = distProduct;
+        currentCameraTarget = distProduct;
 
         return distProduct;
 
@@ -74,12 +76,12 @@ public class CameraTracking : MonoBehaviour {
             Vector3 desiredPos = localPos - currentDesiredPos;
 
             zoomResult = Mathf.Max(zoomResult, Mathf.Abs(desiredPos.y));
-            zoomResult = Mathf.Max(zoomResult, Mathf.Abs(desiredPos.x)/camera.aspect);
+            zoomResult = Mathf.Max(zoomResult, Mathf.Abs(desiredPos.x) / camera.aspect);
 
         }
 
         zoomResult += zoomOffset;
-		lastZoom = zoomResult;
+        lastZoom = zoomResult;
 
         return zoomResult;
 
@@ -94,5 +96,35 @@ public class CameraTracking : MonoBehaviour {
     {
         trackedTransforms.Remove(t);
     }
+    private void IsPlayerBehind()
+    {
+        foreach (Transform player in trackedTransforms)
+        {
+            RaycastHit hit;
 
+            Debug.DrawRay(transform.position, player.position - transform.position, Color.yellow);
+            if (Physics.Raycast(transform.position, player.position - transform.position, out hit))
+            {
+                if (!hit.collider.CompareTag("Player") && hit.transform.GetComponent<Renderer>())
+                {
+                    // Add transparency
+                    Color transparentcolor = hit.transform.GetComponent<Renderer>().material.color;
+                    transparentcolor.a = 0.35f;
+                    hit.transform.GetComponent<Renderer>().material.SetColor("_Color", transparentcolor);
+
+                    // Save hit
+                    oldHit = hit;
+                }
+                else
+                {
+                    // Reset transparency
+                    Color originalcolor = oldHit.transform.GetComponent<Renderer>().material.color;
+                    originalcolor.a = 1f;
+                    oldHit.transform.GetComponent<Renderer>().material.SetColor("_Color", originalcolor);
+                }
+
+            }
+
+        }
+    }
 }
