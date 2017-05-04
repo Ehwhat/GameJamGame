@@ -116,4 +116,8 @@ public class TestEnemy_Patrol : UnitState<TestEnemy> {
         }
     }
 
+    public override void OnDrawGizmos()
+    {
+        throw new NotImplementedException();
+    }
 }

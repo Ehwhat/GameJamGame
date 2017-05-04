@@ -12,14 +12,16 @@ public class PlayerMovement : UnitMovement {
     public float movementWalkZone = 0.65f;
 
     private PlayerControlManager.PlayerController controller;
+    private PlayerManager player;
 
     private Vector2 movementVector = new Vector2();
     // Use this for initialization
 
-    public void Initalise(Transform transform, PlayerControlManager.PlayerController c)
+    public void Initalise(PlayerManager play, PlayerControlManager.PlayerController c)
     {
         controller = c;
-        base.Initalise(transform);
+        player = play;
+        base.Initalise(play.transform);
     }
 
     public void HandleMovement()

@@ -12,7 +12,8 @@ public class CameraTracking : MonoBehaviour {
     public Vector3 cameraOffset = new Vector3(-7, 10, 0);
 
     Vector3 currentCameraTarget;
-    new Camera camera;
+	float lastZoom;
+    public new Camera camera;
 
 	// Use this for initialization
 	void Start () {
@@ -26,23 +27,36 @@ public class CameraTracking : MonoBehaviour {
 
     }
 
+	public float GetLastZoomResult(){
+		return lastZoom;
+	}
+
+	public Vector3 GetLastPosition(){
+		return transform.InverseTransformPoint(currentCameraTarget);
+	}
+
     Vector3 CalculateCameraPosition()
     {
         Vector3 distProduct = Vector3.zero;
 
-        if (trackedTransforms.Count > 1)
+        if (trackedTransforms.Count > 0)
         {
-            for (int i = 0; i < trackedTransforms.Count; i++)
+            distProduct = trackedTransforms[0].position;
+
+            if (trackedTransforms.Count > 1)
             {
-                distProduct += trackedTransforms[i].position;
+                for (int i = 1; i < trackedTransforms.Count; i++)
+                {
+                    distProduct += trackedTransforms[i].position;
 
+                }
             }
+
+            distProduct /= trackedTransforms.Count;
+            distProduct += Quaternion.AngleAxis(isoOffset, Vector3.up) * cameraOffset;
+
         }
-
-        distProduct /= trackedTransforms.Count;
-        distProduct += Quaternion.AngleAxis(isoOffset, Vector3.up) * cameraOffset;
-
-        currentCameraTarget = distProduct;
+		currentCameraTarget = distProduct;
 
         return distProduct;
 
@@ -65,9 +79,20 @@ public class CameraTracking : MonoBehaviour {
         }
 
         zoomResult += zoomOffset;
+		lastZoom = zoomResult;
 
         return zoomResult;
 
+    }
+
+    public void RegisterTransform(Transform t)
+    {
+        trackedTransforms.Add(t);
+    }
+
+    public void DeregisterTransform(Transform t)
+    {
+        trackedTransforms.Remove(t);
     }
 
 }

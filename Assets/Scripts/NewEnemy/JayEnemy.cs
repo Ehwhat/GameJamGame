@@ -17,6 +17,11 @@ public class JayEnemy : MonoBehaviour {
         ePathTest
     }
 
+<<<<<<< HEAD
+=======
+    int health = 5;
+
+>>>>>>> ObjectiveGeneration
     public Renderer rendMesh;
 
     //Speeds for movement.
@@ -50,7 +55,11 @@ public class JayEnemy : MonoBehaviour {
 
     //Pathfinding
     bool tempCalc = false;
+<<<<<<< HEAD
     Vector3[] chasePath;
+=======
+    public Vector3[] chasePath;
+>>>>>>> ObjectiveGeneration
     PathRequest pathRequest;
 
     //Temp node display
@@ -81,7 +90,14 @@ public class JayEnemy : MonoBehaviour {
 
     void Update()
     {
+<<<<<<< HEAD
         
+=======
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+        }
+>>>>>>> ObjectiveGeneration
 
         rb_pos = rb.position;//Might have to move this to fixed
 
@@ -117,6 +133,10 @@ public class JayEnemy : MonoBehaviour {
 
                 rot.y = rb.position.y;
                 Quaternion lookRotation = Quaternion.LookRotation(rot);
+<<<<<<< HEAD
+=======
+                //rb.rotation = Quaternion()
+>>>>>>> ObjectiveGeneration
                 rb.MoveRotation(Quaternion.Euler(0, lookRotation.eulerAngles.y, 0));
 
                 currentWait = 0;
@@ -203,6 +223,20 @@ public class JayEnemy : MonoBehaviour {
             rb.MovePosition(rb.position - distance * Time.fixedDeltaTime * patrolSpeed);
         }
 
+<<<<<<< HEAD
+=======
+        //Update player transforms
+        if (playerTransforms.Length == 0)
+        {
+            GameObject[] g = GameObject.FindGameObjectsWithTag("Player");
+            playerTransforms = new Transform[g.Length];
+            for (int x = 0; x < g.Length; ++x)
+            {
+                playerTransforms[x] = g[x].transform;
+            }
+        }
+
+>>>>>>> ObjectiveGeneration
     }
 
     void Look()
@@ -212,10 +246,18 @@ public class JayEnemy : MonoBehaviour {
         for (int playerIndex = 0; playerIndex < playerTransforms.Length; playerIndex++)
         {
             Vector3 playerRaycast = (playerTransforms[playerIndex].position - visionPoint.position).normalized;
+<<<<<<< HEAD
             float visionAngle = Vector3.Dot(visionPoint.forward, playerRaycast);
 
             //TODO : Need to do a raycast to see if we are seeing the player through a wall as well.
             if (visionAngle > 0.2f)
+=======
+            float playerDistance = Vector3.Distance(playerTransforms[playerIndex].position, visionPoint.position);
+            float visionAngle = Vector3.Dot(visionPoint.forward, playerRaycast);
+
+            //TODO : Need to do a raycast to see if we are seeing the player through a wall as well.
+            if (visionAngle > 0.2f && playerDistance <= 15.0f)
+>>>>>>> ObjectiveGeneration
             {
                 rendMesh.material.color = Color.red;
                 chaseTarget = playerIndex;
@@ -240,6 +282,7 @@ public class JayEnemy : MonoBehaviour {
 
     void PathCallback(Vector3[] v, bool _success)
     {
+<<<<<<< HEAD
         currentPoint = 0;
         if (_success)
         {
@@ -253,11 +296,30 @@ public class JayEnemy : MonoBehaviour {
             {
                 nodes[x] = Instantiate(nodePrefab, v[x], Quaternion.identity) as GameObject;
             }*/
+=======
+        
+        if (_success)
+        {
+            chasePath = v;
+            currentPoint = 0;
+            //currentState = EnemyState.ePathTest;
+
+            /* nodes = new GameObject[v.Length];
+             //Generate display
+             for (int x = 0; x < v.Length; x++)
+             {
+                 nodes[x] = Instantiate(nodePrefab, v[x], Quaternion.identity) as GameObject;
+             }*/
+>>>>>>> ObjectiveGeneration
         }
         else
         {
             //Failed, so we have to do something to help the enemy get a path, for now  we can just remove the old path
+<<<<<<< HEAD
             chasePath = null;
+=======
+            //chasePath = null;
+>>>>>>> ObjectiveGeneration
             //StopCoroutine(UpdatePath());
         }
     }
@@ -274,4 +336,15 @@ public class JayEnemy : MonoBehaviour {
         currentPoint = _currentPoint;
         patrolPoints = _points;
     }
+<<<<<<< HEAD
+=======
+
+    void OnTriggerEnter(Collider col)
+    {
+        if (col.CompareTag("b"))
+        {
+            health--;
+        }
+    }
+>>>>>>> ObjectiveGeneration
 }

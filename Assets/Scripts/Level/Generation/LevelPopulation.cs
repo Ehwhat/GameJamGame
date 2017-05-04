@@ -7,8 +7,8 @@ public class LevelPopulation : MonoBehaviour {
     public enum PrefabSize : int
     {
         Small = 1,
-        Medium = 3,
-        Large = 5
+        Medium = 5,
+        Large = 9
     }
 
     [System.Serializable]
@@ -22,6 +22,16 @@ public class LevelPopulation : MonoBehaviour {
         [Range(0,1)]
         public float levelDensity = 0.2f;
     }
+
+    [System.Serializable]
+    public class EssentialPrefabData
+    {
+        public GameObject prefab;
+        public PrefabSize prefabSize = PrefabSize.Small;
+        public float prefabPlacementRandomness = 2;
+        public bool RandomRotationOnY = true;
+    }
+
 
     public class Fence
     {
@@ -51,14 +61,30 @@ public class LevelPopulation : MonoBehaviour {
         }
     }
 
-    public PrefabData[] levelPrefabs;
+    public bool isDebug = false;
 
+    public Transform levelObjectHolder;
+    public PrefabData[] levelPrefabs;
+    public EssentialPrefabData[] essentialLevelPrefabs;
+
+    public int smallSize = 1;
+    public int mediumSize = 3;
+    public int bigSize = 7;
+
+    public int requiredSmallPasses = 0;
     [Range(0,1000)]
     public int smallPasses = 200;
+    public bool OnlyDoRequiredSmallPasses = false;
+
+    public int requiredMediumPasses = 0;
     [Range(0, 1000)]
     public int mediumPasses = 80;
+    public bool OnlyDoRequiredMediumPasses = false;
+
+    public int requiredBigPasses = 0;
     [Range(0, 1000)]
     public int bigPasses = 30;
+    public bool OnlyDoRequiredBigPasses = true;
 
     private int[,] levelPrefabMap;
     private List<Coord> availibleLevel = new List<Coord>();
@@ -79,7 +105,7 @@ public class LevelPopulation : MonoBehaviour {
 
     LevelMeshData levelMeshData;
 
-    public void PopulateLevel(int[,] level, float size, LevelMeshData data)
+    public bool PopulateLevel(int[,] level, float size, LevelMeshData data)
     {
         levelPrefabMap = level;
 
@@ -96,20 +122,42 @@ public class LevelPopulation : MonoBehaviour {
         smallSpots.Clear();
         fences.Clear();
 
-        FindSpots();
-        PlaceFences();
+        if (!FindSpots())
+        {
+            return false;
+        }
+        //PlaceFences();
 
         PopulateSpot(smallSpots, PrefabSize.Small);
+        PopulateSpot(mediumSpots, PrefabSize.Medium);
+        PopulateSpot(bigSpots, PrefabSize.Large);
 
+        return true;
     }
 
 
     public void PopulateSpot(List<Coord> spots, PrefabSize size)
     {
         List<PrefabData> prefabsAvaliable = new List<PrefabData>();
+        List<EssentialPrefabData> essentials = new List<EssentialPrefabData>();
         float combinedDensity = 0;
-        foreach (PrefabData prefab in levelPrefabs)
+
+        for(int i = 0; i < essentialLevelPrefabs.Length; i++) //(EssentialPrefabData prefab in essentialLevelPrefabs)
         {
+            EssentialPrefabData prefab = essentialLevelPrefabs[i];
+            if (prefab.prefabSize == size && spots.Count > 0)
+            {
+                int randomChoice = Random.Range(0, spots.Count-1);
+                Vector3 position = CoordToWorldSpace(spots[randomChoice]) + new Vector3(Random.Range(-prefab.prefabPlacementRandomness / 2, prefab.prefabPlacementRandomness / 2), 0, Random.Range(-prefab.prefabPlacementRandomness / 2, prefab.prefabPlacementRandomness / 2));
+                Quaternion rotation = prefab.RandomRotationOnY ? Quaternion.Euler(0, Random.Range(0, 360), 0) : Quaternion.identity;
+                Instantiate(prefab.prefab, position, rotation, levelObjectHolder);
+                spots.RemoveAt(randomChoice);
+            }
+        }
+
+        for(int i = 0; i < levelPrefabs.Length; i++) //(PrefabData prefab in levelPrefabs)
+        {
+            PrefabData prefab = levelPrefabs[i];
             if(prefab.prefabSize == size)
             {
                 prefabsAvaliable.Add(prefab);
@@ -118,13 +166,15 @@ public class LevelPopulation : MonoBehaviour {
         }
         if(prefabsAvaliable.Count > 0)
         {
-            foreach(Coord spot in spots)
+            for(int i = 0; i < spots.Count; i++)//(Coord spot in spots)
             {
+                Coord spot = spots[i];
                 float randomChoice = Random.Range(0, combinedDensity);
                 PrefabData prefabChoice = null;
                 float currentDensity = 0;
-                foreach(PrefabData prefab in prefabsAvaliable)
+                for(int j = 0; j < prefabsAvaliable.Count; j++)//(PrefabData prefab in prefabsAvaliable)
                 {
+                    PrefabData prefab = prefabsAvaliable[j];
                     if(randomChoice <= currentDensity + prefab.levelDensity)
                     {
                         prefabChoice = prefab;
@@ -134,7 +184,7 @@ public class LevelPopulation : MonoBehaviour {
                 }
                 Vector3 position = CoordToWorldSpace(spot) + new Vector3(Random.Range(-prefabChoice.prefabPlacementRandomness/2, prefabChoice.prefabPlacementRandomness / 2), 0, Random.Range(-prefabChoice.prefabPlacementRandomness / 2, prefabChoice.prefabPlacementRandomness / 2)); ;
                 Quaternion rotation = prefabChoice.RandomRotationOnY?Quaternion.Euler(0, Random.Range(0, 360), 0):Quaternion.identity;
-                Instantiate(prefabChoice.prefab, position, rotation);
+                Instantiate(prefabChoice.prefab, position, rotation, levelObjectHolder);
 
             }
         }
@@ -213,40 +263,61 @@ public class LevelPopulation : MonoBehaviour {
         
     }
 
-    public void FindSpots()
+    public bool FindSpots()
     {
         FindAvailableSpaces();
-        FindSpots(PrefabSize.Large, bigPasses, ref bigSpots, Color.red);
-        FindSpots(PrefabSize.Medium, mediumPasses, ref mediumSpots, Color.yellow);
-        FindSpots(PrefabSize.Small, smallPasses, ref smallSpots, Color.green);
-        
+        FindSpots(PrefabSize.Large, bigPasses, ref bigSpots, OnlyDoRequiredBigPasses, requiredBigPasses, Color.red);
+        FindSpots(PrefabSize.Medium, mediumPasses, ref mediumSpots, OnlyDoRequiredMediumPasses, requiredMediumPasses, Color.yellow);
+        FindSpots(PrefabSize.Small, smallPasses, ref smallSpots, OnlyDoRequiredSmallPasses, requiredSmallPasses, Color.green);
+
+        return (bigSpots.Count > requiredBigPasses && mediumSpots.Count > requiredMediumPasses && smallSpots.Count > requiredSmallPasses);
+
     }
 
-    public void FindSpots(PrefabSize size, int passes, ref List<Coord> spotList, Color lineColour)
+    public void FindSpots(PrefabSize size, int passes, ref List<Coord> spotList, bool onlyDoRequired, int requiredAmount, Color lineColour)
     {
         if (availibleLevel.Count > passes)
         {
             for (int i = 0; i < passes; i++)
             {
+
+                if (onlyDoRequired && spotList.Count > requiredAmount)
+                    break;
+
                 int randomIdx = Random.Range(0, availibleLevel.Count - 1);
                 Coord selectedCoord = availibleLevel[randomIdx];
 
                 Vector3 v = CoordToWorldSpace(selectedCoord);
-                Debug.DrawLine(v, v + Vector3.up * 10, lineColour, 20);
+                //Debug.DrawLine(v, v + Vector3.up * 10, lineColour, 20);
 
-                if (CheckIfFit(selectedCoord.x, selectedCoord.y, (int)size))
+                int sizeInt = GetSize(size);
+
+                if (CheckIfFit(selectedCoord.x, selectedCoord.y, sizeInt))
                 {
                     spotList.Add(selectedCoord);
-                    RemoveSpace(selectedCoord.x, selectedCoord.y, (int)size);
+                    RemoveSpace(selectedCoord.x, selectedCoord.y, sizeInt);
                 }
 
             }
         }
     }
 
+    int GetSize(PrefabSize size)
+    {
+        if (size == PrefabSize.Large)
+        {
+            return bigSize;
+        }
+        else if (size == PrefabSize.Medium)
+        {
+            return mediumSize;
+        }
+        return smallSize;
+    }
+
     public bool CheckIfFit(int x, int y, int radius = 1)
     {
-        radius -= 1;
+        radius -= 0;
         
         for (int dx = x-radius; dx <= x+radius; dx++)
         {
@@ -266,7 +337,13 @@ public class LevelPopulation : MonoBehaviour {
         return true;
     }
 
-
+    public void DepopulateLevel()
+    {
+        for (int i = 0; i < levelObjectHolder.childCount; i++)
+        {
+            Destroy(levelObjectHolder.GetChild(i).gameObject);
+        }
+    }
     bool IsInLevel(int x, int y)
     {
         return ((x >= 0 && x < levelWidth) && (y >= 0 && y < levelHeight));
@@ -327,34 +404,33 @@ public class LevelPopulation : MonoBehaviour {
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        foreach(Coord c in bigSpots)
+        if (isDebug)
         {
-            Gizmos.DrawCube(CoordToWorldSpace(c) + Vector3.up, Vector3.one * (int)PrefabSize.Large * sizeMultipler);
-        }
-        Gizmos.color = Color.yellow;
-        foreach (Coord c in mediumSpots)
-        {
-            Gizmos.DrawCube(CoordToWorldSpace(c) + Vector3.up, Vector3.one * (int)PrefabSize.Medium * sizeMultipler);
-        }
-        /*Gizmos.color = Color.green;
-        foreach (Coord c in smallSpots)
-        {
-            Gizmos.DrawCube(CoordToWorldSpace(c) + Vector3.up, Vector3.one * 3 * sizeMultipler);
-        }*/
+            Gizmos.color = Color.red;
+            foreach (Coord c in bigSpots)
+            {
+                Gizmos.DrawCube(CoordToWorldSpace(c) + Vector3.up, Vector3.one * bigSize * sizeMultipler);
+            }
+            Gizmos.color = Color.yellow;
+            foreach (Coord c in mediumSpots)
+            {
+                Gizmos.DrawCube(CoordToWorldSpace(c) + Vector3.up, Vector3.one * mediumSize * sizeMultipler);
+            }
+            Gizmos.color = Color.green;
+            foreach (Coord c in smallSpots)
+            {
+                Gizmos.DrawCube(CoordToWorldSpace(c) + Vector3.up, Vector3.one * smallSize * sizeMultipler);
+            }
 
-        if (levelMeshData.solidEdgeVertices != null)
-        {
-            Gizmos.color = Color.blue;
-            /*foreach (Vector3 edgeVert in levelMeshData.solidEdgeVertices)
+            if (levelMeshData.solidEdgeVertices != null)
             {
-                //Gizmos.DrawCube(edgeVert + Vector3.up + Vector3.left*4 + Vector3.forward *4, Vector3.one * 3);
-            }*/
-            foreach(List<Fence> outline in fenceOutlines)
-            {
-                for (int i = 0; i < outline.Count-1; i++)
+                Gizmos.color = Color.blue;
+                foreach (List<Fence> outline in fenceOutlines)
                 {
-                    Gizmos.DrawLine(outline[i].position + Vector3.up, outline[i + 1].position + Vector3.up);
+                    for (int i = 0; i < outline.Count - 1; i++)
+                    {
+                        Gizmos.DrawLine(outline[i].position + Vector3.up, outline[i + 1].position + Vector3.up);
+                    }
                 }
             }
         }

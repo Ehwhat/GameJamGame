@@ -1,38 +1,61 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 
 public class PlayerManager : ControlledUnitManager {
 
+    public PlayerUI playerUI;
+    public Color playerColour = Color.red;
+    public bool _isEnteringContext = false;
+
     HitData lastHit;
     int numRevivers = 0;
     float reviveTime = 0;
-    float endReviveTime = 10;
+    float endReviveTime = 5;
+
+    public float _activationRadius = 1f;
+    [SerializeField]
+    private IActivatableObject _nearestActivatable;
+    private bool _isActivatePressed;
 
     public PlayerMovement playerMovement = new PlayerMovement();
     public PlayerAiming playerAiming = new PlayerAiming();
     public PlayerShooting playerShooting = new PlayerShooting();
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    public void Start ()
     {
         GetPlayerController(playerIndex);
-        playerMovement.Initalise(transform, controller);
+        
+		playerMovement.Initalise(this, controller);
         playerAiming.Initalise(transform, controller);
         playerShooting.Initalise(playerAiming);
     }
 
+    
+
     // Update is called once per frame
     void Update()
     {
-        if (!isDead)
+        playerUI.SetPlayerColour(playerColour);
+        if (!isDead && !_isEnteringContext)
         {
+            CheckObjectInRange(_activationRadius, out _nearestActivatable);
+            
             playerMovement.HandleMovement();
             playerAiming.HandleRotation();
             if (controller.GetTrigger(XboxTrigger.RightTrigger) > 0.1f)
             {
-               // Debug.Log("Shooting");
                 playerShooting.Shoot();
+            }
+            if(controller.GetTrigger(XboxTrigger.LeftTrigger) > 0.1f && !_isActivatePressed && _nearestActivatable != null)
+            {
+                _isActivatePressed = true;
+                _nearestActivatable.OnActivate(this);
+            }else if(controller.GetTrigger(XboxTrigger.LeftTrigger) < 0.1f)
+            {
+                _isActivatePressed = false;
             }
         }
         else
@@ -51,11 +74,17 @@ public class PlayerManager : ControlledUnitManager {
 
             
         }
+
+    }
+
+    public void SetEnteringContext(bool active)
+    {
+        _isEnteringContext = active;
     }
 
     public override void OnDeath()
     {
-        
+        GetComponent<SphereCollider>().enabled = true;
         playerMovement.OnKill(lastHit);
         gameObject.tag = "DeadPlayer";
         StartCoroutine(DisableRotation());
@@ -64,6 +93,7 @@ public class PlayerManager : ControlledUnitManager {
 
     public override void OnResurrect()
     {
+        GetComponent<SphereCollider>().enabled = false;
         playerMovement.OnResurrect();
         gameObject.tag = "Player";
         base.OnResurrect();
@@ -85,6 +115,38 @@ public class PlayerManager : ControlledUnitManager {
         playerMovement.DisableRotation();
     }
 
+    bool CheckObjectInRange(float range, out IActivatableObject nearestActivatable)
+    {
+        IActivatableObject lastObject = _nearestActivatable;
+        nearestActivatable = null;
+        Collider[] foundColliders = Physics.OverlapSphere(transform.position, range);
+        if (foundColliders.Length > 0) {
+            IActivatableObject targetObject = null;
+            float bestDistance = Mathf.Infinity;
+            for(int i = 0; i < foundColliders.Length; i++)
+            {
+                IActivatableObject activatableObject = foundColliders[i].GetComponent<IActivatableObject>();
+                if (activatableObject != null && Vector3.Distance(transform.position, foundColliders[i].transform.position) < bestDistance)
+                {
+                    
+                    targetObject = activatableObject;
+                    bestDistance = Vector3.Distance(transform.position, foundColliders[i].transform.position);
+                }
+            }
+            nearestActivatable = targetObject;
+            
+            if(lastObject != null && lastObject != targetObject)
+            {
+                lastObject.OnDeactivate(this);
+            }
+
+            return targetObject != null;
+        }else
+        {
+            return false;
+        }
+    }
+
     void OnTriggerEnter(Collider col)
     {
        
@@ -101,7 +163,9 @@ public class PlayerManager : ControlledUnitManager {
         if (col.CompareTag("Player"))
         {
             numRevivers--;
+            playerShooting.Shoot();
         }
+        
     }
 
 }

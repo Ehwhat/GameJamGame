@@ -17,5 +17,6 @@ public abstract class UnitState<T> : State<T, UnitState<T>> {
     public abstract void OnTriggerEnter(Collider other);
     public abstract void OnTriggerExit(Collider other);
 
+    public abstract void OnDrawGizmos();
     
 }
