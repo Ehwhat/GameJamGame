@@ -8,6 +8,8 @@ public abstract class ObjectiveAbstract : MonoBehaviour {
     public ObjectiveCallback _onObjectiveSuccess;
     public ObjectiveCallback _onObjectiveFailure;
 
+    public bool _objectiveActive = true;
+
     [SerializeField]
     public float _objectiveSuccessScore = 100;
     public static string PROPERTY_OBJECTIVE_SUCCESS_SCORE = "_objectiveSuccessScore";
@@ -24,12 +26,20 @@ public abstract class ObjectiveAbstract : MonoBehaviour {
 
     public void ObjectiveSuccess()
     {
-        _onObjectiveSuccess(this);
+        if (_onObjectiveSuccess != null)
+        {
+            _onObjectiveSuccess.Invoke(this);
+        }
+        _objectiveActive = false;
     }
 
     public void ObjectiveFailure()
     {
-        _onObjectiveFailure(this);
+        if (_onObjectiveFailure != null)
+        {
+            _onObjectiveFailure.Invoke(this);
+        }
+        _objectiveActive = false;
     }
 
 }

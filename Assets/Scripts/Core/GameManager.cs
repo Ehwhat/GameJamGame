@@ -65,6 +65,11 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public static CameraTracking GetCamera()
+    {
+        return instance.camera;
+    }
+
     public static PlayerManager CreatePlayer(PlayerManager.PlayerIndex index)
     {
         PlayerManager newPlayer = Instantiate(instance.playerPrefab);
@@ -73,14 +78,6 @@ public class GameManager : MonoBehaviour {
         newPlayer.name = "Player " + (int)(index+1);
         instance.camera.RegisterTransform(newPlayer.transform);
         newPlayer.Start();
-        if ((int)(index + 1) == 1)
-        {
-            newPlayer.gameObject.transform.FindChild("Mesh/Capsule").GetComponent<MeshRenderer>().material.color = Color.red;
-        }
-        else
-        {
-            newPlayer.gameObject.transform.FindChild("Mesh/Capsule").GetComponent<MeshRenderer>().material.color = Color.blue;
-        }
         return newPlayer;
     }
 

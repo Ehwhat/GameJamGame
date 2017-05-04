@@ -103,7 +103,7 @@ public class LevelGenerator : MonoBehaviour {
             if(!popGen.PopulateLevel(borderedLevel, sizeMultiplier, levelMeshData))
             {
                 attempts++;
-				if (attempts > 4) {
+				if (attempts > 10) {
 					return false;
 				}
 				return GenerateLevel();

@@ -13,7 +13,7 @@ public class CameraTracking : MonoBehaviour {
 
     Vector3 currentCameraTarget;
 	float lastZoom;
-    new Camera camera;
+    public new Camera camera;
 
 	// Use this for initialization
 	void Start () {

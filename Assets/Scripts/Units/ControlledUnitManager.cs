@@ -13,7 +13,7 @@ public class ControlledUnitManager : UnitManager {
 
     public PlayerIndex playerIndex = PlayerIndex.One;
 
-    protected PlayerControlManager.PlayerController controller;
+    public PlayerControlManager.PlayerController controller;
 
     // Use this for initialization
     void Start () {

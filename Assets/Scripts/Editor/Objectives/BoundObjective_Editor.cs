@@ -33,11 +33,6 @@ public class BoundObjective_Editor : Objective_Editor  {
             if (boundType == BoundObjective.BoundsType.Box)
             {
                 _objectiveBoundsArea.vector2Value = EditorGUILayout.Vector2Field(new GUIContent("Bounds Area"), _objectiveBoundsArea.vector2Value);
-<<<<<<< HEAD
-
-
-=======
->>>>>>> ObjectiveGeneration
             }else if(boundType == BoundObjective.BoundsType.Circle)
             {
                 _objectiveBoundsRadius.floatValue = EditorGUILayout.FloatField(new GUIContent("Bounds Radius"), _objectiveBoundsRadius.floatValue);
@@ -48,7 +43,6 @@ public class BoundObjective_Editor : Objective_Editor  {
         }
     }
 
-<<<<<<< HEAD
     public void OnSceneGUI()
     {
         serializedObject.Update();
@@ -71,9 +65,6 @@ public class BoundObjective_Editor : Objective_Editor  {
         }
         serializedObject.ApplyModifiedProperties();
     }
-
-=======
->>>>>>> ObjectiveGeneration
     //
 
 }
