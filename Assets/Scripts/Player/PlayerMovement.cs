@@ -41,8 +41,8 @@ public class PlayerMovement : UnitMovement {
     {
         if (useRigidbody)
         {
-            Vector3 hitPoint = lastHit.hitPosition;
-            Vector3 forceHit = (rb.position - lastHit.hitPosition).normalized * -100;
+            Vector3 hitPoint = lastHit.rayHit.point;
+            Vector3 forceHit = (rb.position - lastHit.rayHit.point).normalized * -100;
             Debug.Log("ShotHit" + forceHit);
             //Disable Constraints
             rb.constraints = RigidbodyConstraints.None;
