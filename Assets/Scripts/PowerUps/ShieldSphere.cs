@@ -10,10 +10,13 @@ public class ShieldSphere : MonoBehaviour, IHitTarget {
     
     void DeflectProjectile(HitData data)
     {
-        Projectile proj = data.hitProjectile;
+        Projectile proj = data.hitProjectile.GetInstanceFromPool();
+        proj.transform.position = data.rayHit.point;
+        Vector3 normal = new Vector3(data.rayHit.normal.x, 0, data.rayHit.normal.z);
+
         proj.Fire(
             data.rayHit.point,
-            data.rayHit.normal,
+            normal,
             proj.projectileHitLayers,
             proj.projectileUpdateType,
             proj.owner

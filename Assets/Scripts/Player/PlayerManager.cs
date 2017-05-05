@@ -39,12 +39,18 @@ public class PlayerManager : ControlledUnitManager {
     void Update()
     {
         playerUI.SetPlayerColour(playerColour);
+
+        playerUI.SetPlayerHealth(GetPlayerHealthPercent());
+        playerUI.SetPlayerAmmo(playerShooting.GetAmmoClipPercent());
+        playerUI.SetPlayerReloadTime(playerShooting.GetReloadPercent());
+
         if (!isDead && !_isEnteringContext)
         {
             CheckObjectInRange(_activationRadius, out _nearestActivatable);
             
             playerMovement.HandleMovement();
             playerAiming.HandleRotation();
+            playerShooting.SetupAim();
             if (controller.GetTrigger(XboxTrigger.RightTrigger) > 0.1f)
             {
                 playerShooting.Shoot();
@@ -80,6 +86,11 @@ public class PlayerManager : ControlledUnitManager {
     public void SetEnteringContext(bool active)
     {
         _isEnteringContext = active;
+    }
+
+    public float GetPlayerHealthPercent()
+    {
+        return (currentHealth / maxHealth);
     }
 
     public override void OnDeath()
