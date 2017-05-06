@@ -7,8 +7,6 @@ public class NewEnemy_Chase : TriggerState<NewEnemy>
     NewEnemy currentEnemy;
     RaycastHit hit;
 
-    private float searchTimer;
-
     public NewEnemy_Chase(string key, NewEnemy enemy) : base(key)
     {
         currentEnemy = enemy;
@@ -26,7 +24,6 @@ public class NewEnemy_Chase : TriggerState<NewEnemy>
 
     public override void StartState()
     {
-        searchTimer = 0f;
         instance.StartCoroutine(UpdatePath());
     }
 
@@ -107,7 +104,7 @@ public class NewEnemy_Chase : TriggerState<NewEnemy>
                 //Quaternion targetRotation = Quaternion.LookRotation(new Vector3(instance.path.lookPoints[pathIndex].x, 0.5f, instance.path.lookPoints[pathIndex].z) - instance.transform.position);
                 // instance.transform.rotation = Quaternion.Lerp(instance.transform.rotation, targetRotation, Time.deltaTime * instance.turnSpeed);
                 //instance.transform.Translate(Vector3.forward * Time.deltaTime * instance.speed * speedPercent, Space.Self);
-
+                //
                 //Generate a directional velocity based on the targets location, and the current RB
                 Vector3 velocity = (new Vector3(currentEnemy.rb.position.x, currentEnemy.rb.position.y, currentEnemy.rb.position.z) - new Vector3(instance.chaseTarget.position.x, currentEnemy.rb.position.y, instance.chaseTarget.position.z)).normalized * Time.fixedDeltaTime;
 

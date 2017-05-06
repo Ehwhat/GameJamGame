@@ -20,7 +20,7 @@ TagManager:
   - IgnoreProjector
   - NonUnitCollideable
   - Unit
-  - 
+  - NonProjectileCollideable
   - 
   - 
   - 

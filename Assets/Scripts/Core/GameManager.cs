@@ -9,17 +9,12 @@ public class GameManager : MonoBehaviour {
         InGame
     }
 
-	public enum GameMode
-	{
-		DestroyBase,
-		KillUnits
-	}
-
     private static GameManager instance;
 
-    public LevelGenerator levelGenerator;
     public new CameraTracking camera;
-    public PlayerManager playerPrefab;
+    [SerializeField]
+    private PlayerManager playerPrefab;
+    private LevelGenerator levelGenerator;
 
     public GameState currentState = GameState.InGame;
     [Range(1,4)]
@@ -27,7 +22,8 @@ public class GameManager : MonoBehaviour {
 
     public Color[] playerColours = new Color[4];
 
-    private PlayerManager[] currentPlayers = new PlayerManager[4];
+    public PlayerManager[] currentPlayers = new PlayerManager[4];
+
     private PlayerSpawnPoint spawnPoint;
 
     void Awake()
@@ -37,15 +33,18 @@ public class GameManager : MonoBehaviour {
         {
             instance = this;
         }
+        CreatePlayers();
     }
 
     // Use this for initialization
     void Start() {
         if (currentState == GameState.InGame)
         {
+            camera = Object.FindObjectOfType<CameraTracking>();
+            levelGenerator = Object.FindObjectOfType<LevelGenerator>();
             if (levelGenerator.GenerateLevel())
             {
-                SpawnPlayers((PlayerManager.PlayerIndex)amountOfPlayers - 1);
+                SpawnPlayers(amountOfPlayers);
             }
         }
     }
@@ -55,13 +54,23 @@ public class GameManager : MonoBehaviour {
 
     }
 
-    void SpawnPlayers(PlayerManager.PlayerIndex amount)
+    void CreatePlayers()
     {
-        int realAmount = ((int)amount) + 1;
-        for (int i = 0; i < realAmount; i++)
+        for (int i = 0; i < 4; i++)
         {
             PlayerManager player = CreatePlayer((PlayerManager.PlayerIndex)i);
+            currentPlayers[i] = player;
+        }
+    }
+
+    void SpawnPlayers(int amount)
+    {
+        for (int i = 0; i < amount; i++)
+        {
+            PlayerManager player = currentPlayers[i];
             spawnPoint.SpawnPlayer(player);
+            instance.camera.RegisterTransform(player.transform);
+            player.Start();
         }
     }
 
@@ -76,9 +85,12 @@ public class GameManager : MonoBehaviour {
         newPlayer.playerColour = instance.playerColours[(int)(index)];
         newPlayer.playerIndex = index;
         newPlayer.name = "Player " + (int)(index+1);
-        instance.camera.RegisterTransform(newPlayer.transform);
-        newPlayer.Start();
         return newPlayer;
+    }
+
+    public static PlayerManager GetPlayer(PlayerManager.PlayerIndex index)
+    {
+        return instance.currentPlayers[(int)index];
     }
 
 

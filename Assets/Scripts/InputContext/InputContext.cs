@@ -56,17 +56,23 @@ public class InputContext : TrackingUIElement {
     [SerializeField]
     private int _currentCommandIndex;
 
-    public InputContext Init(PlayerControlManager.PlayerController listenController)
+    private PlayerManager _owningPlayer;
+
+    public InputContext Init(PlayerControlManager.PlayerController listenController, PlayerManager owningPlayer)
     {
+        UpdateTracking();
         _listenController = listenController;
+        _owningPlayer = owningPlayer;
         GenerateButtons();
         StartCoroutine(ListenForCommands());
         return this;
     }
 
-    public InputContext InitRandom(PlayerControlManager.PlayerController listenController, int length, bool allowResets)
+    public InputContext InitRandom(PlayerControlManager.PlayerController listenController, PlayerManager owningPlayer, int length, bool allowResets)
     {
+        UpdateTracking();
         _listenController = listenController;
+        _owningPlayer = owningPlayer;
         _allowRetry = allowResets;
         GenerateRandomCommands(length);
         GenerateButtons();
@@ -74,9 +80,11 @@ public class InputContext : TrackingUIElement {
         return this;
     }
 
-    public InputContext InitCompareToManager(PlayerControlManager.PlayerController listenController)
+    public InputContext InitCompareToManager(PlayerControlManager.PlayerController listenController, PlayerManager owningPlayer)
     {
+        UpdateTracking();
         _listenController = listenController;
+        _owningPlayer = owningPlayer;
         _commands.Clear();
         _commandButtons.Clear();
         StartCoroutine(ListenForCommandsToManager());
@@ -122,9 +130,9 @@ public class InputContext : TrackingUIElement {
             {
                 _commands.Add(currentPosition);
                 _commandButtons.Add(GenerateButton(i, _commands[i], InputContextButton.ButtonState.Pressed));
-                if (InputContextManager.ComparePatternToManagerPattern(_commands))
+                if (InputContextManager.ComparePatternToManagerPattern(_commands, _owningPlayer))
                 {
-                    Break();
+                    _owningPlayer.BreakContext();
                     yield break;
                 }
                 i++;
@@ -151,7 +159,7 @@ public class InputContext : TrackingUIElement {
                 {
                     OnSuccess();
                     _active = false;
-                    Break();
+                    _owningPlayer.BreakContext();
                     yield break;
                 }
                 else
@@ -167,7 +175,7 @@ public class InputContext : TrackingUIElement {
                     Reset();
                 }else
                 {
-                    Break();
+                    _owningPlayer.BreakContext();
                 }
             }else if(currentPosition == ThumbstickPositions.None && _waitForNone)
             {

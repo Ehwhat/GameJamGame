@@ -27,11 +27,12 @@ public abstract class TrackingUIElement : MonoBehaviour {
         if(_trackingTransform != null)
         {
             Vector3 transformScreenPosition = _cameraToTrackFrom.WorldToViewportPoint(_trackingTransform.position + _offset);
-            Vector2 screenPosition = new Vector2(
+            Vector3 screenPosition = new Vector3(
                 (transformScreenPosition.x * _canvasRect.sizeDelta.x) - (_canvasRect.sizeDelta.x * 0.5f),
                 (transformScreenPosition.y * _canvasRect.sizeDelta.y) - (_canvasRect.sizeDelta.y * 0.5f)
                 );
-            _rectTransform.anchoredPosition = screenPosition;
+            //transformScreenPosition.z = (2 * (transformScreenPosition.z - _cameraToTrackFrom.nearClipPlane) / (_cameraToTrackFrom.farClipPlane - _cameraToTrackFrom.nearClipPlane)) - 1f;
+            _rectTransform.anchoredPosition3D = screenPosition;
         }
     }
 	

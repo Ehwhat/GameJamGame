@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponFirePoint: {fileID: 0}
-  weaponProjectile: {fileID: 114000013974713260, guid: c60f1972bb9295e4f9bc1196af939316,
+  weaponProjectile: {fileID: 114000013974713260, guid: 670a8ea52318d4742bed5ecd7a02fd03,
     type: 2}
   possibleSpread: {x: 0.1, y: 0}
   fireRatePerSecond: 1

@@ -7,7 +7,7 @@ public class NewEnemy_Attack : TriggerState<NewEnemy>
     NewEnemy currentEnemy;
     RaycastHit hit;
 
-    private float searchTimer;
+    //private float searchTimer;
 
     public NewEnemy_Attack(string key, NewEnemy enemy) : base(key)
     {
@@ -26,7 +26,7 @@ public class NewEnemy_Attack : TriggerState<NewEnemy>
 
     public override void StartState()
     {
-        searchTimer = 0f;
+        //searchTimer = 0f;
     }
 
     public override void UpdateState()

@@ -84,5 +84,11 @@ public class PlayerMovement : UnitMovement {
     {
         rb.constraints = RigidbodyConstraints.FreezeRotationY;
     }
+
+    public void FreezePlayer(bool freeze)
+    {
+        
+        rb.constraints = (freeze) ? RigidbodyConstraints.FreezeAll : RigidbodyConstraints.FreezeRotation;
+    }
     
 }

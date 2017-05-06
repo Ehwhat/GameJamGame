@@ -20,6 +20,7 @@ public class PlayerShooting  {
     {
         if(weaponManager != null)
         {
+            weaponManager.offset = weaponManager.weaponHolder.transform.position;
             weaponManager.currentFiringAngle = aiming.aimingAngle;
             weaponManager.FireWeapon();
         }

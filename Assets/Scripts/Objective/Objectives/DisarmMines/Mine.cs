@@ -15,7 +15,7 @@ public class Mine : MonoBehaviour, IActivatableObject {
             {
                 _contextInput.Break();
             }
-            _contextInput = InputContextManager.CreateNewRandomInputContext(7, false, transform, GameManager.GetCamera().camera, player.controller, OnDisarm, OnFailure);
+            _contextInput =  InputContextManager.CreateNewRandomInputContext(7, false, transform, GameManager.GetCamera().camera, player.controller, player, OnDisarm, OnFailure);
         }
     }
 
@@ -25,6 +25,11 @@ public class Mine : MonoBehaviour, IActivatableObject {
         {
             _contextInput.Break();
         }
+    }
+
+    public bool ActivateCheck(PlayerManager player)
+    {
+        return true;
     }
 
     void OnDisarm()

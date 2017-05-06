@@ -130,6 +130,11 @@ public class Weapon : MonoBehaviour {
 
     IEnumerator ReloadWeaponDelay(float reloadTime)
     {
+        if(storedAmmo < 1)
+        {
+            currentReloadPercent = 0;
+            yield break;
+        }
         float startTime = Time.time;
         while(Time.time - startTime < reloadTime)
         {

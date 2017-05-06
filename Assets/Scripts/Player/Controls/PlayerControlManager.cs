@@ -355,7 +355,7 @@ public class PlayerControlManager : MonoBehaviour {
         public Vector2 GetStickVector(XboxControlStick stick)
         {
             GamePadThumbSticks.StickValue stickValue = XboxControlSticktoStickValue(gamePadState,stick);
-            return new Vector2(stickValue.X, stickValue.Y).normalized;
+            return new Vector2(stickValue.X, stickValue.Y);
         }
 
         public float GetTrigger(XboxTrigger trigger)

@@ -24,11 +24,11 @@ Material:
     m_Floats:
     - first:
         name: _RimLevel
-      second: 0.081
+      second: 0
     m_Colors:
     - first:
         name: _Color
       second: {r: 0.017355122, g: 0.15001197, b: 0.78676474, a: 0.091}
     - first:
         name: _Colour
-      second: {r: 0.0344826, g: 1, b: 0, a: 0}
+      second: {r: 0, g: 1, b: 1, a: 0}

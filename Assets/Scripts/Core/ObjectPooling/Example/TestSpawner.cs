@@ -10,6 +10,7 @@ public class TestSpawner : MonoBehaviour {
 	void Update () {
 	    if(Time.time - lastSpawnTime > .3f)
         {
+            lastSpawnTime = Time.time;
             TestObject spawn = prefab.GetInstanceFromPool(transform); // Here we ask the TestObject to produce a TestObject from it's pool
             spawn.origin = transform.position;
         }

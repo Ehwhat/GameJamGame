@@ -1,23 +1,44 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System;
 
+public class PlayerManager : ControlledUnitManager, IActivatableObject {
 
-public class PlayerManager : ControlledUnitManager {
+    public delegate DropManager.DropJob MarkerCallback(Vector3 markerPosition);
+
+    public enum PlayerState
+    {
+        Alive,
+        Dead,
+        Context,
+        PlaceMarker,
+        Hiding
+    }
 
     public PlayerUI playerUI;
     public Color playerColour = Color.red;
-    public bool _isEnteringContext = false;
+    public PlayerState _playerState = PlayerState.Alive;
+    public Collider _playerCollider;
 
     HitData lastHit;
-    int numRevivers = 0;
-    float reviveTime = 0;
-    float endReviveTime = 5;
 
     public float _activationRadius = 1f;
     [SerializeField]
-    private IActivatableObject _nearestActivatable;
+    private List<Collider> _nearestActivatables;
+
+    private GameObject _targetActivateableObject;
+
     private bool _isActivatePressed;
+
+    [SerializeField]
+    private DropMarkerManager markerPrefab;
+
+    private InputContext currentContext;
+    private DropMarkerManager marker;
+    private DropManager.DropJob markerJob;
 
     public PlayerMovement playerMovement = new PlayerMovement();
     public PlayerAiming playerAiming = new PlayerAiming();
@@ -44,9 +65,34 @@ public class PlayerManager : ControlledUnitManager {
         playerUI.SetPlayerAmmo(playerShooting.GetAmmoClipPercent());
         playerUI.SetPlayerReloadTime(playerShooting.GetReloadPercent());
 
-        if (!isDead && !_isEnteringContext)
+        GameObject targetObject = GetClosestActivateableObject();
+        if (_targetActivateableObject != null && (_targetActivateableObject != targetObject || targetObject == null))
         {
-            CheckObjectInRange(_activationRadius, out _nearestActivatable);
+            _targetActivateableObject.GetComponent<IActivatableObject>().OnDeactivate(this);
+            InputContextManager.RemoveIndicator(_targetActivateableObject.transform);
+        }
+        else if (targetObject != null)
+        {
+            InputContextManager.PlaceIndicator(targetObject.transform);
+        }
+        _targetActivateableObject = targetObject;
+
+        if (marker != null && markerJob != null)
+        {
+            float remainingJobTime = markerJob.GetTimePercent();
+            if(remainingJobTime > 0f)
+            {
+                marker.SetDropTime(remainingJobTime);
+            }else
+            {
+                Destroy(marker.gameObject);
+                markerJob = null;
+            }
+        }
+
+        if (_playerState == PlayerState.Alive)
+        {
+            _nearestActivatables = CheckObjectsInRange(_activationRadius);
             
             playerMovement.HandleMovement();
             playerAiming.HandleRotation();
@@ -55,37 +101,100 @@ public class PlayerManager : ControlledUnitManager {
             {
                 playerShooting.Shoot();
             }
-            if(controller.GetTrigger(XboxTrigger.LeftTrigger) > 0.1f && !_isActivatePressed && _nearestActivatable != null)
+            if(controller.GetTrigger(XboxTrigger.LeftTrigger) > 0.1f && !_isActivatePressed && ActivateNearestActivatableObject())
             {
                 _isActivatePressed = true;
-                _nearestActivatable.OnActivate(this);
             }else if(controller.GetTrigger(XboxTrigger.LeftTrigger) < 0.1f)
             {
                 _isActivatePressed = false;
+            }else if (controller.GetTrigger(XboxTrigger.LeftTrigger) > 0.1f && !_isActivatePressed)
+            {
+                _isActivatePressed = true;
+                InputContextManager.CreateNewManagerInputContext(transform, GameManager.GetCamera().camera, controller, this);
+            }
+        }else if(_playerState == PlayerState.Context)
+        {
+            if (controller.GetStickVector(XboxControlStick.LeftStick).magnitude > 0.1f)
+            {
+                BreakContext();
             }
         }
         else
         {
-            if (numRevivers > 0)
-            {
-                reviveTime += Time.deltaTime * numRevivers;
-
-                if(reviveTime >= endReviveTime)
-                {
-                    reviveTime = 0;
-                   //numRevivers = 0;
-                    RefillHealth();
-                }
-            }
-
             
         }
 
     }
 
-    public void SetEnteringContext(bool active)
+    public void EnterContext(InputContext context)
     {
-        _isEnteringContext = active;
+        _playerState = PlayerState.Context;
+        currentContext = context;
+    }
+
+    public void BreakContext()
+    {
+        _playerState = PlayerState.Alive;
+        currentContext.Break();
+        currentContext = null;
+    }
+
+    public void EnterDropPlace(MarkerCallback callback)
+    {
+        marker = Instantiate<DropMarkerManager>(markerPrefab);
+        marker.transform.position = transform.position;
+        StartCoroutine(DropMarkerPlace(marker, callback));
+    }
+
+    IEnumerator DropMarkerPlace(DropMarkerManager marker, MarkerCallback callback)
+    {
+        while (true)
+        {
+            _playerState = PlayerState.PlaceMarker;
+            if (controller.GetTrigger(XboxTrigger.RightTrigger) > 0.1f || controller.GetTrigger(XboxTrigger.LeftTrigger) > 0.1f)
+            {
+                markerJob = callback(marker.transform.position);
+                _playerState = PlayerState.Alive;
+                yield break;
+            }
+
+            Vector2 stickVector = controller.GetStickVector(XboxControlStick.RightStick);
+            if(stickVector.magnitude > 0.1f)
+            {
+                marker.transform.position += Quaternion.AngleAxis(45, Vector3.up) * new Vector3(stickVector.x, 0, stickVector.y).normalized * 20 * Time.deltaTime;
+            }
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    public void HidePlayer()
+    {
+        foreach(Transform t in transform)
+        {
+            if(t == transform)
+            {
+                continue;
+            }
+            t.gameObject.SetActive(false);
+        }
+        playerMovement.FreezePlayer(true);
+        _playerCollider.isTrigger = true;
+        _playerState = PlayerState.Hiding;
+    }
+
+    public void UnhidePlayer()
+    {
+        foreach (Transform t in transform)
+        {
+            if (t == transform)
+            {
+                continue;
+            }
+            t.gameObject.SetActive(true);
+        }
+        playerMovement.FreezePlayer(false);
+        _playerCollider.isTrigger = false;
+        _playerState = PlayerState.Alive;
     }
 
     public float GetPlayerHealthPercent()
@@ -95,18 +204,16 @@ public class PlayerManager : ControlledUnitManager {
 
     public override void OnDeath()
     {
-        GetComponent<SphereCollider>().enabled = true;
+        _playerState = PlayerState.Dead;
         playerMovement.OnKill(lastHit);
-        gameObject.tag = "DeadPlayer";
         StartCoroutine(DisableRotation());
         base.OnDeath();
     }
 
     public override void OnResurrect()
     {
-        GetComponent<SphereCollider>().enabled = false;
+        _playerState = PlayerState.Alive;
         playerMovement.OnResurrect();
-        gameObject.tag = "Player";
         base.OnResurrect();
     }
 
@@ -126,57 +233,59 @@ public class PlayerManager : ControlledUnitManager {
         playerMovement.DisableRotation();
     }
 
-    bool CheckObjectInRange(float range, out IActivatableObject nearestActivatable)
+
+    GameObject GetClosestActivateableObject()
     {
-        IActivatableObject lastObject = _nearestActivatable;
-        nearestActivatable = null;
-        Collider[] foundColliders = Physics.OverlapSphere(transform.position, range);
-        if (foundColliders.Length > 0) {
-            IActivatableObject targetObject = null;
-            float bestDistance = Mathf.Infinity;
-            for(int i = 0; i < foundColliders.Length; i++)
+        _nearestActivatables = _nearestActivatables.OrderBy(o => Vector3.Distance(transform.position, o.transform.position)).ToList();
+        if (_nearestActivatables.Count > 0)
+        {
+            foreach (Collider activatable in _nearestActivatables)
             {
-                IActivatableObject activatableObject = foundColliders[i].GetComponent<IActivatableObject>();
-                if (activatableObject != null && Vector3.Distance(transform.position, foundColliders[i].transform.position) < bestDistance)
+                IActivatableObject act = activatable.GetComponent<IActivatableObject>();
+                if (act != null)
                 {
-                    
-                    targetObject = activatableObject;
-                    bestDistance = Vector3.Distance(transform.position, foundColliders[i].transform.position);
+                    if (act.ActivateCheck(this))
+                    {
+                        return activatable.gameObject;
+                    }
                 }
             }
-            nearestActivatable = targetObject;
-            
-            if(lastObject != null && lastObject != targetObject)
+        }
+        return null;
+    }
+
+    bool ActivateNearestActivatableObject()
+    {
+        if (_targetActivateableObject != null)
+        {
+            IActivatableObject act = _targetActivateableObject.GetComponent<IActivatableObject>();
+            if (act != null)
             {
-                lastObject.OnDeactivate(this);
+                act.OnActivate(this);
+                return true;
             }
-
-            return targetObject != null;
-        }else
-        {
-            return false;
         }
+        return false;
     }
 
-    void OnTriggerEnter(Collider col)
+    List<Collider> CheckObjectsInRange(float range)
     {
-       
-        if (col.CompareTag("Player"))
-        {
-            
-            //Debug.Log("Reviving");
-            numRevivers++;
-        }
+        return Physics.OverlapSphere(transform.position, range).ToList();
     }
 
-    void OnTriggerExit(Collider col)
+    public void OnActivate(PlayerManager player)
     {
-        if (col.CompareTag("Player"))
-        {
-            numRevivers--;
-            playerShooting.Shoot();
-        }
-        
+        InputContextManager.CreateNewRandomInputContext(5, true, transform, GameManager.GetCamera().camera, player.controller, player, RefillHealth);///
+    }
+
+    public void OnDeactivate(PlayerManager player)
+    {
+        Debug.Log("Oh nooooo");
+    }
+
+    public bool ActivateCheck(PlayerManager player)
+    {
+        return (_playerState == PlayerState.Dead);
     }
 
 }

@@ -58,7 +58,7 @@ public class LevelGenerator : MonoBehaviour {
         {
             yield return new WaitUntil(() => { return constantGeneration; });
             attempts = 0;
-            bool gen = GenerateLevel();
+            GenerateLevel();
 			yield return new WaitForSeconds(timeBetweenGeneration); 
         }
     }

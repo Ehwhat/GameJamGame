@@ -27,6 +27,11 @@ public class KeepAreaClearObjective : BoundObjective, IActivatableObject
         
     }
 
+    public bool ActivateCheck(PlayerManager player)
+    {
+        return true;
+    }
+
     public IEnumerator CheckStep()
     {
         while (true)

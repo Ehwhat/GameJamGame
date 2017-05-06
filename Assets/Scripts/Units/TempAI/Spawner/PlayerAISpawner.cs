@@ -7,7 +7,7 @@ public class PlayerAISpawner : MonoBehaviour {
 
 	public float innerRadius;
 	public float outerRadius;
-	public CameraTracking camera;
+	new public CameraTracking camera;
 
 	public GameObject enemyPrefab;
 

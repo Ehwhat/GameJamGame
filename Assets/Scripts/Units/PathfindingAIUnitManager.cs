@@ -3,8 +3,9 @@ using System.Collections;
 
 public class PathfindingAIUnitManager<T> : AIUnitManager<T> where T : PathfindingAIUnitManager<T>
 {
-
+#pragma warning disable 0109 // Shitty Unity warning checking bugging out
     protected new FSM<T, PathfindingUnitState<T>> stateMachine;
+#pragma warning restore 0109
 
     public float minPathUpdateTime = 0.2f;
     public float pathUpdateMoveThreshold = 0.5f;

@@ -59,6 +59,18 @@ public class LevelPopulation : MonoBehaviour {
         {
             return !(a == b);
         }
+
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+
     }
 
     public bool isDebug = false;
@@ -139,7 +151,7 @@ public class LevelPopulation : MonoBehaviour {
     public void PopulateSpot(List<Coord> spots, PrefabSize size)
     {
         List<PrefabData> prefabsAvaliable = new List<PrefabData>();
-        List<EssentialPrefabData> essentials = new List<EssentialPrefabData>();
+        //List<EssentialPrefabData> essentials = new List<EssentialPrefabData>();
         float combinedDensity = 0;
 
         for(int i = 0; i < essentialLevelPrefabs.Length; i++) //(EssentialPrefabData prefab in essentialLevelPrefabs)
@@ -287,7 +299,7 @@ public class LevelPopulation : MonoBehaviour {
                 int randomIdx = Random.Range(0, availibleLevel.Count - 1);
                 Coord selectedCoord = availibleLevel[randomIdx];
 
-                Vector3 v = CoordToWorldSpace(selectedCoord);
+                //Vector3 v = CoordToWorldSpace(selectedCoord);
                 //Debug.DrawLine(v, v + Vector3.up * 10, lineColour, 20);
 
                 int sizeInt = GetSize(size);

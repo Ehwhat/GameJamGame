@@ -24,7 +24,7 @@ public class TestBomb : MonoBehaviour {
         {
             _currentContext.Break();
         }
-        _currentContext = InputContextManager.CreateNewRandomInputContext(7, false, transform, Camera.main, PlayerControlManager.GetController(0), OnSuccess, OnFailure);
+        //_currentContext = InputContextManager.CreateNewRandomInputContext(7, false, transform, Camera.main, PlayerControlManager.GetController(0), player, OnSuccess, OnFailure);
     }
 
 }

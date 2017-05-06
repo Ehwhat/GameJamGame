@@ -6,7 +6,7 @@ Shader "Custom/CircleProj" {
 		_Colour("Colour", Color) = (1,0,0,1)
 		_BackColour("Background Colour", Color) = (0,0,0,0)
 		_Thickness("Thickness", Range(0.0,0.5)) = 0.05
-		_Radius("Radius", Range(0.0, 0.5)) = 0.4
+		_Radius("Radius", Range(0.0, 2.5)) = 0.4
 		_Dropoff("Dropoff", Range(0.01, 4)) = 0.1
 		_FillAmount("Fill Amount", Range(0, 360)) = 360
 	}

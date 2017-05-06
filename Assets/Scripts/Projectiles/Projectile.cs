@@ -74,6 +74,8 @@ public abstract class Projectile : PooledMonoBehaviour<Projectile> {
     public ProjectileHitMark hitMark;
     public float hitMarkLifetime;
 
+    public float lifetimeAfterCollision;
+
     public TrailRenderer bulletTrail;
 
     public bool IsDebug = false;
@@ -82,6 +84,7 @@ public abstract class Projectile : PooledMonoBehaviour<Projectile> {
     private float distanceTravelled;
     private float currentLifetime;
     private Vector3 oldPos;
+    private bool isDead = false;
     
     private float timeStep
     {
@@ -96,6 +99,7 @@ public abstract class Projectile : PooledMonoBehaviour<Projectile> {
         projectileUpdateType = updateType;
         projectileHitLayers = hitLayers;
         transform.position = position;
+        isDead = false;
 
         distanceTravelled = 0;
         currentLifetime = 0;
@@ -180,7 +184,7 @@ public abstract class Projectile : PooledMonoBehaviour<Projectile> {
     IEnumerator StepBullet()
     {
         yield return new WaitForSeconds(timeStep);
-        while (!Step())
+        while (!isDead && !Step())
         {
             yield return new WaitForSeconds(timeStep);
         }
@@ -194,6 +198,13 @@ public abstract class Projectile : PooledMonoBehaviour<Projectile> {
 
     private void Death(bool wasHit)
     {
+        isDead = true;
+        StartCoroutine(HandleDeath(lifetimeAfterCollision));
+    }
+
+    IEnumerator HandleDeath(float timeTilDeath)
+    {
+        yield return new WaitForSeconds(timeTilDeath);
         ReturnToPool(this);
     }
 
