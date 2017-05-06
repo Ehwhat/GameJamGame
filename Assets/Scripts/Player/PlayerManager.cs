@@ -126,6 +126,11 @@ public class PlayerManager : ControlledUnitManager, IActivatableObject {
 
     }
 
+    public void SetWeapon(Weapon weapon)
+    {
+        playerShooting.SetWeapon(weapon);
+    }
+
     public void EnterContext(InputContext context)
     {
         _playerState = PlayerState.Context;
@@ -275,7 +280,7 @@ public class PlayerManager : ControlledUnitManager, IActivatableObject {
 
     public void OnActivate(PlayerManager player)
     {
-        InputContextManager.CreateNewRandomInputContext(5, true, transform, GameManager.GetCamera().camera, player.controller, player, RefillHealth);///
+        InputContextManager.CreateNewRandomInputContext(7, true, transform, GameManager.GetCamera().camera, player.controller, player, () => { HealToPercent(0.5f); } );///
     }
 
     public void OnDeactivate(PlayerManager player)

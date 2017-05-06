@@ -58,6 +58,15 @@ public abstract class DamageableObject : MonoBehaviour, IHitTarget
         }
     }
 
+    public void HealToPercent(float i)
+    {
+        currentHealth = i*maxHealth;
+        if (isDead && currentHealth > 0)
+        {
+            HandleResurrection();
+        }
+    }
+
     private void HandleResurrection() //and on the third day, he rose!
     {
         isDead = false;

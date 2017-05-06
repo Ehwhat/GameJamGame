@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec1134a5ed6d8464b9e71a62786518fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  safeRadius: 5
+  safeRadius: 10
 --- !u!136 &136000012069617390
 CapsuleCollider:
   m_ObjectHideFlags: 1

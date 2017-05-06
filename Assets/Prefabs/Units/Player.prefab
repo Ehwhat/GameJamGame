@@ -2320,6 +2320,7 @@ MonoBehaviour:
   playerMovement:
     useRigidbody: 1
     currentSpeed: 0
+    allowedDistanceFromPlayerCentre: 30
     movementWalkSpeed: 7
     movementRunSpeed: 10
     movementDeadZone: 0.1
@@ -2494,7 +2495,7 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 800517b60a1e96e40987f92b7fc01666, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}

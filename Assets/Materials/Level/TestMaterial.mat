@@ -25,7 +25,7 @@ Material:
         name: _BlendARock
       second:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 2.1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
         name: _BlendATex
@@ -153,7 +153,7 @@ Material:
       second: 1
     - first:
         name: _Metallic
-      second: 0
+      second: 1
     - first:
         name: _Mode
       second: 0
@@ -181,10 +181,10 @@ Material:
     m_Colors:
     - first:
         name: _BlendAColour
-      second: {r: 0.18685123, g: 0.58823526, b: 0.0865052, a: 1}
+      second: {r: 0.3529412, g: 0.9411765, b: 0.57606494, a: 1}
     - first:
         name: _BlendBColour
-      second: {r: 0.56920415, g: 0.6154695, b: 0.6911765, a: 1}
+      second: {r: 1, g: 1, b: 1, a: 1}
     - first:
         name: _BlendFromTint
       second: {r: 1, g: 1, b: 1, a: 1}

@@ -1,0 +1,34 @@
+fileFormatVersion: 2
+guid: 857e1f4c3a698f1499b1dfc69581c2b1
+timeCreated: 1494031670
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Exo
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 406e9a7155c20e240af9f79e9e8b972d, type: 3}
+  - {fileID: 12800000, guid: 59155ef1e04a7024dbf748015306635a, type: 3}
+  - {fileID: 12800000, guid: 06d4c7d2a5437334cac274cd5f8cff17, type: 3}
+  - {fileID: 12800000, guid: 71a798e2c67f6154d9ee150572620717, type: 3}
+  - {fileID: 12800000, guid: 2d53a3a54596b1a4bbaa3af0e991dac4, type: 3}
+  - {fileID: 12800000, guid: 65329aa7c44086248bb07e9f259d6ff6, type: 3}
+  - {fileID: 12800000, guid: 575a3859b3aaa7945a8abb11eb0265d3, type: 3}
+  - {fileID: 12800000, guid: 4a8f52a97aacddd448066f5f74777c54, type: 3}
+  - {fileID: 12800000, guid: 14bc06b94e8f9024f9beb1fa2809a3bc, type: 3}
+  - {fileID: 12800000, guid: 5e5f931aecc363340b07d7b59328d5ee, type: 3}
+  - {fileID: 12800000, guid: 0406646a78f5d6944b829c262c4ec344, type: 3}
+  - {fileID: 12800000, guid: 1907676bb9ed5a146bb3e768dcf7fd26, type: 3}
+  - {fileID: 12800000, guid: 18152f9e43a194d4f89048745977c5a4, type: 3}
+  - {fileID: 12800000, guid: 43d456bf31a5eca42b59d54525ec1c24, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

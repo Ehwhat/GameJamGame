@@ -76,6 +76,7 @@ public class LevelPopulation : MonoBehaviour {
     public bool isDebug = false;
 
     public Transform levelObjectHolder;
+    public ObjectiveManager objectiveManager;
     public PrefabData[] levelPrefabs;
     public EssentialPrefabData[] essentialLevelPrefabs;
 
@@ -139,14 +140,48 @@ public class LevelPopulation : MonoBehaviour {
             return false;
         }
         //PlaceFences();
+        int bigObjs = 0;
+        int midObjs = 0;
+        List<ObjectiveManager.ObjectivePrefab> decidedObjectives = objectiveManager.DecideObjectives(objectiveManager.amountOfObjectives, out bigObjs, out midObjs);
 
-        PopulateSpot(smallSpots, PrefabSize.Small);
-        PopulateSpot(mediumSpots, PrefabSize.Medium);
+        if(requiredMediumPasses < midObjs)
+        {
+            requiredMediumPasses = midObjs;
+        }
+        if (requiredBigPasses < bigObjs)
+        {
+            requiredBigPasses = bigObjs;
+        }
+
+        PopulateObjectives(decidedObjectives,FindObjectiveSpots(ref mediumSpots, midObjs), FindObjectiveSpots(ref bigSpots, bigObjs));
+
         PopulateSpot(bigSpots, PrefabSize.Large);
+        PopulateSpot(mediumSpots, PrefabSize.Medium);
+        PopulateSpot(smallSpots, PrefabSize.Small);
+        
 
         return true;
     }
 
+    public List<Vector3> FindObjectiveSpots(ref List<Coord> spots, int amount)
+    {
+        List<Vector3> objPos = new List<Vector3>();
+        if (spots.Count > 1)
+        {
+            for (int i = 0; i < amount; i++) {
+                int rand = Random.Range(0, spots.Count - 1);
+                Coord spot = spots[rand];
+                objPos.Add(CoordToWorldSpace(spot));
+                spots.Remove(spot);
+            }
+        }
+        return objPos;
+    }
+
+    public void PopulateObjectives(List<ObjectiveManager.ObjectivePrefab> objs,List<Vector3> mid, List<Vector3> large)
+    {
+        objectiveManager.PopulateObjectives(objs, mid, large);
+    }
 
     public void PopulateSpot(List<Coord> spots, PrefabSize size)
     {

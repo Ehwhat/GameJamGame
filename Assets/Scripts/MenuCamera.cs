@@ -15,7 +15,7 @@ public class MenuCamera : MonoBehaviour {
     void Update()
     {
         transform.position = Vector3.Lerp(transform.position, currentMount.position, speedFactor);
-        transform.rotation = Quaternion.Slerp(transform.rotation, currentMount.rotation, speedFactor);
+        transform.rotation = Quaternion.Lerp(transform.rotation, currentMount.rotation, speedFactor);
         //var velocity = Vector3.Magnitude(transform.position - lastPosition);
         //cameraComp.fieldOfView = 60 + velocity * zoomFactor;
         //cameraComp.zoomFactor = 60 + velocity * zoomFactor;

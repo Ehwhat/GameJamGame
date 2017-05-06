@@ -81,17 +81,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27f08040ebe40e047af54cebb3dad38b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelGenerator: {fileID: 0}
   camera: {fileID: 0}
   playerPrefab: {fileID: 114000010362553504, guid: 27bc1b9eb7cb688449ed799eb26d22bb,
     type: 2}
-  currentState: 1
+  weaponPrefabs:
+  - _name: Automatic Rifle
+    _weapon: {fileID: 114000013566121078, guid: 2265d6415db720848a82115182366051,
+      type: 2}
+  - _name: Plasma Rifle
+    _weapon: {fileID: 114000013566121078, guid: 92d513b910b4bde479db09d2ba6d1f87,
+      type: 2}
+  - _name: Rocket Launcher
+    _weapon: {fileID: 114000013566121078, guid: 2dafabff737e8f64bb694f86caa25e2d,
+      type: 2}
+  - _name: Shotgun
+    _weapon: {fileID: 114000013566121078, guid: 12e16a6ac8ec0954e87de6f575fff5e5,
+      type: 2}
+  - _name: SMG
+    _weapon: {fileID: 114000013566121078, guid: b9a2140e1f31c6b4ea4d0ada6a1b533c,
+      type: 2}
+  levels:
+  - _name: MENU
+    _id: 0
+  - _name: GAME
+    _id: 1
+  currentState: 0
   amountOfPlayers: 4
   playerColours:
   - {r: 1, g: 0, b: 0, a: 1}
   - {r: 0, g: 1, b: 0.17241383, a: 1}
   - {r: 0, g: 0.006896496, b: 1, a: 1}
   - {r: 0.986207, g: 1, b: 0, a: 1}
+  activePlayers: 00000000
   currentPlayers:
   - {fileID: 0}
   - {fileID: 0}

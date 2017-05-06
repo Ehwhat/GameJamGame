@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class HealingSphere : MonoBehaviour {
 
-    public GameObject _healSphereMesh;
     public float _radius;
     public float _healPerSecond = 10;
     public float _disableTimer = 5;
@@ -63,7 +62,10 @@ public class HealingSphere : MonoBehaviour {
     {
         foreach(PlayerManager player in players)
         {
-            player.HealFor(_healPerSecond * Time.deltaTime);
+            if (player != player.isDead)
+            {
+                player.HealFor(_healPerSecond * Time.deltaTime);
+            }
         }
     }
     void moveToPlayer(PlayerManager player) 

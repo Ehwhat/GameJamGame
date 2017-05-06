@@ -177,8 +177,8 @@ public class PlayerControlManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-
-	}
+        UpdateGamePadStates();
+    }
 	
 	// Update is called once per frame
 	void Update () {

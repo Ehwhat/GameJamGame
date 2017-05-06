@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Barrier
+  m_Name: HealthBarrier
   m_Shader: {fileID: 4800000, guid: 94e3bb0247185f842a5153fe0cd6ef74, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
@@ -31,4 +31,4 @@ Material:
       second: {r: 0.017355122, g: 0.15001197, b: 0.78676474, a: 0.091}
     - first:
         name: _Colour
-      second: {r: 0, g: 1, b: 1, a: 0}
+      second: {r: 0, g: 0.72794116, b: 0.095385484, a: 0}

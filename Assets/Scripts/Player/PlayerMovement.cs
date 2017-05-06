@@ -4,7 +4,8 @@ using System.Collections;
 public class PlayerMovement : UnitMovement {
 
     public float currentSpeed = 0.0f;
-    
+    public float allowedDistanceFromPlayerCentre = 10;
+
     public float movementWalkSpeed = 7;
     public float movementRunSpeed = 10;
 
@@ -27,7 +28,19 @@ public class PlayerMovement : UnitMovement {
     public void HandleMovement()
     {
         Vector3 movementVector = GetMovementVector();
-        MoveAlongVector(movementVector,45);
+        Vector3 playerCentre = GameManager.GetPlayersCentre();
+
+        if ((Vector3.Distance(t.position, playerCentre) > allowedDistanceFromPlayerCentre-1))
+        {
+            Vector3 direction = (t.position- playerCentre).normalized;
+            t.position = Vector3.Lerp(t.position,playerCentre + (direction * (allowedDistanceFromPlayerCentre-1)),Time.deltaTime*10);
+        }
+
+        if(!(Vector3.Distance(t.position + Quaternion.AngleAxis(45, Vector3.up) * movementVector, playerCentre) > allowedDistanceFromPlayerCentre))
+        {
+            MoveAlongVector(movementVector, 45);
+        }
+
     }
 
     Vector3 GetMovementVector()
@@ -43,7 +56,7 @@ public class PlayerMovement : UnitMovement {
         {
             Vector3 hitPoint = lastHit.rayHit.point;
             Vector3 forceHit = (rb.position - lastHit.rayHit.point).normalized * -100;
-            Debug.Log("ShotHit" + forceHit);
+            //Debug.Log("ShotHit" + forceHit);
             //Disable Constraints
             rb.constraints = RigidbodyConstraints.None;
             rb.AddForceAtPosition(forceHit, hitPoint);

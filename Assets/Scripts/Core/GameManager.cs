@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
@@ -9,6 +10,20 @@ public class GameManager : MonoBehaviour {
         InGame
     }
 
+    [System.Serializable]
+    public struct WeaponPrefabs
+    {
+        public string _name;
+        public Weapon _weapon;
+    }
+
+    [System.Serializable]
+    public struct LevelInfo
+    {
+        public string _name;
+        public int _id;
+    }
+
     private static GameManager instance;
 
     public new CameraTracking camera;
@@ -16,15 +31,23 @@ public class GameManager : MonoBehaviour {
     private PlayerManager playerPrefab;
     private LevelGenerator levelGenerator;
 
-    public GameState currentState = GameState.InGame;
-    [Range(1,4)]
-    public int amountOfPlayers = 1;
+    private PlayerMenuManager playerMenuManager;
+    public WeaponPrefabs[] weaponPrefabs;
+    public LevelInfo[] levels;
+
+    public GameState currentState = GameState.Menu;
+    public int amountOfPlayers = 0;
 
     public Color[] playerColours = new Color[4];
 
+    public bool[] activePlayers = new bool[4];
     public PlayerManager[] currentPlayers = new PlayerManager[4];
+    PlayerMenu.PlayerInfo[] playerInfo;
 
     private PlayerSpawnPoint spawnPoint;
+    private int sceneIndex = 0;
+
+    public bool usePlayerInfo = false;
 
     void Awake()
     {
@@ -33,44 +56,142 @@ public class GameManager : MonoBehaviour {
         {
             instance = this;
         }
-        CreatePlayers();
+
     }
 
     // Use this for initialization
     void Start() {
-        if (currentState == GameState.InGame)
+
+        activePlayers[0] = true;
+        if(currentState == GameState.Menu)
         {
-            camera = Object.FindObjectOfType<CameraTracking>();
-            levelGenerator = Object.FindObjectOfType<LevelGenerator>();
-            if (levelGenerator.GenerateLevel())
-            {
-                SpawnPlayers(amountOfPlayers);
-            }
+            playerMenuManager = Object.FindObjectOfType<PlayerMenuManager>();
+        }
+        else if (currentState == GameState.InGame)
+        {
+            
         }
     }
 
     // Update is called once per frame
     void Update() {
+        
+    }
 
+    public static void LoadLevel(LevelGenerator levelGenerator, CameraTracking cam)
+    {
+        instance.camera = cam;
+        if (levelGenerator.GenerateLevel())
+        {
+            if (instance.usePlayerInfo)
+            {
+                instance.CreatePlayers(instance.playerInfo);
+            }else
+            {
+                instance.CreatePlayers();
+            }
+            instance.SpawnPlayers();
+        }
+    }
+
+    public static void StartGame()
+    {
+        instance.SetState(GameState.InGame);
+        instance.playerInfo = instance.playerMenuManager.GetPlayerInfo();
+        instance.SetLevel("GAME");
+        instance.Start();
+    }
+
+    public static Vector3 GetPlayersCentre()
+    {
+        Vector3 distProduct = Vector3.zero;
+        PlayerManager[] players = instance.currentPlayers;
+
+        if (players.Length > 0)
+        {
+            distProduct = players[0].transform.position;
+
+            if (players.Length > 1)
+            {
+                for (int i = 1; i < players.Length; i++)
+                {
+                    distProduct += players[i].transform.position;
+
+                }
+            }
+
+            distProduct /= players.Length;
+        }
+        return distProduct;
+    }
+
+    void CreatePlayers(PlayerMenu.PlayerInfo[] info)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            if (info[i]._active)
+            {
+                amountOfPlayers++;
+                PlayerManager player = CreatePlayer((PlayerManager.PlayerIndex)i, info[i]);
+                currentPlayers[i] = player;
+                activePlayers[i] = true;
+            }
+        }
     }
 
     void CreatePlayers()
     {
         for (int i = 0; i < 4; i++)
         {
-            PlayerManager player = CreatePlayer((PlayerManager.PlayerIndex)i);
+            amountOfPlayers++;
+            PlayerManager player = CreatePlayer((PlayerManager.PlayerIndex)i, new PlayerMenu.PlayerInfo(0, playerColours[i]));
             currentPlayers[i] = player;
+            activePlayers[i] = true;
         }
     }
 
-    void SpawnPlayers(int amount)
+    void SpawnPlayers()
     {
-        for (int i = 0; i < amount; i++)
+        for (int i = 0; i < 4; i++)
         {
-            PlayerManager player = currentPlayers[i];
-            spawnPoint.SpawnPlayer(player);
-            instance.camera.RegisterTransform(player.transform);
-            player.Start();
+            if (activePlayers[i])
+            {
+                PlayerManager player = currentPlayers[i];
+                spawnPoint.SpawnPlayer(player);
+                instance.camera.RegisterTransform(player.transform);
+                player.Start();
+            }
+        }
+    }
+
+    public void SetState(GameState state)
+    {
+        currentState = state;
+    }
+
+    public void SetLevel(string level)
+    {
+        foreach(LevelInfo lvl in levels)
+        {
+            if(lvl._name == level)
+            {
+                SceneManager.LoadScene(lvl._id);
+                SceneManager.SetActiveScene(SceneManager.GetSceneAt(lvl._id));
+                sceneIndex = lvl._id;
+            }
+        }
+    }
+
+    public static WeaponPrefabs[] GetWeaponPrefabs()
+    {
+        return instance.weaponPrefabs;
+    }
+
+    public static void SetPlayerActive(int i, bool active)
+    {
+        if(i > 0 && i < 4)
+        {
+            instance.activePlayers[i] = active;
         }
     }
 
@@ -79,10 +200,11 @@ public class GameManager : MonoBehaviour {
         return instance.camera;
     }
 
-    public static PlayerManager CreatePlayer(PlayerManager.PlayerIndex index)
+    public static PlayerManager CreatePlayer(PlayerManager.PlayerIndex index, PlayerMenu.PlayerInfo info)
     {
         PlayerManager newPlayer = Instantiate(instance.playerPrefab);
-        newPlayer.playerColour = instance.playerColours[(int)(index)];
+        newPlayer.playerColour = info._playerColour;
+        newPlayer.SetWeapon(GetWeaponPrefabs()[info._playerWeapon]._weapon);
         newPlayer.playerIndex = index;
         newPlayer.name = "Player " + (int)(index+1);
         return newPlayer;

@@ -29,7 +29,6 @@ public class InputContextManager : MonoBehaviour {
 
     void Awake()
     {
-        _inputContextParent = transform;
         _inputContextParentStatic = _inputContextParent;
         _inputContextPatternsStatic = _inputContextPatterns;
         _prefabStatic = _prefab;
@@ -99,14 +98,20 @@ public class InputContextManager : MonoBehaviour {
         {
             if (pat._command.Count == pattern.Count)
             {
+                bool fail = false;
                 for (int i = 0; i < pat._command.Count; i++)
                 {
                     if (pattern[i] != pat._command[i])
                     {
-                        return false;
+                        fail = true;
+                        break;
                     }
                 }
-                if (pat._successEvent != null)
+                if (fail)
+                {
+                    continue;
+                }
+                else if (pat._successEvent != null)
                 {
                     pat._successEvent.Invoke(player);
                 }
