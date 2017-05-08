@@ -34,7 +34,7 @@ public class PlayerUI : MonoBehaviour {
         reloadProjector.material.SetFloat("_FillAmount", i * 360);
     }
 
-    void Update()
+    void FixedUpdate()
     {
         transform.rotation = Quaternion.Euler(Vector3.up);
     }

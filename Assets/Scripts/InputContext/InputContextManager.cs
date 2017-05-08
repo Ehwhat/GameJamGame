@@ -39,8 +39,14 @@ public class InputContextManager : MonoBehaviour {
     {
         context = ((InputContext)Instantiate(context, _inputContextParentStatic)).Init(listenController, player);
         //context.transform.SetParent(_inputContextParentStatic, false);
-        context._successEvent.AddListener(successEvent);
-        context._failureEvent.AddListener(failureEvent);
+        if (successEvent != null)
+        {
+            context._successEvent.AddListener(successEvent);
+        }
+        if (failureEvent != null)
+        {
+            context._failureEvent.AddListener(failureEvent);
+        }
         context._trackingTransform = track;
         context._cameraToTrackFrom = camera;
         player.EnterContext(context);
@@ -53,8 +59,14 @@ public class InputContextManager : MonoBehaviour {
         InputContext context = ((InputContext)Instantiate(_prefabStatic, _inputContextParentStatic)).InitRandom(listenController, player, length, allowResets);
 
         //context.transform.SetParent(_inputContextParentStatic, false);
-        context._successEvent.AddListener(successEvent);
-        context._failureEvent.AddListener(failureEvent);
+        if (successEvent != null)
+        {
+            context._successEvent.AddListener(successEvent);
+        }
+        if (failureEvent != null)
+        {
+            context._failureEvent.AddListener(failureEvent);
+        }
         context._trackingTransform = track;
         context._cameraToTrackFrom = camera;
         player.EnterContext(context);

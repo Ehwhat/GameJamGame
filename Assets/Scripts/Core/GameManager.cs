@@ -44,6 +44,8 @@ public class GameManager : MonoBehaviour {
     public PlayerManager[] currentPlayers = new PlayerManager[4];
     PlayerMenu.PlayerInfo[] playerInfo;
 
+    public float gameScore;
+
     private PlayerSpawnPoint spawnPoint;
     private int sceneIndex = 0;
 
@@ -167,6 +169,21 @@ public class GameManager : MonoBehaviour {
     public void SetState(GameState state)
     {
         currentState = state;
+    }
+
+    public static float GetScore()
+    {
+        return instance.gameScore;
+    }
+
+    public static void SetScore(float score)
+    {
+        instance.gameScore = score;
+    }
+
+    public static void AddScore(float amount)
+    {
+        instance.gameScore += amount;
     }
 
     public void SetLevel(string level)

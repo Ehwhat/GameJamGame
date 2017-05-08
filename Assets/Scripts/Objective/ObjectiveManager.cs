@@ -63,6 +63,17 @@ public class ObjectiveManager : MonoBehaviour {
     public void RegisterObjective(ObjectiveAbstract obj)
     {
         objectives.Add(obj);
+        obj.AddObjectiveCallbacks(AddSuccessScore, AddFailureScore);
+    }
+
+    public void AddSuccessScore(ObjectiveAbstract obj)
+    {
+        GameManager.AddScore(obj._objectiveSuccessScore);
+    }
+
+    public void AddFailureScore(ObjectiveAbstract obj)
+    {
+        GameManager.AddScore(obj._objectiveFailureScore);
     }
 
     public bool CheckAllObjectivesDone()

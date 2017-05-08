@@ -10,7 +10,7 @@ Shader "Custom/BoxProj" {
 		_FillAmount("Fill Amount", Range(0, 360)) = 360
 	}
 		Subshader{
-		Tags{ "Queue" = "Transparent+1" "RenderType" = "Transparent" "DisableBatching" = "True" }
+		Tags{ "Queue" = "Geometry-1" "RenderType" = "Transparent" "DisableBatching" = "True" }
 		Pass{
 		ZWrite Off
 		//ColorMask RGB

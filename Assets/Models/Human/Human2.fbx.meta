@@ -159,7 +159,7 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
-    motionNodeName: <Root Transform>
+    motionNodeName: Armature/Armature 1/Stomach_R/Torso_R
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -199,139 +199,139 @@ ModelImporter:
       - path: 
         weight: 1
       - path: Armature
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/FootIK_L
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/FootIK_L/Foot_R
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/FootIK_L/Foot_R/Toes_R
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/FootIK_L/Foot_R/Toes_R/Toes_R_end
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/FootIK_R
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/FootIK_R/Foot_R_001
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/FootIK_R/Foot_R_001/Toes_R_001
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/FootIK_R/Foot_R_001/Toes_R_001/Toes_R_001_end
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Thigh_R
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Thigh_R/Shin_R
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Thigh_R/Shin_R/Shin_R_end
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Thigh_R_001
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Thigh_R_001/Shin_R_001
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Thigh_R_001/Shin_R_001/Shin_R_001_end
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R/Elbow_R
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R/Elbow_R/Palm_R
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R/Elbow_R/Palm_R/IndexF1_R
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R/Elbow_R/Palm_R/IndexF1_R/IndexF2_R
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R/Elbow_R/Palm_R/IndexF1_R/IndexF2_R/IndexF3_R
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R/Elbow_R/Palm_R/IndexF1_R/IndexF2_R/IndexF3_R/IndexF3_R_end
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R/Elbow_R/Palm_R/LittleF1_R
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R/Elbow_R/Palm_R/LittleF1_R/LittleF2_R
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R/Elbow_R/Palm_R/LittleF1_R/LittleF2_R/LittleF3_R
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R/Elbow_R/Palm_R/LittleF1_R/LittleF2_R/LittleF3_R/LittleF3_R_end
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R/Elbow_R/Palm_R/MiddleF1_R
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R/Elbow_R/Palm_R/MiddleF1_R/MiddleF2_R
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R/Elbow_R/Palm_R/MiddleF1_R/MiddleF2_R/MIddleF3_R
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R/Elbow_R/Palm_R/MiddleF1_R/MiddleF2_R/MIddleF3_R/MIddleF3_R_end
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R/Elbow_R/Palm_R/RingF1_R
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R/Elbow_R/Palm_R/RingF1_R/RingF2_R
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R/Elbow_R/Palm_R/RingF1_R/RingF2_R/RingF3_R
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R/Elbow_R/Palm_R/RingF1_R/RingF2_R/RingF3_R/RingF3_R_end
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R/Elbow_R/Palm_R/ThumbRoot_R
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R/Elbow_R/Palm_R/ThumbRoot_R/Thumb1_R
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R/Elbow_R/Palm_R/ThumbRoot_R/Thumb1_R/Thumb2_R
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R/Elbow_R/Palm_R/ThumbRoot_R/Thumb1_R/Thumb2_R/Thumb2_R_end
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R_001
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R_001/Elbow_R_001
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R_001/Elbow_R_001/Palm_R_001
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R_001/Elbow_R_001/Palm_R_001/IndexF1_R_001
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R_001/Elbow_R_001/Palm_R_001/IndexF1_R_001/IndexF2_R_001
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R_001/Elbow_R_001/Palm_R_001/IndexF1_R_001/IndexF2_R_001/IndexF3_R_001
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R_001/Elbow_R_001/Palm_R_001/IndexF1_R_001/IndexF2_R_001/IndexF3_R_001/IndexF3_R_001_end
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R_001/Elbow_R_001/Palm_R_001/LittleF1_R_001
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R_001/Elbow_R_001/Palm_R_001/LittleF1_R_001/LittleF2_R_001
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R_001/Elbow_R_001/Palm_R_001/LittleF1_R_001/LittleF2_R_001/LittleF3_R_001
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R_001/Elbow_R_001/Palm_R_001/LittleF1_R_001/LittleF2_R_001/LittleF3_R_001/LittleF3_R_001_end
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R_001/Elbow_R_001/Palm_R_001/MiddleF1_R_001
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R_001/Elbow_R_001/Palm_R_001/MiddleF1_R_001/MiddleF2_R_001
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R_001/Elbow_R_001/Palm_R_001/MiddleF1_R_001/MiddleF2_R_001/MIddleF3_R_001
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R_001/Elbow_R_001/Palm_R_001/MiddleF1_R_001/MiddleF2_R_001/MIddleF3_R_001/MIddleF3_R_001_end
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R_001/Elbow_R_001/Palm_R_001/RingF1_R_001
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R_001/Elbow_R_001/Palm_R_001/RingF1_R_001/RingF2_R_001
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R_001/Elbow_R_001/Palm_R_001/RingF1_R_001/RingF2_R_001/RingF3_R_001
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R_001/Elbow_R_001/Palm_R_001/RingF1_R_001/RingF2_R_001/RingF3_R_001/RingF3_R_001_end
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R_001/Elbow_R_001/Palm_R_001/ThumbRoot_R_001
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R_001/Elbow_R_001/Palm_R_001/ThumbRoot_R_001/Thumb1_R_001
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R_001/Elbow_R_001/Palm_R_001/ThumbRoot_R_001/Thumb1_R_001/Thumb2_R_001
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R_001/Elbow_R_001/Palm_R_001/ThumbRoot_R_001/Thumb1_R_001/Thumb2_R_001/Thumb2_R_001_end
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/Neck_R
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/Neck_R/Head_R
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/Neck_R/Head_R/Head_R_end
-        weight: 1
+        weight: 0
       - path: Cylinder_000_Cylinder_001
         weight: 1
       maskType: 0
@@ -551,7 +551,7 @@ ModelImporter:
       - path: Armature/Armature 1/FootIK_R/Foot_R_001/Toes_R_001/Toes_R_001_end
         weight: 1
       - path: Armature/Armature 1/Stomach_R
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Thigh_R
         weight: 1
       - path: Armature/Armature 1/Stomach_R/Thigh_R/Shin_R
@@ -697,9 +697,9 @@ ModelImporter:
       - path: 
         weight: 1
       - path: Armature
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/FootIK_L
         weight: 0
       - path: Armature/Armature 1/FootIK_L/Foot_R
@@ -731,7 +731,7 @@ ModelImporter:
       - path: Armature/Armature 1/Stomach_R/Thigh_R_001/Shin_R_001/Shin_R_001_end
         weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R
         weight: 1
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R/Elbow_R
@@ -825,11 +825,11 @@ ModelImporter:
       - path: Armature/Armature 1/Stomach_R/Torso_R/ForeArm_R_001/Elbow_R_001/Palm_R_001/ThumbRoot_R_001/Thumb1_R_001/Thumb2_R_001/Thumb2_R_001_end
         weight: 1
       - path: Armature/Armature 1/Stomach_R/Torso_R/Neck_R
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/Neck_R/Head_R
-        weight: 1
+        weight: 0
       - path: Armature/Armature 1/Stomach_R/Torso_R/Neck_R/Head_R/Head_R_end
-        weight: 1
+        weight: 0
       - path: Cylinder_000_Cylinder_001
         weight: 1
       maskType: 0
@@ -839,7 +839,7 @@ ModelImporter:
   meshes:
     lODScreenPercentages: []
     globalScale: 20
-    meshCompression: 0
+    meshCompression: 3
     addColliders: 0
     importBlendShapes: 1
     swapUVChannels: 0

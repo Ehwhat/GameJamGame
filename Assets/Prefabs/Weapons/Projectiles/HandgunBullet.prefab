@@ -22,7 +22,7 @@ GameObject:
   - 33: {fileID: 33000012785216794}
   - 23: {fileID: 23000012559270288}
   - 114: {fileID: 114000013974713260}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: HandgunBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38,7 +38,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000010237564792}
   - 96: {fileID: 96000012897323124}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}

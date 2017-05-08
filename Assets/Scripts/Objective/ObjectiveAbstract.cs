@@ -18,10 +18,10 @@ public abstract class ObjectiveAbstract : MonoBehaviour {
     public float _objectiveFailureScore = -100;
     public static string PROPERTY_OBJECTIVE_FAILURE_SCORE = "_objectiveFailureScore";
 
-    public void SetObjectiveCallbacks(ObjectiveCallback successCallback, ObjectiveCallback failureCallback)
+    public void AddObjectiveCallbacks(ObjectiveCallback successCallback, ObjectiveCallback failureCallback)
     {
-        _onObjectiveSuccess = successCallback;
-        _onObjectiveFailure = failureCallback;
+        _onObjectiveSuccess += successCallback;
+        _onObjectiveFailure += failureCallback;
     }
 
     public void ObjectiveSuccess()

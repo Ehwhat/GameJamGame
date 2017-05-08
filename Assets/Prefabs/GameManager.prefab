@@ -82,7 +82,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camera: {fileID: 0}
-  playerPrefab: {fileID: 114000010362553504, guid: 27bc1b9eb7cb688449ed799eb26d22bb,
+  playerPrefab: {fileID: 114000014250643860, guid: 3ecc0ebd1ae56d1439580ef38fb21154,
     type: 2}
   weaponPrefabs:
   - _name: Automatic Rifle
@@ -118,6 +118,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  usePlayerInfo: 0
 --- !u!114 &114000010576636284
 MonoBehaviour:
   m_ObjectHideFlags: 1

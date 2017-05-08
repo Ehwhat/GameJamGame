@@ -5,6 +5,7 @@ public class PlayerMovement : UnitMovement {
 
     public float currentSpeed = 0.0f;
     public float allowedDistanceFromPlayerCentre = 10;
+    public GameObject playerMesh;
 
     public float movementWalkSpeed = 7;
     public float movementRunSpeed = 10;
@@ -39,13 +40,20 @@ public class PlayerMovement : UnitMovement {
         if(!(Vector3.Distance(t.position + Quaternion.AngleAxis(45, Vector3.up) * movementVector, playerCentre) > allowedDistanceFromPlayerCentre))
         {
             MoveAlongVector(movementVector, 45);
+            Vector3 direction = movementVector.normalized;
+            
         }
 
     }
 
     Vector3 GetMovementVector()
     {
-        movementVector = Vector2.Lerp(movementVector,controller.GetStickVector(XboxControlStick.LeftStick), Time.deltaTime * 10);
+        Vector2 stickVector = controller.GetStickVector(XboxControlStick.LeftStick);
+        movementVector = Vector2.Lerp(movementVector, stickVector, Time.deltaTime * 10);
+        if (stickVector.magnitude > 0.1f)
+        {
+            playerMesh.transform.rotation = Quaternion.AngleAxis(45, Vector3.up) * Quaternion.LookRotation(new Vector3(stickVector.x, 0, stickVector.y), Vector3.up);
+        }
         GetSpeed(movementVector.magnitude);
         return new Vector3(movementVector.x, 0, movementVector.y) * currentSpeed * Time.deltaTime;
     }

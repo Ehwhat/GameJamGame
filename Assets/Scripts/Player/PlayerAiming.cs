@@ -5,6 +5,8 @@ using System.Collections;
 public class PlayerAiming : UnitAiming {
 
     public float lookDeadZone = 0.3f;
+    public GameObject playerTorso;
+    public GameObject playerMesh;
 
     public bool isAiming { private set; get; }
     public float aimingAngle { private set; get; }
@@ -21,7 +23,8 @@ public class PlayerAiming : UnitAiming {
     public void HandleRotation()
     {
         Vector2 lookDirection = GetLookDirection(45);
-        LookInDirection(lookDirection,45);
+        playerTorso.transform.localRotation = Quaternion.Euler(playerMesh.transform.rotation.eulerAngles.y - aimingAngle + 180, 0,0);
+        //LookInDirection(lookDirection,45);
     }
 
     Vector2 GetLookDirection(float isoOffset = 0)

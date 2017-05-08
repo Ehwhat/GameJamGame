@@ -280,7 +280,13 @@ public class PlayerManager : ControlledUnitManager, IActivatableObject {
 
     public void OnActivate(PlayerManager player)
     {
-        InputContextManager.CreateNewRandomInputContext(7, true, transform, GameManager.GetCamera().camera, player.controller, player, () => { HealToPercent(0.5f); } );///
+        InputContextManager.CreateNewRandomInputContext(7, true, transform, GameManager.GetCamera().camera, player.controller, player, HealToHalf );///
+    }
+
+    public void HealToHalf()
+    {
+        Debug.Log("heal");
+        HealToPercent(0.5f);
     }
 
     public void OnDeactivate(PlayerManager player)

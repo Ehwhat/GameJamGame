@@ -29,8 +29,6 @@ public class TankVehicle : VehicleBase {
             Vector2 leftStick = controller.GetStickVector(XboxControlStick.LeftStick);
             Vector2 rightStick = controller.GetStickVector(XboxControlStick.RightStick);
 
-            Debug.Log(leftStick);
-
             float leftSpeed = leftStick.y * _trackSpeed * Time.deltaTime;
             float rightSpeed = rightStick.y * _trackSpeed * Time.deltaTime;
 

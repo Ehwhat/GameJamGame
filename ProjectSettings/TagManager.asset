@@ -22,8 +22,8 @@ TagManager:
   - Unit
   - NonProjectileCollideable
   - Ground
-  - 
-  - 
+  - Cutout
+  - Bullet
   - 
   - 
   - 

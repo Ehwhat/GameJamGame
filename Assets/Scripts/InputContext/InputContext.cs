@@ -33,10 +33,10 @@ public class InputContext : TrackingUIElement {
     private bool _waitForNone = true;
 
     [SerializeField]
-    public InputContextEvent _successEvent;
+    public InputContextEvent _successEvent = new InputContextEvent();
 
     [SerializeField]
-    public InputContextEvent _failureEvent;
+    public InputContextEvent _failureEvent = new InputContextEvent();
 
     [SerializeField]
     private GameObject _directionalArrowPrefab;
@@ -109,6 +109,7 @@ public class InputContext : TrackingUIElement {
             _commandButtons.Add(GenerateButton(i, _commands[i], InputContextButton.ButtonState.NotPressed));
         }
         _commandButtons[_currentCommandIndex].SetState(InputContextButton.ButtonState.Current);
+        UpdateTracking();
     }
 
     InputContextButton GenerateButton(int index, ThumbstickPositions thumbstick, InputContextButton.ButtonState state)
@@ -157,6 +158,7 @@ public class InputContext : TrackingUIElement {
                 _currentCommandIndex++;
                 if (_currentCommandIndex >= _commands.Count)
                 {
+                    Debug.Log("Succ");
                     OnSuccess();
                     _active = false;
                     _owningPlayer.BreakContext();
@@ -187,12 +189,18 @@ public class InputContext : TrackingUIElement {
 
     public void OnSuccess()
     {
-        _successEvent.Invoke();
+        if (_successEvent != null)
+        {
+            _successEvent.Invoke();
+        }
     }
 
     public void OnFailure()
     {
-        _failureEvent.Invoke();
+        if (_failureEvent != null)
+        {
+            _failureEvent.Invoke();
+        }
     }
 
     public void Reset()
