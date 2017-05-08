@@ -106,6 +106,8 @@ public class LevelPopulation : MonoBehaviour {
     private List<Coord> mediumSpots = new List<Coord>();
     private List<Coord> smallSpots = new List<Coord>();
 
+    private List<Coord> pathNodes = new List<Coord>();
+
     //private List<Coord> edgeSpots = new List<Coord>();
 
     private List<Fence> fences = new List<Fence>();
@@ -139,6 +141,11 @@ public class LevelPopulation : MonoBehaviour {
         {
             return false;
         }
+
+        //Generate PathNodes
+
+        FindSpots(PrefabSize.Small, 100, ref pathNodes, false, 0, Color.blue);
+
         //PlaceFences();
         int bigObjs = 0;
         int midObjs = 0;
@@ -347,6 +354,16 @@ public class LevelPopulation : MonoBehaviour {
 
             }
         }
+    }
+
+    public List<Vector3> GetPathSpots()
+    {
+        List<Vector3> pathVectors = new List<Vector3>();
+        foreach(Coord c in pathNodes)
+        {
+            pathVectors.Add(new Vector3(c.x, 0, c.y));
+        }
+        return pathVectors;
     }
 
     int GetSize(PrefabSize size)

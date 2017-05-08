@@ -6,7 +6,7 @@ Properties {
 }
 
 Category {
-	Tags { "Queue"="Geometry" "IgnoreProjector"="True" "RenderType"="Transparent" "PreviewType"="Plane" }
+	Tags { "Queue"="Geometry+10" "IgnoreProjector"="True" "RenderType"="Transparent" "PreviewType"="Plane" }
 	Blend SrcAlpha OneMinusSrcAlpha
 	ColorMask RGB
 	Cull Off Lighting Off ZWrite Off

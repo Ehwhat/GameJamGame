@@ -13,7 +13,14 @@ public class WeaponManager : ProjectileManager {
     }
 
     public Transform weaponHolder;
-    public Weapon currentWeapon;
+    
+    public Weapon _currentWeapon
+    {
+        get { return currentWeapon; }
+        set { SetWeapon(value); }
+    }
+    [SerializeField]
+    private Weapon currentWeapon;
 
     public float currentFiringAngle;
 
@@ -32,7 +39,7 @@ public class WeaponManager : ProjectileManager {
     {
         if(currentWeapon != null && currentWeapon.hideFlags != HideFlags.HideInHierarchy)
         {
-            Destroy(currentWeapon);
+            Destroy(currentWeapon.gameObject);
         }
         currentWeapon = Instantiate<Weapon>(w);
         currentWeapon.transform.parent = weaponHolder;

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
@@ -41,7 +42,7 @@ public class GameManager : MonoBehaviour {
     public Color[] playerColours = new Color[4];
 
     public bool[] activePlayers = new bool[4];
-    public PlayerManager[] currentPlayers = new PlayerManager[4];
+    public PlayerManager[] currentPlayers;
     PlayerMenu.PlayerInfo[] playerInfo;
 
     public float gameScore;
@@ -80,7 +81,7 @@ public class GameManager : MonoBehaviour {
         
     }
 
-    public static void LoadLevel(LevelGenerator levelGenerator, CameraTracking cam)
+    public static void LoadLevel(LevelGenerator levelGenerator, CameraTracking cam, int playerAmount)
     {
         instance.camera = cam;
         if (levelGenerator.GenerateLevel())
@@ -90,9 +91,9 @@ public class GameManager : MonoBehaviour {
                 instance.CreatePlayers(instance.playerInfo);
             }else
             {
-                instance.CreatePlayers();
+                instance.CreatePlayers(playerAmount);
             }
-            instance.SpawnPlayers();
+            instance.SpawnPlayers(playerAmount);
         }
     }
 
@@ -127,8 +128,16 @@ public class GameManager : MonoBehaviour {
         return distProduct;
     }
 
+    public static List<Vector3> GetPathNodes()
+    {
+        return instance.levelGenerator.GetLevelPop().GetPathSpots();
+    }
+
+    
+
     void CreatePlayers(PlayerMenu.PlayerInfo[] info)
     {
+        currentPlayers = new PlayerManager[4];
         for (int i = 0; i < 4; i++)
         {
             if (info[i]._active)
@@ -141,9 +150,10 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    void CreatePlayers()
+    void CreatePlayers(int playerAmount)
     {
-        for (int i = 0; i < 4; i++)
+        currentPlayers = new PlayerManager[playerAmount];
+        for (int i = 0; i < playerAmount; i++)
         {
             amountOfPlayers++;
             PlayerManager player = CreatePlayer((PlayerManager.PlayerIndex)i, new PlayerMenu.PlayerInfo(0, playerColours[i]));
@@ -152,9 +162,9 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    void SpawnPlayers()
+    void SpawnPlayers(int playerAmount)
     {
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < playerAmount; i++)
         {
             if (activePlayers[i])
             {

@@ -241,9 +241,9 @@ public class PlayerManager : ControlledUnitManager, IActivatableObject {
 
     GameObject GetClosestActivateableObject()
     {
-        _nearestActivatables = _nearestActivatables.OrderBy(o => Vector3.Distance(transform.position, o.transform.position)).ToList();
         if (_nearestActivatables.Count > 0)
         {
+            _nearestActivatables = _nearestActivatables.Where(o=> o != null).OrderBy(o => Vector3.Distance(transform.position, o.transform.position)).ToList();
             foreach (Collider activatable in _nearestActivatables)
             {
                 IActivatableObject act = activatable.GetComponent<IActivatableObject>();

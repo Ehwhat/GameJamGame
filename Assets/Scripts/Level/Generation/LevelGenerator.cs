@@ -35,6 +35,7 @@ public class LevelGenerator : MonoBehaviour {
     public float timeBetweenGeneration = .5f;
 
     LevelMeshData levelMeshData;
+    LevelPopulation popGen;
     float startTime;
 
 
@@ -96,7 +97,7 @@ public class LevelGenerator : MonoBehaviour {
         LevelMeshGenerator meshGen = GetComponent<LevelMeshGenerator>();
         levelMeshData = meshGen.GenerateMesh(borderedLevel, sizeMultiplier);
 
-        LevelPopulation popGen = GetComponent<LevelPopulation>();
+        popGen = GetComponent<LevelPopulation>();
         popGen.DepopulateLevel();
         if (populateLevel)
         {
@@ -120,6 +121,11 @@ public class LevelGenerator : MonoBehaviour {
         watch.Stop();
         Debug.Log("Map Generated In " + (watch.ElapsedMilliseconds) +" Seconds");
         return true;
+    }
+
+    public LevelPopulation GetLevelPop()
+    {
+        return popGen;
     }
 
     private void SmoothLevel()
@@ -209,8 +215,6 @@ public class LevelGenerator : MonoBehaviour {
         }
 
     }
-
-
 
     void ConnectClosestIslands(List<Island> islands, bool forceAccessibilityToTheMainIsland = false)
     {

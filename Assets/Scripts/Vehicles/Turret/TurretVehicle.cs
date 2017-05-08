@@ -7,7 +7,8 @@ public class TurretVehicle : MonoBehaviour {
     public WeaponManager _weapon;
     public float _isoOffset = 45;
 
-    private float aimAngle;
+    private float _aimAngle;
+    private Vector3 _oldDirection;
 
     // Use this for initialization
     void Start () {
@@ -31,11 +32,13 @@ public class TurretVehicle : MonoBehaviour {
 
     void AimTurret(Vector2 direction)
     {
-        if (direction.magnitude > 0.3f)
+        if (direction.magnitude < 0.3f)
         {
-            aimAngle = Mathf.Rad2Deg * Mathf.Atan2(direction.y, -direction.x) - _isoOffset;
-            _weapon.currentFiringAngle = aimAngle;
-            transform.rotation = Quaternion.AngleAxis(_isoOffset, Vector3.up) * Quaternion.LookRotation(new Vector3(direction.x, 0, direction.y), Vector3.up);
+            direction = _oldDirection;
         }
+        _oldDirection = direction;
+        _aimAngle = Mathf.Rad2Deg * Mathf.Atan2(direction.y, -direction.x) - _isoOffset;
+        _weapon.currentFiringAngle = _aimAngle;
+        transform.rotation = Quaternion.AngleAxis(_isoOffset, Vector3.up) * Quaternion.LookRotation(new Vector3(direction.x, 0, direction.y), Vector3.up);
     }
 }
