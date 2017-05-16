@@ -65,6 +65,9 @@ public class PlayerManager : ControlledUnitManager, IActivatableObject {
         playerUI.SetPlayerAmmo(playerShooting.GetAmmoClipPercent());
         playerUI.SetPlayerReloadTime(playerShooting.GetReloadPercent());
 
+        AlexUIManager.SetPlayerAmmoBar((int)playerIndex, playerShooting.GetAmmoClipPercent());
+        AlexUIManager.SetPlayerHealthBar((int)playerIndex, GetPlayerHealthPercent());
+
         GameObject targetObject = GetClosestActivateableObject();
         if (_targetActivateableObject != null && (_targetActivateableObject != targetObject || targetObject == null))
         {
