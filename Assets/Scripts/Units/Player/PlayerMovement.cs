@@ -60,7 +60,7 @@ public class PlayerMovement : UnitMovement {
 
     public void OnKill(HitData lastHit)
     {
-        if (useRigidbody)
+        if (useRigidbody && lastHit != null)
         {
             Vector3 hitPoint = lastHit.rayHit.point;
             Vector3 forceHit = (rb.position - lastHit.rayHit.point).normalized * -100;

@@ -90,7 +90,7 @@ Material:
       second: 0
     - first:
         name: _Fade
-      second: 0.49
+      second: 0.177
     - first:
         name: _GlossMapScale
       second: 1
