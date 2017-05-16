@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using EnemyMessages;
 
+
 public class EnemyTest : EnemyBase {
 
     public struct TestStruct
