@@ -785,9 +785,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1c16b774f726a14ba92b648a2cea14e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shieldDrop: {fileID: 0}
-  tankDrop: {fileID: 0}
-  healDrop: {fileID: 0}
+  shieldDrop: {fileID: 1000013043408800, guid: 041334f167f83d54ca56a196e5c12eda, type: 2}
+  tankDrop: {fileID: 1000012727670824, guid: b402c9fdc1ea375449c811887fb2eed6, type: 2}
+  healDrop: {fileID: 1000012658209700, guid: 481f038bdcc36a5419f68e3647d4590b, type: 2}
 --- !u!4 &564648423
 Transform:
   m_ObjectHideFlags: 0
@@ -813,8 +813,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inputContextParent: {fileID: 1475219321}
-  _indicatorPrefab: {fileID: 0}
-  _prefab: {fileID: 0}
+  _indicatorPrefab: {fileID: 114000011466830922, guid: da81801c419aa1643a0878d2479e86b3,
+    type: 2}
+  _prefab: {fileID: 114000010105064798, guid: 0f794b858cd40cc4298bc4309f153c6d, type: 2}
   _inputContextPatterns:
   - _successEvent:
       m_PersistentCalls:
