@@ -35,7 +35,7 @@ public class LevelGenerator : MonoBehaviour {
     public float timeBetweenGeneration = .5f;
 
     LevelMeshData levelMeshData;
-    LevelPopulation popGen;
+    static LevelPopulation popGen;
     float startTime;
 
 
@@ -45,7 +45,7 @@ public class LevelGenerator : MonoBehaviour {
     int realSmoothAmount;
     int realFillAmount;
 
-    void Start()
+    void Awake()
     {
         
         StartCoroutine(GenLevel());
@@ -123,7 +123,7 @@ public class LevelGenerator : MonoBehaviour {
         return true;
     }
 
-    public LevelPopulation GetLevelPop()
+    public static LevelPopulation GetLevelPop()
     {
         return popGen;
     }

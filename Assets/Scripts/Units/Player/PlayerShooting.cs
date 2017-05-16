@@ -20,10 +20,17 @@ public class PlayerShooting  {
     {
         if(weaponManager != null)
         {
-            weaponManager.offset = weaponManager.weaponHolder.transform.position;
-            weaponManager.currentFiringAngle = aiming.aimingAngle;
-            weaponManager.FireWeapon();
+            weaponManager.FireWeapon(aiming.aimingAngle);
         }
+    }
+
+    public void HandleWeapon()
+    {
+        if(weaponManager != null)
+        {
+            weaponManager.UpdateWeapon(aiming.aimingAngle);
+        }
+        SetupAim();
     }
 
     public void SetWeapon(Weapon weapon)
@@ -47,7 +54,6 @@ public class PlayerShooting  {
 
     public void SetupAim()
     {
-        weaponManager.offset = weaponManager.weaponHolder.transform.position;
         aimRect.SetPosition(0, weaponManager.GetFiringPoint());
         aimRect.SetPosition(1, weaponManager.GetFiringPoint() + (Quaternion.AngleAxis(aiming.aimingAngle, Vector3.up) * Vector3.forward)*aimLength);
     }

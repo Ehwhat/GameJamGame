@@ -144,7 +144,7 @@ public class LevelPopulation : MonoBehaviour {
 
         //Generate PathNodes
 
-        FindSpots(PrefabSize.Small, 100, ref pathNodes, false, 0, Color.blue);
+        
 
         //PlaceFences();
         int bigObjs = 0;
@@ -321,6 +321,7 @@ public class LevelPopulation : MonoBehaviour {
     {
         FindAvailableSpaces();
         FindSpots(PrefabSize.Large, bigPasses, ref bigSpots, OnlyDoRequiredBigPasses, requiredBigPasses, Color.red);
+        FindSpots(PrefabSize.Medium, 8, ref pathNodes, false, 0, Color.blue);
         FindSpots(PrefabSize.Medium, mediumPasses, ref mediumSpots, OnlyDoRequiredMediumPasses, requiredMediumPasses, Color.yellow);
         FindSpots(PrefabSize.Small, smallPasses, ref smallSpots, OnlyDoRequiredSmallPasses, requiredSmallPasses, Color.green);
 
@@ -485,17 +486,22 @@ public class LevelPopulation : MonoBehaviour {
             {
                 Gizmos.DrawCube(CoordToWorldSpace(c) + Vector3.up, Vector3.one * smallSize * sizeMultipler);
             }
+            Gizmos.color = Color.blue;
+            foreach (Coord c in pathNodes)
+            {
+                Gizmos.DrawCube(CoordToWorldSpace(c) + Vector3.up, Vector3.one * smallSize * sizeMultipler);
+            }
 
             if (levelMeshData.solidEdgeVertices != null)
             {
                 Gizmos.color = Color.blue;
-                foreach (List<Fence> outline in fenceOutlines)
+                /*foreach (List<Fence> outline in fenceOutlines)
                 {
                     for (int i = 0; i < outline.Count - 1; i++)
                     {
                         Gizmos.DrawLine(outline[i].position + Vector3.up, outline[i + 1].position + Vector3.up);
                     }
-                }
+                }*/
             }
         }
     }

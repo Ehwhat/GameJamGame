@@ -22,10 +22,9 @@ public class TurretVehicle : MonoBehaviour {
         {
             Vector2 lookDirection = controller.GetStickVector(XboxControlStick.RightStick);
             AimTurret(lookDirection);
-            _weapon.offset = _weapon.weaponHolder.transform.position;
             if (controller.GetTrigger(XboxTrigger.RightTrigger) > 0.1f)
             {
-                _weapon.FireWeapon();
+                _weapon.FireWeapon(_aimAngle);
             }
         }
 	}
@@ -38,7 +37,6 @@ public class TurretVehicle : MonoBehaviour {
         }
         _oldDirection = direction;
         _aimAngle = Mathf.Rad2Deg * Mathf.Atan2(direction.y, -direction.x) - _isoOffset;
-        _weapon.currentFiringAngle = _aimAngle;
         transform.rotation = Quaternion.AngleAxis(_isoOffset, Vector3.up) * Quaternion.LookRotation(new Vector3(direction.x, 0, direction.y), Vector3.up);
     }
 }

@@ -54,9 +54,12 @@ public class ObjectiveManager : MonoBehaviour {
                 position = bigSpots[rand];
                 mediumSpots.RemoveAt(rand);
             }
-            ObjectiveAbstract obj = Instantiate<ObjectiveAbstract>(objective.objective);
-            obj.transform.position = position;
-            RegisterObjective(obj);
+            if (objective.objective != null)
+            {
+                ObjectiveAbstract obj = Instantiate<ObjectiveAbstract>(objective.objective);
+                obj.transform.position = position;
+                RegisterObjective(obj);
+            }
         }
     }
 

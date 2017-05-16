@@ -128,10 +128,10 @@ public class GameManager : MonoBehaviour {
         return distProduct;
     }
 
-    public static List<Vector3> GetPathNodes()
+    /*public static List<Vector3> GetPathNodes()
     {
         return instance.levelGenerator.GetLevelPop().GetPathSpots();
-    }
+    }*/
 
     
 

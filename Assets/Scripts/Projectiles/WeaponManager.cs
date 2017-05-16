@@ -5,15 +5,9 @@ using System.Collections.Generic;
 
 public class WeaponManager : ProjectileManager {
 
-    public enum AmmoSystem
-    {
-        Clip,
-        Clipless,
-        Unlimited
-    }
+    public Transform weaponFirePoint;
+    public AudioSource audioSource;
 
-    public Transform weaponHolder;
-    
     public Weapon _currentWeapon
     {
         get { return currentWeapon; }
@@ -29,10 +23,17 @@ public class WeaponManager : ProjectileManager {
         SetWeapon(currentWeapon);
     }
 
-
-    void Update()
+    public void LateUpdate()
     {
+        currentWeapon.LateUpdate();
+    }
 
+    public void UpdateWeapon(float firingAngle)
+    {
+        offset = weaponFirePoint.transform.position;
+        currentFiringAngle = firingAngle;
+        Vector3 direction = Quaternion.AngleAxis(currentFiringAngle, Vector3.up) * Vector3.forward;
+        currentWeapon.UpdateWeapon(direction);
     }
 
     public void SetWeapon(Weapon w)
@@ -42,14 +43,17 @@ public class WeaponManager : ProjectileManager {
             Destroy(currentWeapon.gameObject);
         }
         currentWeapon = Instantiate<Weapon>(w);
-        currentWeapon.transform.parent = weaponHolder;
-        currentWeapon.Initalise();
+        currentWeapon.transform.parent = transform;
+        currentWeapon.Initalise(audioSource);
     }
 
-    public void FireWeapon()
+    public void FireWeapon(float firingAngle)
     {
+        offset = weaponFirePoint.transform.position;
+        currentFiringAngle = firingAngle;
         Vector3 direction = Quaternion.AngleAxis(currentFiringAngle, Vector3.up) * Vector3.forward;
-        currentWeapon.FireWeapon(this, direction);
+        currentWeapon.UpdateWeapon(direction);
+        currentWeapon.FireWeapon(this);
     }
 
     public float GetAmmoClipPercent()
@@ -60,6 +64,12 @@ public class WeaponManager : ProjectileManager {
     public float GetReloadPercent()
     {
         return currentWeapon.GetReloadPercent();
+    }
+
+    public Vector3 GetFiringPoint()
+    {
+        offset = weaponFirePoint.transform.position;
+        return offset;
     }
 
 }

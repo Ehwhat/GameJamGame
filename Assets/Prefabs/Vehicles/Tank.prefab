@@ -699,7 +699,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: {x: 0, y: 0, z: 0}
-  weaponHolder: {fileID: 4000010135331174}
+  weaponFirePoint: {fileID: 4000010135331174}
   currentWeapon: {fileID: 114000013566121078, guid: b9a2140e1f31c6b4ea4d0ada6a1b533c,
     type: 2}
   currentFiringAngle: 0

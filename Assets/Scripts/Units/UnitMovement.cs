@@ -9,7 +9,7 @@ public class UnitMovement{
     protected Transform t;
     protected Rigidbody rb;
 
-    protected void Initalise(Transform transform)
+    public void Initalise(Transform transform)
     {
         t = transform;
         rb = transform.GetComponent<Rigidbody>();

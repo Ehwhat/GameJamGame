@@ -9,7 +9,7 @@ public class LevelStart : MonoBehaviour {
     public LevelGenerator levelGenerator;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
         GameManager.LoadLevel(levelGenerator, camera, playerAmount);
 	}
 

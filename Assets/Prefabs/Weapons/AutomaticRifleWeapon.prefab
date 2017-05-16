@@ -51,15 +51,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dc362786b2fbd4489149daba07be837, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponFirePoint: {fileID: 0}
   weaponProjectile: {fileID: 114000013974713260, guid: 670a8ea52318d4742bed5ecd7a02fd03,
     type: 2}
-  possibleSpread: {x: 0.001, y: 0}
-  fireRatePerSecond: 10
-  bulletsPerShot: 1
   reloadTime: 3
+  weaponFiringMode: 2
+  possibleSpread: {x: 0.001, y: 0}
+  fireRatePerSecond: 20
+  burstsPerSecond: 2
+  shotsPerBurst: 3
+  bulletsPerShot: 1
   ammoSystem: 0
   maxStoredAmmo: 132
   storedAmmo: 84
   ammoPackAmount: 0
-  ammoPerClip: 20
+  ammoPerClip: 21
+  weaponShotSound: {fileID: 8300000, guid: ec35fa56241ac4a4e91357c1f4241753, type: 3}

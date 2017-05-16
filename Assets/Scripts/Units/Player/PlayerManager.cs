@@ -96,7 +96,7 @@ public class PlayerManager : ControlledUnitManager, IActivatableObject {
             
             playerMovement.HandleMovement();
             playerAiming.HandleRotation();
-            playerShooting.SetupAim();
+            playerShooting.HandleWeapon();
             if (controller.GetTrigger(XboxTrigger.RightTrigger) > 0.1f)
             {
                 playerShooting.Shoot();

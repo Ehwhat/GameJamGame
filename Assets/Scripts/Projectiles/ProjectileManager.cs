@@ -15,13 +15,8 @@ public class ProjectileManager : MonoBehaviour {
 
     protected virtual Vector3 GetSpread(Vector2 pS)
     {
-        Vector3 circle = new Vector3((Random.insideUnitCircle* pS.x).x, (Random.insideUnitCircle * pS.y).y,0);
+        Vector3 circle = new Vector3((Random.insideUnitCircle * pS.x).x, (Random.insideUnitCircle * pS.y).y, 0);
         return circle;
-    }
-
-    public Vector3 GetFiringPoint()
-    {
-        return offset;
     }
 	
 }

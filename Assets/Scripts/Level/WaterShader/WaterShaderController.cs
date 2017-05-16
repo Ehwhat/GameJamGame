@@ -54,6 +54,7 @@ public class WaterShaderController : MonoBehaviour {
 
 	void createOceanSquare(Vector3 position, int detailMod){
 		MeshFilter meshFilter = new GameObject("oceanSquare").AddComponent<MeshFilter>();
+        meshFilter.gameObject.layer = gameObject.layer;
 		MeshRenderer meshRenderer = meshFilter.gameObject.AddComponent<MeshRenderer>();
 		meshRenderer.sharedMaterial = waterMaterial;
 		meshFilter.transform.parent = transform;
