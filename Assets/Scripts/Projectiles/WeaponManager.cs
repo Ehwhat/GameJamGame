@@ -66,6 +66,11 @@ public class WeaponManager : ProjectileManager {
         return currentWeapon.GetReloadPercent();
     }
 
+    public void GiveAmmoPack()
+    {
+        currentWeapon.OnAmmoPack();
+    }
+
     public Vector3 GetFiringPoint()
     {
         offset = weaponFirePoint.transform.position;
