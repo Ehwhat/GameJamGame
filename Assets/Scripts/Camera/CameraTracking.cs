@@ -11,6 +11,8 @@ public class CameraTracking : MonoBehaviour {
     public float zoomOffset = 5;
     public Vector3 cameraOffset = new Vector3(-7, 10, 0);
 
+    public SimpleBlit blit;
+
     Vector3 currentCameraTarget;
 	float lastZoom;
     public new Camera camera;

@@ -54,12 +54,15 @@ public class GameManager : MonoBehaviour {
 
     void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
-        if (instance == null)
+        if (instance != null)
+        {
+            Destroy(this.gameObject);
+        }
+        else
         {
             instance = this;
         }
-
+        DontDestroyOnLoad(this.gameObject);
     }
 
     // Use this for initialization
@@ -84,6 +87,7 @@ public class GameManager : MonoBehaviour {
     public static void LoadLevel(LevelGenerator levelGenerator, CameraTracking cam, int playerAmount)
     {
         instance.camera = cam;
+        instance.currentState = GameState.InGame;
         if (levelGenerator.GenerateLevel())
         {
             if (instance.usePlayerInfo)
@@ -95,11 +99,26 @@ public class GameManager : MonoBehaviour {
             }
             instance.SpawnPlayers(playerAmount);
         }
+        cam.blit.LerpCutoff(1, 0, 1.2f);
+    }
+
+    public static void EndGame()
+    {
+        if(instance.currentState == GameState.InGame)
+        {
+            instance.camera.blit.LerpCutoff(0, 1, 1.2f);
+            instance.Invoke("StartMenu",1.2f);
+        }
+    }
+
+    public void StartMenu()
+    {
+        instance.SetLevel("MENU");
+        instance.Start();
     }
 
     public static void StartGame()
     {
-        instance.SetState(GameState.InGame);
         instance.playerInfo = instance.playerMenuManager.GetPlayerInfo();
         instance.SetLevel("GAME");
         instance.Start();

@@ -158,7 +158,6 @@ public class InputContext : TrackingUIElement {
                 _currentCommandIndex++;
                 if (_currentCommandIndex >= _commands.Count)
                 {
-                    Debug.Log("Succ");
                     OnSuccess();
                     _active = false;
                     _owningPlayer.BreakContext();

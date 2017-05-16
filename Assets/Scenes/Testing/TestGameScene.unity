@@ -675,7 +675,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 700ea1161b46da045b8b30426b1ae6b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerAmount: 2
+  playerAmount: 1
   camera: {fileID: 1466667855}
   levelGenerator: {fileID: 180832059}
 --- !u!1001 &188339155
@@ -2632,7 +2632,9 @@ MonoBehaviour:
   - size: 5
     objective: {fileID: 114000012555758430, guid: 93aa00f6545f22a418e65cb39f1c0215,
       type: 2}
-  amountOfObjectives: 4
+  exitPrefab: {fileID: 114000010988041382, guid: b8528baf975825a4b8de419f7a8e54a7,
+    type: 2}
+  amountOfObjectives: 1
   objectives: []
 --- !u!1 &1063960308
 GameObject:
@@ -2998,6 +3000,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f91d742f3be083418c26878ab8255c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cutoff: 0
   TransitionMaterial: {fileID: 2100000, guid: 7624d611bd330e44b80ef65275598a16, type: 2}
 --- !u!20 &1196938087
 Camera:
@@ -3025,7 +3028,7 @@ Camera:
     serializedVersion: 2
     m_Bits: 4294866927
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 1503949688}
+  m_TargetTexture: {fileID: 1272277628}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 0
@@ -3107,6 +3110,28 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1270032499}
+--- !u!84 &1272277628
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_Width: 1148
+  m_Height: 535
+  m_AntiAliasing: 1
+  m_DepthFormat: 1
+  m_ColorFormat: 0
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_TextureSettings:
+    m_FilterMode: 1
+    m_Aniso: 0
+    m_MipBias: 0
+    m_WrapMode: 1
 --- !u!1 &1300414897
 GameObject:
   m_ObjectHideFlags: 0
@@ -3528,6 +3553,7 @@ MonoBehaviour:
   isoOffset: 45
   zoomOffset: 5
   cameraOffset: {x: 0, y: 175, z: -300}
+  blit: {fileID: 1466667856}
   camera: {fileID: 0}
 --- !u!114 &1466667856
 MonoBehaviour:
@@ -3540,6 +3566,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f91d742f3be083418c26878ab8255c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cutoff: 0
   TransitionMaterial: {fileID: 2100000, guid: 7624d611bd330e44b80ef65275598a16, type: 2}
 --- !u!114 &1466667857
 MonoBehaviour:
@@ -3659,28 +3686,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!84 &1573617510
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_Width: 1140
-  m_Height: 427
-  m_AntiAliasing: 1
-  m_DepthFormat: 1
-  m_ColorFormat: 0
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_TextureSettings:
-    m_FilterMode: 1
-    m_Aniso: 0
-    m_MipBias: 0
-    m_WrapMode: 1
 --- !u!1 &1647063023
 GameObject:
   m_ObjectHideFlags: 0
@@ -4326,7 +4331,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!23 &1813615687
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4382,7 +4387,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1813615686}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 18.476639, y: 7.72, z: -3.3364372}
+  m_LocalPosition: {x: 18.476639, y: 0, z: -3.3364372}
   m_LocalScale: {x: 100, y: 1, z: 100}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -4780,7 +4785,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000011299958280, guid: 3ecc0ebd1ae56d1439580ef38fb21154, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114000014250643860, guid: 3ecc0ebd1ae56d1439580ef38fb21154,
         type: 2}

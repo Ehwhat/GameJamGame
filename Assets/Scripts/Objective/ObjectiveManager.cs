@@ -11,10 +11,42 @@ public class ObjectiveManager : MonoBehaviour {
         public ObjectiveAbstract objective;
     }
 
+    public enum GameObjectiveState
+    {
+        NotComplete,
+        TimeToGo,
+        Done
+    }
+
     public ObjectivePrefab[] objectivePrefabs;
+    public ObjectiveExit exitPrefab;
     public int amountOfObjectives;
 
     public List<ObjectiveAbstract> objectives;
+
+    private GameObjectiveState objectiveState = GameObjectiveState.NotComplete;
+
+    private void Update()
+    {
+        if (CheckAllObjectivesDone() && objectiveState == GameObjectiveState.NotComplete)
+        {
+            Debug.Log("All objectives done");
+            objectiveState = GameObjectiveState.TimeToGo;
+            SpawnExit();
+        }
+    }
+
+    public void SpawnExit()
+    {
+        exitPrefab.gameObject.SetActive(true);
+        exitPrefab.SetCallback(OnExit);
+    }
+
+    public void OnExit()
+    {
+        Debug.Log("Exit Game");
+        GameManager.EndGame();
+    }
 
     public List<ObjectivePrefab> DecideObjectives(int amount, out int bigObjective, out int midObjectives)
     {
@@ -32,6 +64,7 @@ public class ObjectiveManager : MonoBehaviour {
                 bigObjective++;
             }
             decidedList.Add(randomObjective);
+            midObjectives++; // for objective exit
         }
         return decidedList;
         
@@ -61,6 +94,9 @@ public class ObjectiveManager : MonoBehaviour {
                 RegisterObjective(obj);
             }
         }
+        exitPrefab = Instantiate<ObjectiveExit>(exitPrefab);
+        exitPrefab.transform.position = mediumSpots[0];
+        exitPrefab.gameObject.SetActive(false);
     }
 
     public void RegisterObjective(ObjectiveAbstract obj)
@@ -85,7 +121,7 @@ public class ObjectiveManager : MonoBehaviour {
         {
             foreach(ObjectiveAbstract obj in objectives)
             {
-                if(obj != null || obj._objectiveActive)
+                if (obj != null && obj._objectiveActive)
                 {
                     return false;
                 }
@@ -96,6 +132,10 @@ public class ObjectiveManager : MonoBehaviour {
 
     public ObjectiveAbstract findClosestObjectiveToPlayers()
     {
+        if(objectiveState == GameObjectiveState.TimeToGo)
+        {
+            return exitPrefab;
+        }
         ObjectiveAbstract bestObjective = null;
         if (objectives.Count > 0) {
             Vector3 playerCentre = GameManager.GetPlayersCentre();
