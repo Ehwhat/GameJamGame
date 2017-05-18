@@ -26,6 +26,7 @@ public class CameraTracking : MonoBehaviour {
 	void Update () {
         transform.position = CalculateCameraPosition();
         camera.orthographicSize = CalculateCameraZoom();
+        IsPlayerBehind();
 
     }
 
@@ -96,5 +97,31 @@ public class CameraTracking : MonoBehaviour {
     {
         trackedTransforms.Remove(t);
     }
+    private void IsPlayerBehind()
+    {
+        foreach (Transform player in trackedTransforms)
+        {
+            RaycastHit hit;
 
+            //Debug.DrawRay(transform.position, (player.position + new Vector3(0, 1, 0)) - transform.position, Color.yellow);
+
+            //If theres something between the player and camera,then enable the game object.
+            if (Physics.Raycast(transform.position, (player.position + new Vector3(0,1,0)) - transform.position, out hit))
+            {
+                //checkifitsa player
+                if (!hit.collider.CompareTag("Player"))
+                {
+                    //Turns off the gameobject
+                    player.transform.Find("CutProjector").gameObject.SetActive(true);
+                   
+                }
+                else
+                {
+                    player.transform.Find("CutProjector").gameObject.SetActive(false);
+                }
+
+            }
+
+        }
+    }
 }
