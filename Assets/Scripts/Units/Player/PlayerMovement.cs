@@ -29,6 +29,7 @@ public class PlayerMovement : UnitMovement {
     public void HandleMovement()
     {
         Vector3 movementVector = GetMovementVector();
+        
         Vector3 playerCentre = GameManager.GetPlayersCentre();
 
         if ((Vector3.Distance(t.position, playerCentre) > allowedDistanceFromPlayerCentre-1))

@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class PlayerMenu : MonoBehaviour {
-
+    [System.Serializable]
     public class PlayerInfo
     {
         public bool _active = false;

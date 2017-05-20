@@ -20,16 +20,13 @@ public class PlayerShooting  {
     {
         if(weaponManager != null)
         {
-            weaponManager.FireWeapon(aiming.aimingAngle);
+            weaponManager.AimWeaponAt(aiming.aimingAngle);
+            weaponManager.FireWeapon();
         }
     }
 
     public void HandleWeapon()
     {
-        if(weaponManager != null)
-        {
-            weaponManager.UpdateWeapon(aiming.aimingAngle);
-        }
         SetupAim();
     }
 

@@ -1289,7 +1289,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011299958280}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12.95, y: 8.53, z: 4.2}
+  m_LocalPosition: {x: 58.3185, y: 0, z: -63.376633}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -2467,7 +2467,7 @@ MonoBehaviour:
   offset: {x: 0, y: 0, z: 0}
   weaponFirePoint: {fileID: 4000010858398424}
   audioSource: {fileID: 82000013509346524}
-  currentWeapon: {fileID: 114000013566121078, guid: b9a2140e1f31c6b4ea4d0ada6a1b533c,
+  currentWeapon: {fileID: 114000013566121078, guid: ba952ac0d52a46f4384426f0cff4053a,
     type: 2}
   currentFiringAngle: 0
 --- !u!114 &114000013533079180

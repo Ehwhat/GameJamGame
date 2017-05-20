@@ -27,6 +27,7 @@ public class EnemyMelee : EnemyBase, IHitTarget {
     private Vector3 lastKnownPlayerPosition;
 
     private Vector3 currentAttackPosition;
+    private Rigidbody rb;
 
     public float health = 100;
 
@@ -38,6 +39,7 @@ public class EnemyMelee : EnemyBase, IHitTarget {
 
     // Use this for initialization
     void Start () {
+        rb = GetComponent<Rigidbody>();
         _enemyState = EnemyState.Patrolling;
         movement.Initalise(transform);
     }
@@ -48,6 +50,8 @@ public class EnemyMelee : EnemyBase, IHitTarget {
         {
             CheckForPlayer();
             HandleMovement();
+        }else
+        {
         }
     }
     void FoundPlayers(List<PlayerManager> players)
@@ -165,7 +169,7 @@ public class EnemyMelee : EnemyBase, IHitTarget {
             if(Time.time- lastAttacktime > attackSpeed)
             {
                 lastAttacktime = Time.time;
-                if (Vector3.Distance(transform.position, player.transform.position) < 0.1f);
+                if (Vector3.Distance(transform.position, player.transform.position) < 1.5f)
                 {
                      player.DamageFor(1);
                 }
@@ -189,11 +193,13 @@ public class EnemyMelee : EnemyBase, IHitTarget {
 
         if (patrolPath != null && patrolPath.Length > 0)
         {
-            if (Vector3.Distance(transform.position, patrolPath[currentPatrolPoint]) < 0.5f)
+            if (Vector3.Distance(transform.position, patrolPath[currentPatrolPoint]) < 2.5f)
             {
                 GoToNextPatrolPoint();
             }
-            Vector3 direction = patrolPath[currentPatrolPoint] - transform.position;
+            Vector3 circle = Random.insideUnitCircle * 2;
+            Vector3 point = patrolPath[currentPatrolPoint] + new Vector3(circle.x,0,circle.y);
+            Vector3 direction = point - transform.position;
             movement.MoveAlongDirection(direction, speed * Time.deltaTime);
         }
     }
@@ -226,6 +232,26 @@ public class EnemyMelee : EnemyBase, IHitTarget {
         if(health <= 0)
         {
             _enemyState = EnemyState.Dead;
+            Die(hit);
         }
+    }
+
+    void Die(HitData lastHit)
+    {
+        Vector3 hitPoint = lastHit.rayHit.point;
+        Vector3 forceHit = (rb.position - lastHit.rayHit.point).normalized * -100;
+        rb.constraints = RigidbodyConstraints.None;
+        rb.AddForceAtPosition(forceHit, hitPoint);
+        StartCoroutine(DisableRotation());
+    }
+
+    IEnumerator DisableRotation()
+    {
+
+        yield return new WaitForSeconds(3.0f);
+        rb.angularDrag = 2.0f;
+        rb.velocity = Vector3.zero;
+        rb.useGravity = false;
+        transform.GetChild(0).GetComponent<CapsuleCollider>().enabled = false;
     }
 }

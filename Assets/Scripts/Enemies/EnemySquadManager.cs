@@ -49,6 +49,7 @@ public class EnemySquadManager : MonoBehaviour {
     public EnemyBase[] _members;
     public float _squadSpawnRadius = 5;
     public Vector3 _squadOrigin;
+    public bool _spawnOnStart = false;
 
     private Queue<MessageRelay> _messageRelayQueue = new Queue<MessageRelay>();
    
@@ -62,7 +63,10 @@ public class EnemySquadManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        Spawn(Vector3.zero, 40);
+        if (_spawnOnStart)
+        {
+            Spawn(40);
+        }
 	}
 	
 	// Update is called once per frame
@@ -79,11 +83,9 @@ public class EnemySquadManager : MonoBehaviour {
         }
     }
     
-    public void Spawn(Vector3 origin, float distanceFromPlayers)
+    public void Spawn(float distanceFromPlayers)
     {
-        _squadOrigin = origin;
-        SpawnSquad();
-        GeneratePathThroughPlayers(distanceFromPlayers);
+        GeneratePathThroughPlayers(distanceFromPlayers); 
     }
 
     private void SpawnSquad()
@@ -116,7 +118,6 @@ public class EnemySquadManager : MonoBehaviour {
     private EnemyBase SpawnMember(EnemyBase prefab, int attempts = 0)
     {
         Vector3 randomPosition = GetRandomPositionInSquadRadius(_squadOrigin);
-        Debug.Log(randomPosition);
         EnemyBase member = Instantiate<EnemyBase>(prefab);
         member.transform.position = randomPosition;
         member.InitaliseEnemy(this);
@@ -150,6 +151,8 @@ public class EnemySquadManager : MonoBehaviour {
 
     void OnPathComplete(Vector3[] path)
     {
+        _squadOrigin = path[0];
+        SpawnSquad();
         RelayMessage<SquadNewPathMessage>(new SquadNewPathMessage(SquadMessageType.NewPath, path), null);
     }
 

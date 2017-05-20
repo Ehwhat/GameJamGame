@@ -5,6 +5,13 @@ using System.Collections.Generic;
 
 public class WeaponManager : ProjectileManager {
 
+    public enum WeaponAimingMode
+    {
+        Angle,
+        Vector,
+        Transform
+    }
+
     public Transform weaponFirePoint;
     public AudioSource audioSource;
 
@@ -16,11 +23,22 @@ public class WeaponManager : ProjectileManager {
     [SerializeField]
     private Weapon currentWeapon;
 
-    public float currentFiringAngle;
+    private WeaponAimingMode currentWeaponAimingMode = WeaponAimingMode.Angle;
+    [SerializeField]
+    private float currentAngleTarget;
+    private Vector3 currentVectorTarget;
+    private Transform currentTransformTarget;
 
     public void Start()
     {
+        
         SetWeapon(currentWeapon);
+    }
+
+    public void Update()
+    {
+        currentAngleTarget = GetFiringAngle();
+        UpdateWeapon();
     }
 
     public void LateUpdate()
@@ -28,12 +46,29 @@ public class WeaponManager : ProjectileManager {
         currentWeapon.LateUpdate();
     }
 
-    public void UpdateWeapon(float firingAngle)
+    private void UpdateWeapon()
     {
         offset = weaponFirePoint.transform.position;
-        currentFiringAngle = firingAngle;
-        Vector3 direction = Quaternion.AngleAxis(currentFiringAngle, Vector3.up) * Vector3.forward;
+        Vector3 direction = Quaternion.AngleAxis(currentAngleTarget, Vector3.up) * Vector3.forward;
         currentWeapon.UpdateWeapon(direction);
+    }
+
+    public void AimWeaponAt(float angle)
+    {
+        currentWeaponAimingMode = WeaponAimingMode.Angle;
+        currentAngleTarget = angle;
+    }
+
+    public void AimWeaponAt(Vector3 vector)
+    {
+        currentWeaponAimingMode = WeaponAimingMode.Vector;
+        currentVectorTarget = vector;
+    }
+
+    public void AimWeaponAt(Transform t)
+    {
+        currentWeaponAimingMode = WeaponAimingMode.Transform;
+        currentTransformTarget = t;
     }
 
     public void SetWeapon(Weapon w)
@@ -47,11 +82,10 @@ public class WeaponManager : ProjectileManager {
         currentWeapon.Initalise(audioSource);
     }
 
-    public void FireWeapon(float firingAngle)
+    public void FireWeapon()
     {
         offset = weaponFirePoint.transform.position;
-        currentFiringAngle = firingAngle;
-        Vector3 direction = Quaternion.AngleAxis(currentFiringAngle, Vector3.up) * Vector3.forward;
+        Vector3 direction = Quaternion.AngleAxis(GetFiringAngle(), Vector3.up) * Vector3.forward;
         currentWeapon.UpdateWeapon(direction);
         currentWeapon.FireWeapon(this);
     }
@@ -75,6 +109,28 @@ public class WeaponManager : ProjectileManager {
     {
         offset = weaponFirePoint.transform.position;
         return offset;
+    }
+
+    private float GetFiringAngle()
+    {
+        if(currentWeaponAimingMode == WeaponAimingMode.Angle)
+        {
+            return currentAngleTarget;
+        }else if(currentWeaponAimingMode == WeaponAimingMode.Vector)
+        {
+            Vector3 targetDirection = currentVectorTarget - offset;
+            return Angle360(Vector3.forward, targetDirection, Vector3.right);
+        }else
+        {
+            Vector3 targetDirection = currentTransformTarget.position - offset;
+            return Angle360(Vector3.forward, targetDirection, Vector3.right);
+        }
+    }
+
+    float Angle360(Vector3 from, Vector3 to, Vector3 right)
+    {
+        float angle = Vector3.Angle(from, to);
+        return (Vector3.Angle(right, to) > 90f) ? 360f - angle : angle;
     }
 
 }

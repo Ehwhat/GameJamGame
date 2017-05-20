@@ -167,7 +167,7 @@ MonoBehaviour:
   speed: 5
   turnSpeed: 20
   seeingRadius: 15
-  health: 100
+  health: 30
 --- !u!136 &136000011577071766
 CapsuleCollider:
   m_ObjectHideFlags: 1

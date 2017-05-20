@@ -31,7 +31,7 @@ public class StatePatternEnemy : MonoBehaviour
     [HideInInspector]
     public PatrolState patrolState;
     [HideInInspector]
-    public NavMeshAgent navMeshAgent;
+    public UnityEngine.AI.NavMeshAgent navMeshAgent;
 
     private void Awake()
     {
@@ -41,7 +41,7 @@ public class StatePatternEnemy : MonoBehaviour
         patrolState = new PatrolState(this);
         attackState = new AttackState(this);
         
-        navMeshAgent = GetComponent<NavMeshAgent>();
+        navMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
     }
 
 

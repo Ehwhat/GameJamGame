@@ -34,6 +34,8 @@ public class LevelGenerator : MonoBehaviour {
     public bool constantGeneration = false;
     public float timeBetweenGeneration = .5f;
 
+    public NavMeshGenerator navMeshGenerator;
+
     LevelMeshData levelMeshData;
     static LevelPopulation popGen;
     float startTime;
@@ -118,6 +120,9 @@ public class LevelGenerator : MonoBehaviour {
             Grid pathfindingGrid = GetComponent<Grid>();
             pathfindingGrid.CreateGrid();
         }
+
+        navMeshGenerator.GenerateNavMesh();
+
         watch.Stop();
         Debug.Log("Map Generated In " + (watch.ElapsedMilliseconds) +" Seconds");
         return true;

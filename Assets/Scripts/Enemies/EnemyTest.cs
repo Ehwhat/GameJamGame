@@ -85,6 +85,7 @@ public class EnemyTest : EnemyBase {
         }else if(players.Count > 0)
         {
             FoundPlayers(players);
+            weaponManager.AimWeaponAt(lastKnownPlayer.transform);
             ShootPlayer(lastKnownPlayer);
         }
     }
@@ -124,9 +125,8 @@ public class EnemyTest : EnemyBase {
         if (player._playerState != PlayerManager.PlayerState.Dead)
         {
             Vector3 targetDirection = player.transform.position - transform.position;
-            Debug.Log(targetDirection);
             float currentAngle = Vector3.Angle(Vector3.forward, targetDirection);
-            weaponManager.FireWeapon(currentAngle);
+            weaponManager.FireWeapon();
         }
     }
 

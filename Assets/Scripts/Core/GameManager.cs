@@ -43,11 +43,12 @@ public class GameManager : MonoBehaviour {
 
     public bool[] activePlayers = new bool[4];
     public PlayerManager[] currentPlayers;
-    PlayerMenu.PlayerInfo[] playerInfo;
+    public PlayerMenu.PlayerInfo[] playerInfo;
 
     public float gameScore;
 
     private PlayerSpawnPoint spawnPoint;
+    private SquadSpawner squadSpawn;
     private int sceneIndex = 0;
 
     public bool usePlayerInfo = false;
@@ -69,6 +70,7 @@ public class GameManager : MonoBehaviour {
     void Start() {
 
         activePlayers[0] = true;
+        camera = FindObjectOfType<CameraTracking>();
         if(currentState == GameState.Menu)
         {
             playerMenuManager = Object.FindObjectOfType<PlayerMenuManager>();
@@ -81,23 +83,55 @@ public class GameManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        
+        if(currentState == GameState.InGame)
+        {
+            CheckPlayersDead();
+        }
     }
 
-    public static void LoadLevel(LevelGenerator levelGenerator, CameraTracking cam, int playerAmount)
+    void CheckPlayersDead()
+    {
+        if (currentPlayers != null)
+        {
+            for (int i = 0; i < currentPlayers.Length; i++)
+            {
+                if (currentPlayers[i] != null && activePlayers[i] && !currentPlayers[i].isDead)
+                {
+                    return;
+                }
+            }
+            EndGame();
+        }
+    }
+
+    public static void SpawnSquad(float distance)
+    {
+        if(instance.squadSpawn != null)
+        {
+            instance.squadSpawn.SpawnSquad(distance);
+        }
+    }
+
+    public static void SpawnSquad(float distance, NavMeshEnemySquadManager squad)
+    {
+        if (instance.squadSpawn != null)
+        {
+            instance.squadSpawn.SpawnSquad(distance, squad);
+        }
+    }
+
+    public static void LoadLevel(LevelGenerator levelGenerator, SquadSpawner squad, CameraTracking cam)
     {
         instance.camera = cam;
+        instance.squadSpawn = squad;
         instance.currentState = GameState.InGame;
         if (levelGenerator.GenerateLevel())
         {
             if (instance.usePlayerInfo)
             {
                 instance.CreatePlayers(instance.playerInfo);
-            }else
-            {
-                instance.CreatePlayers(playerAmount);
             }
-            instance.SpawnPlayers(playerAmount);
+            instance.SpawnPlayers(instance.amountOfPlayers);
         }
         cam.blit.LerpCutoff(1, 0, 1.2f);
     }
@@ -113,6 +147,8 @@ public class GameManager : MonoBehaviour {
 
     public void StartMenu()
     {
+        instance.currentState = GameState.Menu;
+        Debug.Log("Menu open");
         instance.SetLevel("MENU");
         instance.Start();
     }
@@ -129,20 +165,23 @@ public class GameManager : MonoBehaviour {
         Vector3 distProduct = Vector3.zero;
         PlayerManager[] players = instance.currentPlayers;
 
-        if (players.Length > 0)
+        if (players != null)
         {
-            distProduct = players[0].transform.position;
-
-            if (players.Length > 1)
+            if (instance.amountOfPlayers > 0)
             {
-                for (int i = 1; i < players.Length; i++)
+                distProduct = players[0].transform.position;
+
+                if (instance.amountOfPlayers > 1)
                 {
-                    distProduct += players[i].transform.position;
+                    for (int i = 1; i < instance.amountOfPlayers; i++)
+                    {
+                        distProduct += players[i].transform.position;
 
+                    }
                 }
-            }
 
-            distProduct /= players.Length;
+                distProduct /= instance.amountOfPlayers;
+            }
         }
         return distProduct;
     }
@@ -157,7 +196,8 @@ public class GameManager : MonoBehaviour {
     void CreatePlayers(PlayerMenu.PlayerInfo[] info)
     {
         currentPlayers = new PlayerManager[4];
-        for (int i = 0; i < 4; i++)
+        amountOfPlayers = 0;
+        for (int i = 0; i < info.Length; i++)
         {
             if (info[i]._active)
             {

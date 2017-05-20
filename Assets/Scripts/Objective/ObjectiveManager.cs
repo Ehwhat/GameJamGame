@@ -25,6 +25,7 @@ public class ObjectiveManager : MonoBehaviour {
     public List<ObjectiveAbstract> objectives;
 
     private GameObjectiveState objectiveState = GameObjectiveState.NotComplete;
+    private static Vector3[] objectivePositions;
 
     private void Update()
     {
@@ -72,6 +73,7 @@ public class ObjectiveManager : MonoBehaviour {
 
     public void PopulateObjectives(List<ObjectivePrefab> decidedObjs,List<Vector3>mediumSpots, List<Vector3>bigSpots)
     {
+        objectivePositions = new Vector3[decidedObjs.Count];
         for (int i = 0; i < decidedObjs.Count; i++)
         {
             ObjectivePrefab objective = decidedObjs[i];
@@ -91,6 +93,7 @@ public class ObjectiveManager : MonoBehaviour {
             {
                 ObjectiveAbstract obj = Instantiate<ObjectiveAbstract>(objective.objective);
                 obj.transform.position = position;
+                objectivePositions[i] = position;
                 RegisterObjective(obj);
             }
         }
@@ -159,6 +162,11 @@ public class ObjectiveManager : MonoBehaviour {
             }
         }
         return bestObjective;
+    }
+
+    public static Vector3[] getObjectivePositions()
+    {
+        return objectivePositions;
     }
 
 }

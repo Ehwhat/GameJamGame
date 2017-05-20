@@ -55,7 +55,7 @@ MonoBehaviour:
     type: 2}
   reloadTime: 5
   weaponFiringMode: 3
-  possibleSpread: {x: 0.2, y: 0}
+  possibleSpread: {x: 0.1, y: 0}
   fireRatePerSecond: 20
   burstsPerSecond: 2
   shotsPerBurst: 3

@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 
 Shader "Custom/BoxProj" {
 	Properties{
@@ -37,7 +39,7 @@ Shader "Custom/BoxProj" {
 	v2f vert(float4 vertex : POSITION)
 	{
 		v2f o;
-		o.pos = mul(UNITY_MATRIX_MVP, vertex);
+		o.pos = UnityObjectToClipPos(vertex);
 		o.uvShadow = mul(unity_Projector, vertex) - fixed4(0.5, 0.5, 0 ,0);
 		o.uvFalloff = mul(unity_ProjectorClip, vertex);
 		UNITY_TRANSFER_FOG(o,o.pos);

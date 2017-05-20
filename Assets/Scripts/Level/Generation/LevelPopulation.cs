@@ -321,8 +321,9 @@ public class LevelPopulation : MonoBehaviour {
     {
         FindAvailableSpaces();
         FindSpots(PrefabSize.Large, bigPasses, ref bigSpots, OnlyDoRequiredBigPasses, requiredBigPasses, Color.red);
-        FindSpots(PrefabSize.Medium, 8, ref pathNodes, false, 0, Color.blue);
+        
         FindSpots(PrefabSize.Medium, mediumPasses, ref mediumSpots, OnlyDoRequiredMediumPasses, requiredMediumPasses, Color.yellow);
+        FindSpots(PrefabSize.Small, 64, ref pathNodes, false, 0, Color.blue);
         FindSpots(PrefabSize.Small, smallPasses, ref smallSpots, OnlyDoRequiredSmallPasses, requiredSmallPasses, Color.green);
 
         return (bigSpots.Count > requiredBigPasses && mediumSpots.Count > requiredMediumPasses && smallSpots.Count > requiredSmallPasses);
@@ -362,7 +363,8 @@ public class LevelPopulation : MonoBehaviour {
         List<Vector3> pathVectors = new List<Vector3>();
         foreach(Coord c in pathNodes)
         {
-            pathVectors.Add(new Vector3(c.x, 0, c.y));
+            Vector3 vec = CoordToWorldSpace(c);
+            pathVectors.Add(new Vector3(vec.x, 0, vec.z));
         }
         return pathVectors;
     }

@@ -11,7 +11,8 @@ public class ShootTest : MonoBehaviour {
 	    if(weapon != null)
         {
             shootAngle += Time.deltaTime*5;
-            weapon.FireWeapon(shootAngle);
+            weapon.AimWeaponAt(shootAngle);
+            weapon.FireWeapon();
         }
 	}
 }

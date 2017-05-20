@@ -210,7 +210,7 @@ public abstract class Projectile : PooledMonoBehaviour<Projectile> {
 
     public virtual void HandleDamage(RaycastHit hit)
     {
-		IHitTarget hitTarget = hit.collider.transform.root.gameObject.GetComponent<IHitTarget>();
+		IHitTarget hitTarget = hit.collider.transform.GetComponent<IHitTarget>();
         HitData hitData;
 
         Vector3 knockback = transform.forward * knockbackForce + knockbackModifier;

@@ -323,7 +323,8 @@ public class JayEnemy : EnemyBase, IHitTarget
             Vector3 targetDirection = player.transform.position - transform.position;
             Debug.Log(targetDirection);
             float currentAngle = Vector3.Angle(Vector3.forward, targetDirection);
-            weaponManager.FireWeapon(currentAngle);
+            weaponManager.AimWeaponAt(player.transform);
+            weaponManager.FireWeapon();
         }
     }
 

@@ -24,7 +24,8 @@ public class TurretVehicle : MonoBehaviour {
             AimTurret(lookDirection);
             if (controller.GetTrigger(XboxTrigger.RightTrigger) > 0.1f)
             {
-                _weapon.FireWeapon(_aimAngle);
+                _weapon.AimWeaponAt(_aimAngle);
+                _weapon.FireWeapon();
             }
         }
 	}

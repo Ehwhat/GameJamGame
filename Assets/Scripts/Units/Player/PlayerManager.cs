@@ -26,6 +26,7 @@ public class PlayerManager : ControlledUnitManager, IActivatableObject {
     HitData lastHit;
 
     public float _activationRadius = 1f;
+    public float _deathDepth = -10f;
     [SerializeField]
     private List<Collider> _nearestActivatables;
 
@@ -91,6 +92,12 @@ public class PlayerManager : ControlledUnitManager, IActivatableObject {
                 Destroy(marker.gameObject);
                 markerJob = null;
             }
+        }
+
+        if(transform.position.y < _deathDepth)
+        {
+            DamageFor(10000);
+            transform.position = GameManager.GetPlayersCentre();
         }
 
         if (_playerState == PlayerState.Alive)
