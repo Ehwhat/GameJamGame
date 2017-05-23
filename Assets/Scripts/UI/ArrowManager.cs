@@ -4,9 +4,9 @@ using System.Collections;
 public class ArrowManager : MonoBehaviour {
 
     public ObjectiveManager objectiveManager;
-	
-	// Update is called once per frame
-	void Update () {
+   
+    // Update is called once per frame
+    void Update () {
         PointTowardsObjective();
 	}
 

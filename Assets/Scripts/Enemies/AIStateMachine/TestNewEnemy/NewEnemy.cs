@@ -41,7 +41,7 @@ public class NewEnemy : AIUnitManager<TestEnemy>
     public void Start()
     {
         rb = GetComponent<Rigidbody>();
-        movePoint = gameObject.transform.FindChild("MovePoint").transform;
+        movePoint = gameObject.transform.Find("MovePoint").transform;
         stateMachine = new FSM<NewEnemy, TriggerState<NewEnemy>>("Patrol", this, new NewEnemy_Patrol("Patrol", this), new NewEnemy_Alert("Alert", this), new NewEnemy_Chase("Chase", this), new NewEnemy_Attack("Attack", this));
         if (stateMachine == null)
             Debug.Log("null");

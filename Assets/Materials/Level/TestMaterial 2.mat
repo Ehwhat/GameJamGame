@@ -6,197 +6,116 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: TestMaterial
+  m_Name: TestMaterial 2
   m_Shader: {fileID: 4800000, guid: 957e8a73d6162334cb53ecd888f46e9d, type: 3}
   m_ShaderKeywords: _EMISSION _PARALLAXMAP _SPECGLOSSMAP
   m_LightmapFlags: 1
+  m_EnableInstancingVariants: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
+  disabledShaderPasses: []
   m_SavedProperties:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TexEnvs:
-    - first:
-        name: _BlendANormal
-      second:
+    - _BlendANormal:
         m_Texture: {fileID: 2800000, guid: 482bf089fdbf1724187af612dde2dff8, type: 3}
         m_Scale: {x: 0.6, y: 0.6}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _BlendARock
-      second:
+    - _BlendARock:
         m_Texture: {fileID: 0}
         m_Scale: {x: 2.1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _BlendATex
-      second:
+    - _BlendATex:
         m_Texture: {fileID: 2800000, guid: 4afc2bfec127e7a4c81a0d2f2794d13b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _BlendBNormal
-      second:
+    - _BlendBNormal:
         m_Texture: {fileID: 2800000, guid: d0c2a01bef410b84cadc9a8d93661000, type: 3}
         m_Scale: {x: 2, y: 2}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _BlendBTex
-      second:
+    - _BlendBTex:
         m_Texture: {fileID: 2800000, guid: b1bbcc4bfa0627e4490e4d1e925c7203, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _BlendFrom
-      second:
+    - _BlendFrom:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _BlendTo
-      second:
+    - _BlendTo:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _BumpMap
-      second:
+    - _BumpMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _DetailAlbedoMap
-      second:
+    - _DetailAlbedoMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _DetailMask
-      second:
+    - _DetailMask:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _DetailNormalMap
-      second:
+    - _DetailNormalMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _EmissionMap
-      second:
+    - _EmissionMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _GroundNormal
-      second:
+    - _GroundNormal:
         m_Texture: {fileID: 2800000, guid: 40607542a1370bb41a5a9da6e10c0707, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _MainTex
-      second:
+    - _MainTex:
         m_Texture: {fileID: 2800000, guid: 4afc2bfec127e7a4c81a0d2f2794d13b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _MetallicGlossMap
-      second:
+    - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _NoiseTexture
-      second:
+    - _NoiseTexture:
         m_Texture: {fileID: 2800000, guid: c0c40d3b1e8ea3042a2f27a53404c1a3, type: 3}
         m_Scale: {x: 0.1, y: 0.1}
         m_Offset: {x: 0.1, y: 0}
-    - first:
-        name: _OcclusionMap
-      second:
+    - _OcclusionMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _ParallaxMap
-      second:
+    - _ParallaxMap:
         m_Texture: {fileID: 2800000, guid: cf8e3f8a078961341af4b981315ac51c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _SpecGlossMap
-      second:
+    - _SpecGlossMap:
         m_Texture: {fileID: 2800000, guid: 819484c66b44826449a88ee5d54fa63f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - first:
-        name: _BumpScale
-      second: 1
-    - first:
-        name: _Cutoff
-      second: 0.5
-    - first:
-        name: _DetailNormalMapScale
-      second: 1
-    - first:
-        name: _DstBlend
-      second: 0
-    - first:
-        name: _GlossMapScale
-      second: 0.098
-    - first:
-        name: _Glossiness
-      second: 0
-    - first:
-        name: _GlossyReflections
-      second: 1
-    - first:
-        name: _Metallic
-      second: 1
-    - first:
-        name: _Mode
-      second: 0
-    - first:
-        name: _OcclusionStrength
-      second: 1
-    - first:
-        name: _Parallax
-      second: 0.005
-    - first:
-        name: _SmoothnessTextureChannel
-      second: 0
-    - first:
-        name: _SpecularHighlights
-      second: 1
-    - first:
-        name: _SrcBlend
-      second: 1
-    - first:
-        name: _UVSec
-      second: 0
-    - first:
-        name: _ZWrite
-      second: 1
+    - _BumpScale: 1
+    - _Cutoff: 0.5
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _GlossMapScale: 0.098
+    - _Glossiness: 0
+    - _GlossyReflections: 1
+    - _Metallic: 1
+    - _Mode: 0
+    - _NoiseIntensity: 1
+    - _OcclusionStrength: 1
+    - _Parallax: 0.005
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _UVSec: 0
+    - _ZWrite: 1
     m_Colors:
-    - first:
-        name: _BlendAColour
-      second: {r: 0.3529412, g: 0.9411765, b: 0.57606494, a: 1}
-    - first:
-        name: _BlendBColour
-      second: {r: 1, g: 1, b: 1, a: 1}
-    - first:
-        name: _BlendFromTint
-      second: {r: 1, g: 1, b: 1, a: 1}
-    - first:
-        name: _BlendToTint
-      second: {r: 1, g: 1, b: 1, a: 1}
-    - first:
-        name: _Color
-      second: {r: 1, g: 1, b: 1, a: 1}
-    - first:
-        name: _EmissionColor
-      second: {r: 0, g: 0, b: 0, a: 1}
-    - first:
-        name: _SpecColor
-      second: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+    - _BlendAColour: {r: 0.3529412, g: 0.9411765, b: 0.57606494, a: 1}
+    - _BlendBColour: {r: 1, g: 1, b: 1, a: 1}
+    - _BlendFromTint: {r: 1, g: 1, b: 1, a: 1}
+    - _BlendToTint: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}

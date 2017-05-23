@@ -44,12 +44,12 @@ public class KeepAreaClearObjective : BoundObjective, IActivatableObject
 
     public bool ActivateCheck(PlayerManager player)
     {
-        return true;
+        return !_isActive;
     }
 
     public IEnumerator CheckStep()
     {
-        while (true)
+        while (_objectiveActive)
         {
             SetUITime(_currentTimeClear / _timeGoal);
             if (CheckArea("Player") && _isActive)
@@ -64,6 +64,7 @@ public class KeepAreaClearObjective : BoundObjective, IActivatableObject
                 }
                 if(_currentTimeClear >= _timeGoal)
                 {
+                    _objectiveActive = false;
                     ObjectiveSuccess();
                 }
             }
