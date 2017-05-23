@@ -3485,9 +3485,6 @@ MonoBehaviour:
   - size: 5
     objective: {fileID: 114000011967607426, guid: 167349e7fbefea04e93a1b35fd586ba4,
       type: 2}
-  - size: 5
-    objective: {fileID: 114000012555758430, guid: 93aa00f6545f22a418e65cb39f1c0215,
-      type: 2}
   exitPrefab: {fileID: 114000010988041382, guid: b8528baf975825a4b8de419f7a8e54a7,
     type: 2}
   amountOfObjectives: 2
@@ -4348,10 +4345,6 @@ Prefab:
     - target: {fileID: 4448053992954226, guid: 665d801dfced6834d89525184b9b2e41, type: 2}
       propertyPath: m_RootOrder
       value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 1702075937668808, guid: 665d801dfced6834d89525184b9b2e41, type: 2}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 665d801dfced6834d89525184b9b2e41, type: 2}
@@ -5261,7 +5254,7 @@ Prefab:
     - target: {fileID: 114000010224974352, guid: d313428f5984e084395f05a93140dbda,
         type: 2}
       propertyPath: playerInfo.Array.data[1]._active
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114000010224974352, guid: d313428f5984e084395f05a93140dbda,
         type: 2}
@@ -5372,12 +5365,12 @@ Prefab:
     - target: {fileID: 114000010224974352, guid: d313428f5984e084395f05a93140dbda,
         type: 2}
       propertyPath: playerInfo.Array.data[2]._active
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114000010224974352, guid: d313428f5984e084395f05a93140dbda,
         type: 2}
       propertyPath: playerInfo.Array.data[3]._active
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114000010224974352, guid: d313428f5984e084395f05a93140dbda,
         type: 2}

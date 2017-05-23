@@ -23,8 +23,8 @@ public class ObjectiveManager : MonoBehaviour {
 
     public delegate void OnObjectiveComplete (ObjectiveAbstract objective);
 
-    public OnObjectiveComplete onObjectiveSuccess;
-    public OnObjectiveComplete onObjectiveFailure;
+    public OnObjectiveComplete onObjectiveSuccess = null;
+    public OnObjectiveComplete onObjectiveFailure = null;
 
     public ObjectivePrefab[] objectivePrefabs;
     public ObjectiveExit exitPrefab;
@@ -37,6 +37,10 @@ public class ObjectiveManager : MonoBehaviour {
 
     private void Update()
     {
+        if (onObjectiveSuccess != null)
+        {
+            onObjectiveSuccess(null);
+        }
         if (CheckAllObjectivesDone() && objectiveState == GameObjectiveState.NotComplete)
         {
             Debug.Log("All objectives done");
@@ -118,14 +122,21 @@ public class ObjectiveManager : MonoBehaviour {
 
     public void AddSuccessScore(ObjectiveAbstract obj)
     {
-        onObjectiveSuccess(obj);
+        if (onObjectiveSuccess != null)
+        {
+            onObjectiveSuccess(obj);
+        }
         GameManager.AddScore(obj._objectiveSuccessScore);
         score.UpdateScore(GameManager.GetScore());
+        SlidingUI.SendSlidingMessage("Objective complete!");
     }
 
     public void AddFailureScore(ObjectiveAbstract obj)
     {
-        onObjectiveFailure(obj);
+        if (onObjectiveFailure != null)
+        {
+            onObjectiveFailure(obj);
+        }
         GameManager.AddScore(obj._objectiveFailureScore);
         score.UpdateScore(GameManager.GetScore());
     }

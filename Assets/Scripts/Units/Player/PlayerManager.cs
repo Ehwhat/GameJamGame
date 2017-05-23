@@ -143,9 +143,14 @@ public class PlayerManager : ControlledUnitManager, IActivatableObject {
         gameObject.SetActive(active);
     }
 
-    public void SetWeapon(Weapon weapon)
+    public void SetWeapon(Weapon weapon, bool announce = true)
     {
         playerShooting.SetWeapon(weapon);
+        if(announce)
+        {
+            SlidingUI.SendSlidingMessage("Player " + playerIndex + " Picked up " + weapon.weaponName);
+        }
+        
     }
 
     public void EnterContext(InputContext context)

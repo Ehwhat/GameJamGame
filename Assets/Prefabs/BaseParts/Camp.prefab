@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4000011372462642}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Camp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37,7 +37,7 @@ GameObject:
   - component: {fileID: 33000011436606570}
   - component: {fileID: 65000010923785156}
   - component: {fileID: 23000010256770612}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55,7 +55,7 @@ GameObject:
   - component: {fileID: 33000013111992588}
   - component: {fileID: 23000012310857280}
   - component: {fileID: 65000012096746938}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cylinder (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ GameObject:
   - component: {fileID: 33000011460304270}
   - component: {fileID: 65000013426847126}
   - component: {fileID: 23000012033555640}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,7 +88,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4000014203280500}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Tent (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 33000011418141120}
   - component: {fileID: 136000011445525766}
   - component: {fileID: 23000012208538492}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Log Bench
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 33000013158097814}
   - component: {fileID: 65000013392952080}
   - component: {fileID: 23000013365024870}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -142,7 +142,7 @@ GameObject:
   - component: {fileID: 33000011945821742}
   - component: {fileID: 136000012934749622}
   - component: {fileID: 23000012843404918}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Log bench
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -160,7 +160,7 @@ GameObject:
   - component: {fileID: 33000012943485064}
   - component: {fileID: 135000012833305476}
   - component: {fileID: 23000011060789318}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -178,7 +178,7 @@ GameObject:
   - component: {fileID: 33000013444994858}
   - component: {fileID: 65000011253123014}
   - component: {fileID: 23000012700276792}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -196,7 +196,7 @@ GameObject:
   - component: {fileID: 33000011053387006}
   - component: {fileID: 23000011707189640}
   - component: {fileID: 65000013386524722}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cylinder (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -214,7 +214,7 @@ GameObject:
   - component: {fileID: 33000010000914960}
   - component: {fileID: 23000010043589564}
   - component: {fileID: 65000013201132798}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cylinder (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -232,7 +232,7 @@ GameObject:
   - component: {fileID: 33000010001857372}
   - component: {fileID: 23000013042462676}
   - component: {fileID: 65000010032841150}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cylinder (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -247,7 +247,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4000014248535556}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Tent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -265,7 +265,7 @@ GameObject:
   - component: {fileID: 33000010523370878}
   - component: {fileID: 136000011952177962}
   - component: {fileID: 23000012418549756}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Log bench
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -280,7 +280,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4000011628196738}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Tent (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -295,7 +295,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4000011637820018}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Tent (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
