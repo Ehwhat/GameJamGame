@@ -4,7 +4,9 @@ using System.Collections;
 public class healthPickup : MonoBehaviour
 {
     public float healAmount = 10;
+
     public ParticleSystem particles;
+    public TextMesh pickupText;
 
     public bool respawnHealth = true;
     public float respawnTime = 1;
@@ -23,6 +25,7 @@ public class healthPickup : MonoBehaviour
             hasHealed = true;
             particles.Stop();
             particleStopTime = Time.time;
+            pickupText.gameObject.SetActive(false);
             if (!respawnHealth)
             {
                 Destroy(gameObject, particles.duration);
@@ -39,6 +42,7 @@ public class healthPickup : MonoBehaviour
     {
         yield return new WaitForSeconds(seconds);
         hasHealed = false;
+        pickupText.gameObject.SetActive(true);
         particles.Play();
         particles.time = particleStopTime + seconds;
     }

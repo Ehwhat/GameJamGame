@@ -4,6 +4,7 @@ using System.Collections;
 public class gunPickUp : MonoBehaviour
 {
     public ParticleSystem particles;
+    public TextMesh pickupText;
 
     public bool respawnWeapon = true;
     public float respawnTime = 1;
@@ -23,6 +24,7 @@ public class gunPickUp : MonoBehaviour
             hasGiven = true;
             particles.Stop();
             particleStopTime = Time.time;
+            pickupText.gameObject.SetActive(false);
             if (!respawnWeapon)
             {
                 Destroy(gameObject, particles.duration);
@@ -39,6 +41,7 @@ public class gunPickUp : MonoBehaviour
     {
         yield return new WaitForSeconds(seconds);
         hasGiven = false;
+        pickupText.gameObject.SetActive(true);
         particles.Play();
         particles.time = particleStopTime + seconds;
     }

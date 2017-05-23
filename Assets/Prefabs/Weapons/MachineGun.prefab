@@ -62,8 +62,8 @@ MonoBehaviour:
   shotsPerBurst: 3
   bulletsPerShot: 1
   ammoSystem: 0
-  maxStoredAmmo: 1000
-  storedAmmo: 1000
-  ammoPackAmount: 300
-  ammoPerClip: 150
+  maxStoredAmmo: 300
+  storedAmmo: 300
+  ammoPackAmount: 100
+  ammoPerClip: 100
   weaponShotSound: {fileID: 8300000, guid: ec35fa56241ac4a4e91357c1f4241753, type: 3}

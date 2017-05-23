@@ -58,12 +58,12 @@ MonoBehaviour:
   weaponFiringMode: 2
   possibleSpread: {x: 0.02, y: 0}
   fireRatePerSecond: 15
-  burstsPerSecond: 1
+  burstsPerSecond: 3
   shotsPerBurst: 3
   bulletsPerShot: 1
   ammoSystem: 0
-  maxStoredAmmo: 132
-  storedAmmo: 132
+  maxStoredAmmo: 120
+  storedAmmo: 120
   ammoPackAmount: 60
-  ammoPerClip: 32
+  ammoPerClip: 30
   weaponShotSound: {fileID: 0}
