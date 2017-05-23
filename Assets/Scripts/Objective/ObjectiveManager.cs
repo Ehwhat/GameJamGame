@@ -18,6 +18,11 @@ public class ObjectiveManager : MonoBehaviour {
         Done
     }
 
+    public delegate void OnObjectiveComplete (ObjectiveAbstract objective);
+
+    public OnObjectiveComplete onObjectiveSuccess;
+    public OnObjectiveComplete onObjectiveFailure;
+
     public ObjectivePrefab[] objectivePrefabs;
     public ObjectiveExit exitPrefab;
     public int amountOfObjectives;
@@ -110,11 +115,13 @@ public class ObjectiveManager : MonoBehaviour {
 
     public void AddSuccessScore(ObjectiveAbstract obj)
     {
+        onObjectiveSuccess(obj);
         GameManager.AddScore(obj._objectiveSuccessScore);
     }
 
     public void AddFailureScore(ObjectiveAbstract obj)
     {
+        onObjectiveFailure(obj);
         GameManager.AddScore(obj._objectiveFailureScore);
     }
 

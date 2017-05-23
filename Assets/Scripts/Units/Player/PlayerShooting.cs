@@ -39,6 +39,11 @@ public class PlayerShooting  {
         }
     }
 
+    public void GiveAmmoPack()
+    {
+        weaponManager.GiveAmmoPack();
+    }
+
     public float GetAmmoClipPercent()
     {
         return weaponManager.GetAmmoClipPercent();

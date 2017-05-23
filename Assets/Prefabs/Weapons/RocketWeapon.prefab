@@ -16,10 +16,10 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000012682754736}
-  - 114: {fileID: 114000013566121078}
+  - component: {fileID: 4000012682754736}
+  - component: {fileID: 114000013566121078}
   m_Layer: 0
   m_Name: RocketWeapon
   m_TagString: Untagged
@@ -36,10 +36,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &114000013566121078
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -51,15 +51,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dc362786b2fbd4489149daba07be837, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponFirePoint: {fileID: 0}
   weaponProjectile: {fileID: 114000013974713260, guid: 17602b5588d292c4a9498dd0ca735778,
     type: 2}
+  reloadTime: 3
+  weaponFiringMode: 0
   possibleSpread: {x: 0.02, y: 0}
   fireRatePerSecond: 0.6
+  burstsPerSecond: 1
+  shotsPerBurst: 1
   bulletsPerShot: 1
-  reloadTime: 3
   ammoSystem: 0
   maxStoredAmmo: 32
   storedAmmo: 8
-  ammoPackAmount: 0
+  ammoPackAmount: 4
   ammoPerClip: 2
+  weaponShotSound: {fileID: 0}

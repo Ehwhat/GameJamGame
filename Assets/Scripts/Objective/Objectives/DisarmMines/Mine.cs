@@ -6,6 +6,8 @@ public class Mine : MonoBehaviour, IActivatableObject {
 
     private InputContext _contextInput;
     public bool _disarmed;
+    public float _explodeRadius = 3;
+    public ParticleSystem _particleSystem;
 
     public void OnActivate(PlayerManager player)
     {
@@ -29,7 +31,7 @@ public class Mine : MonoBehaviour, IActivatableObject {
 
     public bool ActivateCheck(PlayerManager player)
     {
-        return true;
+        return !_disarmed;
     }
 
     void OnDisarm()
@@ -39,7 +41,25 @@ public class Mine : MonoBehaviour, IActivatableObject {
 	
     void OnFailure()
     {
+        Explode();
         _disarmed = true;
+    }
+
+    void Explode()
+    {
+        _particleSystem.Play();
+        Collider[] colliders = Physics.OverlapSphere(transform.position, _explodeRadius);
+        if(colliders.Length > 0)
+        {
+            foreach(Collider c in colliders)
+            {
+                DamageableObject d = c.GetComponent<DamageableObject>();
+                if (d)
+                {
+                    d.DamageFor(1000);
+                }
+            }
+        }
     }
 
 }

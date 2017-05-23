@@ -11,6 +11,7 @@
 
 		_GroundNormal("Overall Ground Normal", 2D) = "white"{}
 
+		_NoiseIntensity("Noise Intensity", Range(0.1, 20)) = 1
 		_NoiseTexture("Noise", 2D) = "white"{}
 
 		_Glossiness ("Smoothness", Range(0,1)) = 0.5
@@ -54,6 +55,7 @@
 
 		half _Glossiness;
 		half _Metallic;
+		float _NoiseIntensity;
 		fixed4 _BlendAColour;
 		fixed4 _BlendBColour;
 
@@ -65,7 +67,8 @@
 			half3 blendFromNormal = UnpackNormal(tex2D(_BlendANormal, IN.uv_BlendANormal));
 			half3 blendToNormal = UnpackNormal(tex2D(_BlendBNormal, IN.uv_BlendBNormal));
 			
-			float4 blend = tex2D(_NoiseTexture, IN.uv_NoiseTexture);
+			float4 blend = tex2D(_NoiseTexture, IN.uv_NoiseTexture)*_NoiseIntensity;
+			blend = clamp(blend, 0, 1);
 
 			float4 c = ((1 - blend)*blendFrom + blend*blendTo);
 			half3 normal = ((1 - blend)*blendFromNormal + blend*blendToNormal);

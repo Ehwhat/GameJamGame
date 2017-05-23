@@ -79,6 +79,7 @@ public class PlayerManager : ControlledUnitManager, IActivatableObject {
         {
             InputContextManager.PlaceIndicator(targetObject.transform);
         }
+        
         _targetActivateableObject = targetObject;
 
         if (marker != null && markerJob != null)
@@ -215,6 +216,11 @@ public class PlayerManager : ControlledUnitManager, IActivatableObject {
     public float GetPlayerHealthPercent()
     {
         return (currentHealth / maxHealth);
+    }
+
+    public void GiveAmmoPack()
+    {
+        playerShooting.GiveAmmoPack();
     }
 
     public override void OnDeath()
