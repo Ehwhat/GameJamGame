@@ -43,11 +43,17 @@ public class PlayerMenuManager : MonoBehaviour {
             } else {
                 if (playerOneController.GetTrigger(XboxTrigger.RightTrigger) > 0.1f)
                 {
+                    //Send required data to the player manager
                     GameManager.StartGame();
                 }
             }
         }
 	}
+
+   public void StartGame()
+    {
+        GameManager.StartGame();
+    }
 
     void GiveMenusControllers()
     {

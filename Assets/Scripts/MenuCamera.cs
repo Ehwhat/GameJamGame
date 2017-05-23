@@ -6,6 +6,8 @@ public class MenuCamera : MonoBehaviour {
     public float speedFactor = 0.1f;
     public float zoomFactor = 1.0f;
     public Transform currentMount;
+
+    
     //public Camera cameraComp;
     void Start()
     {
@@ -20,8 +22,14 @@ public class MenuCamera : MonoBehaviour {
         //cameraComp.fieldOfView = 60 + velocity * zoomFactor;
         //cameraComp.zoomFactor = 60 + velocity * zoomFactor;
     }
-    public void setMount(Transform newMount)
+    public void setMountByTransform(Transform newMount)
     {
         currentMount = newMount;
+    }
+
+    public void setMount(MountPoint newMount)
+    {
+        currentMount = newMount.transform;
+        newMount.button.Select();
     }
 }
