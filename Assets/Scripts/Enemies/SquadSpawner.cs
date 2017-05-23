@@ -33,11 +33,28 @@ public class SquadSpawner : MonoBehaviour {
     public NavMeshEnemySquadManager SpawnSquad(float distance)
     {
         NavMeshEnemySquadManager squad = Instantiate(GetRandomSquad());
+        squad.Spawn();
         return squad;
     }
+
     public NavMeshEnemySquadManager SpawnSquad(float distance, NavMeshEnemySquadManager squad)
     {
-        squad = Instantiate<NavMeshEnemySquadManager>(squad);
+        squad = Instantiate(squad);
+        squad.Spawn();
+        return squad;
+    }
+
+    public NavMeshEnemySquadManager SpawnSquad(Vector3 goToPoint, NavMeshEnemySquadManager squad)
+    {
+        squad = Instantiate(squad);
+        squad.Spawn(goToPoint);
+        return squad;
+    }
+
+    public NavMeshEnemySquadManager SpawnSquad(Vector3 goToPoint)
+    {
+        NavMeshEnemySquadManager squad = Instantiate(GetRandomSquad());
+        squad.Spawn(goToPoint);
         return squad;
     }
 

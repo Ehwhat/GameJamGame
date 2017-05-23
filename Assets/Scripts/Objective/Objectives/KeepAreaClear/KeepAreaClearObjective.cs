@@ -13,11 +13,26 @@ public class KeepAreaClearObjective : BoundObjective, IActivatableObject
     public float _timeGoal = 30;
     public static string PROPERTY_TIME_GOAL = "_timeGoal";
 
+    public Projector _timeProjector;
+    public static string PROPERTY_TOME_PROJ = "_timeProjector";
+
+    void Start()
+    {
+        _timeProjector.material = new Material(_timeProjector.material);
+        _timeProjector.material.SetFloat("_Radius", _boundsRadius/2);
+
+    }
+
     public void OnActivate(PlayerManager player)
     {
         if (!_isActive)
         {
+            SetUITime(0);
             _isActive = true;
+            for (int i = 0; i < 2; i++)
+            {
+                GameManager.SpawnSquad(transform.position);
+            }
             StartCoroutine(CheckStep());
         }
     }
@@ -36,6 +51,7 @@ public class KeepAreaClearObjective : BoundObjective, IActivatableObject
     {
         while (true)
         {
+            SetUITime(_currentTimeClear / _timeGoal);
             if (CheckArea("Player") && _isActive)
             {
                 if (CheckArea("Enemy"))
@@ -53,6 +69,11 @@ public class KeepAreaClearObjective : BoundObjective, IActivatableObject
             }
             yield return new WaitForEndOfFrame();
         }
+    }
+
+    private void SetUITime(float i)
+    {
+        _timeProjector.material.SetFloat("_FillAmount", i * 360);
     }
 
     private bool CheckArea(string tag)

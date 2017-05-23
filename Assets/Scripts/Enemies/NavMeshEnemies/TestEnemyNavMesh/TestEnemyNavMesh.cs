@@ -84,7 +84,10 @@ public class TestEnemyNavMesh : NavMeshEnemyBase, IHitTarget
                 RaycastHit hit;
                 if (Physics.Raycast(transform.position, player.transform.position - transform.position, out hit))
                 {
-                    players.Add(new PlayerFoundInfo(player,Vector3.Distance(transform.position, player.transform.position)));
+                    if (hit.collider.gameObject == player.gameObject)
+                    {
+                        players.Add(new PlayerFoundInfo(player, Vector3.Distance(transform.position, player.transform.position)));
+                    }
                 }
             }
         }

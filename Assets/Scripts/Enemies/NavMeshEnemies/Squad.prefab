@@ -51,8 +51,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f72b427973ed8c4fa68e2637b1cbf59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _spawnOnStart: 0
   _enemies:
   - {fileID: 114378165375593846, guid: d24c921cc7a03d94197ef242fd742739, type: 2}
   - {fileID: 114378165375593846, guid: d24c921cc7a03d94197ef242fd742739, type: 2}
   - {fileID: 114378165375593846, guid: d24c921cc7a03d94197ef242fd742739, type: 2}
   - {fileID: 114378165375593846, guid: d24c921cc7a03d94197ef242fd742739, type: 2}
+  _patrolPath: []
+  _squadPatrolType: 0
+  _squadSpawnPosition: 2
+  _squadSpawnPoint: {x: 0, y: 0, z: 0}

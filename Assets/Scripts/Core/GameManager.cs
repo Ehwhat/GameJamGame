@@ -112,6 +112,14 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public static void SpawnSquad(Vector3 goToPoint)
+    {
+        if (instance.squadSpawn != null)
+        {
+            instance.squadSpawn.SpawnSquad(goToPoint);
+        }
+    }
+
     public static void SpawnSquad(float distance, NavMeshEnemySquadManager squad)
     {
         if (instance.squadSpawn != null)

@@ -4,8 +4,14 @@ using System.Collections;
 
 public static class ListDrawer {
 
+    
+
     public static void Show(SerializedProperty list, GUIContent label)
     {
+
+        GUIStyle buttonStyle = new GUIStyle();
+        buttonStyle = EditorStyles.miniButton;
+
         if (list == null)
         {
             EditorGUILayout.LabelField(label);
@@ -22,7 +28,7 @@ public static class ListDrawer {
             EditorGUILayout.BeginHorizontal();
             list.isExpanded = EditorGUILayout.Foldout(list.isExpanded, label);
             list.arraySize = EditorGUILayout.IntField("Size:", list.arraySize);
-            if (GUILayout.Button("+", EditorStyles.miniButton))
+            if (GUILayout.Button("+", EditorStyles.miniButton, GUILayout.MaxWidth(30)))
             {
                 list.InsertArrayElementAtIndex(0);
             }
@@ -88,7 +94,7 @@ public static class ListDrawer {
         {
             GUI.enabled = false;
         }
-        if (GUILayout.Button("/\\", EditorStyles.miniButtonLeft))
+        if (GUILayout.Button("/\\", EditorStyles.miniButtonLeft, GUILayout.MaxWidth(30)))
         {
             list.MoveArrayElement(arrayIndex, arrayIndex - 1);
         }
@@ -98,13 +104,13 @@ public static class ListDrawer {
         {
             GUI.enabled = false;
         }
-        if (GUILayout.Button("\\/", EditorStyles.miniButtonRight))
+        if (GUILayout.Button("\\/", EditorStyles.miniButtonRight, GUILayout.MaxWidth(30)))
         {
             list.MoveArrayElement(arrayIndex, arrayIndex + 1);
         }
         GUI.enabled = gui_enabled;
 
-        if (GUILayout.Button("-", EditorStyles.miniButtonLeft))
+        if (GUILayout.Button("-", EditorStyles.miniButtonLeft, GUILayout.MaxWidth(30)))
         {
             destroyThis = true;
         }
@@ -112,9 +118,10 @@ public static class ListDrawer {
         {
             destroyThis = false;
         }
-        if (GUILayout.Button("+", EditorStyles.miniButtonRight))
+        if (GUILayout.Button("+", EditorStyles.miniButtonRight, GUILayout.MaxWidth(30)))
         {
             list.InsertArrayElementAtIndex(arrayIndex);
+            list.GetArrayElementAtIndex(arrayIndex+1).isExpanded = true;
         }
     }
 
