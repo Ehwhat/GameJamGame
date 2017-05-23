@@ -68,6 +68,7 @@ public class PlayerManager : ControlledUnitManager, IActivatableObject {
 
         AlexUIManager.SetPlayerAmmoBar((int)playerIndex, playerShooting.GetAmmoClipPercent());
         AlexUIManager.SetPlayerHealthBar((int)playerIndex, GetPlayerHealthPercent());
+        AlexUIManager.SetWeaponName((int)playerIndex, playerShooting.GetWeaponName());
 
         GameObject targetObject = GetClosestActivateableObject();
         if (_targetActivateableObject != null && (_targetActivateableObject != targetObject || targetObject == null))
@@ -150,9 +151,12 @@ public class PlayerManager : ControlledUnitManager, IActivatableObject {
 
     public void BreakContext()
     {
-        _playerState = PlayerState.Alive;
-        currentContext.Break();
-        currentContext = null;
+        if (currentContext != null)
+        {
+            _playerState = PlayerState.Alive;
+            currentContext.Break();
+            currentContext = null;
+        }
     }
 
     public void EnterDropPlace(MarkerCallback callback)
@@ -225,6 +229,7 @@ public class PlayerManager : ControlledUnitManager, IActivatableObject {
 
     public override void OnDeath()
     {
+        BreakContext();
         _playerState = PlayerState.Dead;
         playerMovement.OnKill(lastHit);
         StartCoroutine(DisableRotation());

@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour {
     public PlayerManager[] currentPlayers;
     public PlayerMenu.PlayerInfo[] playerInfo;
 
-    public float gameScore;
+    public int gameScore;
 
     private PlayerSpawnPoint spawnPoint;
     private SquadSpawner squadSpawn;
@@ -248,17 +248,17 @@ public class GameManager : MonoBehaviour {
         currentState = state;
     }
 
-    public static float GetScore()
+    public static int GetScore()
     {
         return instance.gameScore;
     }
 
-    public static void SetScore(float score)
+    public static void SetScore(int score)
     {
         instance.gameScore = score;
     }
 
-    public static void AddScore(float amount)
+    public static void AddScore(int amount)
     {
         instance.gameScore += amount;
     }

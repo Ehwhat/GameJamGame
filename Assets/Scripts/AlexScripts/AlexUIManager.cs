@@ -7,6 +7,7 @@ public class AlexUIManager : MonoBehaviour {
     [System.Serializable]
     public struct AlexPlayerUI
     {
+        public Text weaponName;
         public Image healthBar;
         public Image ammoBar;
     }
@@ -54,4 +55,20 @@ public class AlexUIManager : MonoBehaviour {
         }
         return null;
     }
+
+    private static Text GetPlayerWeaponName(int playerIndex)
+    {
+        if(playerIndex < 4 && playerIndex > -1)
+        {
+            return staticPlayerUIs[playerIndex].weaponName;
+        }
+        return null;
+
+    }
+    public static void SetWeaponName(int playerIndex, string name)
+    {
+        Text text = GetPlayerWeaponName(playerIndex);
+        text.text = name;
+    }
+
 }

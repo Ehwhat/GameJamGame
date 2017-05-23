@@ -23,8 +23,8 @@ public abstract class Objective_Editor : Editor {
         {
             EditorGUI.indentLevel++;
             EditorGUILayout.BeginHorizontal();
-            _objectiveSuccessScore.floatValue = EditorGUILayout.FloatField(new GUIContent("Success Score"), _objectiveSuccessScore.floatValue);
-            _objectiveFailureScore.floatValue = EditorGUILayout.FloatField(new GUIContent("Failure Score"), _objectiveFailureScore.floatValue);
+            _objectiveSuccessScore.intValue = EditorGUILayout.IntField(new GUIContent("Success Score"), _objectiveSuccessScore.intValue);
+            _objectiveFailureScore.intValue = EditorGUILayout.IntField(new GUIContent("Failure Score"), _objectiveFailureScore.intValue);
             EditorGUILayout.EndHorizontal();
             EditorGUI.indentLevel--;
         }

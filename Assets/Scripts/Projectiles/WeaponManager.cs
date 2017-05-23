@@ -127,6 +127,11 @@ public class WeaponManager : ProjectileManager {
         }
     }
 
+    public string GetWeaponName()
+    {
+        return currentWeapon.weaponName;
+    }
+
     float Angle360(Vector3 from, Vector3 to, Vector3 right)
     {
         float angle = Vector3.Angle(from, to);

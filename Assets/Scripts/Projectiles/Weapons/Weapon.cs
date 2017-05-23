@@ -32,6 +32,10 @@ public class Weapon : MonoBehaviour {
         Unlimited
     }
 
+    [Tooltip("Weapon Name")]
+    public string weaponName;
+    public static string PROPERTY_WEAPON_NAME = "weaponName";
+
     [Tooltip("Projectile that the weapon fires")]
     public Projectile weaponProjectile;
     public static string PROPERTY_WEAPON_PROJECTILE = "weaponProjectile";

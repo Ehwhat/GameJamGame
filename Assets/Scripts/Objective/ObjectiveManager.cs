@@ -18,6 +18,9 @@ public class ObjectiveManager : MonoBehaviour {
         Done
     }
 
+
+    public ScoreUI score;
+
     public delegate void OnObjectiveComplete (ObjectiveAbstract objective);
 
     public OnObjectiveComplete onObjectiveSuccess;
@@ -117,12 +120,14 @@ public class ObjectiveManager : MonoBehaviour {
     {
         onObjectiveSuccess(obj);
         GameManager.AddScore(obj._objectiveSuccessScore);
+        score.UpdateScore(GameManager.GetScore());
     }
 
     public void AddFailureScore(ObjectiveAbstract obj)
     {
         onObjectiveFailure(obj);
         GameManager.AddScore(obj._objectiveFailureScore);
+        score.UpdateScore(GameManager.GetScore());
     }
 
     public bool CheckAllObjectivesDone()

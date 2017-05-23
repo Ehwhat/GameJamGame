@@ -11,11 +11,11 @@ public abstract class ObjectiveAbstract : MonoBehaviour {
     public bool _objectiveActive = true;
 
     [SerializeField]
-    public float _objectiveSuccessScore = 100;
+    public int _objectiveSuccessScore = 100;
     public static string PROPERTY_OBJECTIVE_SUCCESS_SCORE = "_objectiveSuccessScore";
 
     [SerializeField]
-    public float _objectiveFailureScore = -100;
+    public int _objectiveFailureScore = -100;
     public static string PROPERTY_OBJECTIVE_FAILURE_SCORE = "_objectiveFailureScore";
 
     public void AddObjectiveCallbacks(ObjectiveCallback successCallback, ObjectiveCallback failureCallback)

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 [CustomEditor(typeof(Weapon))]
 public class Weapon_Editor : Editor {
 
+    SerializedProperty _weaponName;
     SerializedProperty _weaponProjectile;
     SerializedProperty _weaponReload;
 
@@ -36,6 +37,7 @@ public class Weapon_Editor : Editor {
 
     void OnEnable()
     {
+        _weaponName = FindProperty(serializedObject, Weapon.PROPERTY_WEAPON_NAME);
 
         _weaponProjectile = FindProperty(serializedObject,Weapon.PROPERTY_WEAPON_PROJECTILE);
         _weaponReload = FindProperty(serializedObject,Weapon.PROPERTY_RELOAD_TIME);
@@ -74,6 +76,8 @@ public class Weapon_Editor : Editor {
         foldoutStyle.font = EditorStyles.boldFont;
 
         serializedObject.Update();
+
+        _weaponName.stringValue = EditorGUILayout.TextField(new GUIContent("Weapon Name", _toolTips[_weaponName]), _weaponName.stringValue);
 
         _generalWeaponsSettingFoldout = EditorGUILayout.Foldout(_generalWeaponsSettingFoldout, new GUIContent("General Weapons Settings"), foldoutStyle);
         if (_generalWeaponsSettingFoldout)

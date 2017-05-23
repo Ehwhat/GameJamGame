@@ -214,7 +214,8 @@ public class InputContext : TrackingUIElement {
 
     public void Break()
     {
-        Destroy(gameObject);
+        if(gameObject != null)
+           Destroy(gameObject);
     }
 
     void Update()

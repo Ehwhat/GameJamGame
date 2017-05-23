@@ -54,6 +54,11 @@ public class PlayerShooting  {
         return weaponManager.GetReloadPercent();
     }
 
+    public string GetWeaponName()
+    {
+        return weaponManager.GetWeaponName();
+    }
+
     public void SetupAim()
     {
         aimRect.SetPosition(0, weaponManager.GetFiringPoint());

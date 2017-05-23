@@ -8,12 +8,14 @@ public class Mine : MonoBehaviour, IActivatableObject {
     public bool _disarmed;
     public float _explodeRadius = 3;
     public ParticleSystem _particleSystem;
+    private bool _playerUsing = false;
 
     public void OnActivate(PlayerManager player)
     {
         if (!_disarmed)
         {
-            if (_contextInput != null)
+            _playerUsing = true;
+            if (_contextInput != null )
             {
                 _contextInput.Break();
             }
@@ -23,6 +25,7 @@ public class Mine : MonoBehaviour, IActivatableObject {
 
     public void OnDeactivate(PlayerManager player)
     {
+        _playerUsing = false;
         if (_contextInput != null)
         {
             _contextInput.Break();
