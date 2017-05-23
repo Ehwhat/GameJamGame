@@ -39,9 +39,6 @@ public class GameManager : MonoBehaviour {
     public GameState currentState = GameState.Menu;
     public int amountOfPlayers = 0;
 
-    public Color[] playerColours = new Color[4];
-
-    public bool[] activePlayers = new bool[4];
     public PlayerManager[] currentPlayers;
     public PlayerMenu.PlayerInfo[] playerInfo;
 
@@ -50,8 +47,6 @@ public class GameManager : MonoBehaviour {
     private PlayerSpawnPoint spawnPoint;
     private SquadSpawner squadSpawn;
     private int sceneIndex = 0;
-
-    public bool usePlayerInfo = false;
 
     void Awake()
     {
@@ -69,7 +64,7 @@ public class GameManager : MonoBehaviour {
     // Use this for initialization
     void Start() {
 
-        activePlayers[0] = true;
+        playerInfo[0]._active = true;
         camera = FindObjectOfType<CameraTracking>();
         if(currentState == GameState.Menu)
         {
@@ -86,6 +81,7 @@ public class GameManager : MonoBehaviour {
         if(currentState == GameState.InGame)
         {
             CheckPlayersDead();
+            CheckControllers();
         }
     }
 
@@ -95,12 +91,30 @@ public class GameManager : MonoBehaviour {
         {
             for (int i = 0; i < currentPlayers.Length; i++)
             {
-                if (currentPlayers[i] != null && activePlayers[i] && !currentPlayers[i].isDead)
+                if (currentPlayers[i] != null && playerInfo[i]._active && !currentPlayers[i].isDead)
                 {
                     return;
                 }
             }
             EndGame();
+        }
+    }
+
+    void CheckControllers()
+    {
+        if (currentPlayers != null) {
+            for (int i = 0; i < 4; i++)
+            {
+                PlayerControlManager.PlayerController controller = PlayerControlManager.GetController((XInputDotNetPure.PlayerIndex)i);
+                if (!controller.IsConnected() && currentPlayers[i].gameObject.activeSelf)
+                {
+                    DespawnPlayer(i);
+                }
+                if (controller.IsConnected() && !currentPlayers[i].gameObject.activeSelf && controller.GetTrigger(XboxTrigger.RightTrigger) > 0.3f)
+                {
+                    SpawnPlayer(i);
+                }
+            }
         }
     }
 
@@ -135,11 +149,8 @@ public class GameManager : MonoBehaviour {
         instance.currentState = GameState.InGame;
         if (levelGenerator.GenerateLevel())
         {
-            if (instance.usePlayerInfo)
-            {
-                instance.CreatePlayers(instance.playerInfo);
-            }
-            instance.SpawnPlayers(instance.amountOfPlayers);
+            instance.CreatePlayers(instance.playerInfo);
+            instance.SpawnPlayers();
         }
         cam.blit.LerpCutoff(1, 0, 1.2f);
     }
@@ -204,44 +215,63 @@ public class GameManager : MonoBehaviour {
     void CreatePlayers(PlayerMenu.PlayerInfo[] info)
     {
         currentPlayers = new PlayerManager[4];
-        amountOfPlayers = 0;
-        for (int i = 0; i < info.Length; i++)
+        for (int i = 0; i < 4; i++)
         {
-            if (info[i]._active)
+             currentPlayers[i] = CreatePlayer((PlayerManager.PlayerIndex)i, info[i]);
+        }
+    }
+
+    void SpawnPlayers()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            if (playerInfo[i]._active)
             {
                 amountOfPlayers++;
-                PlayerManager player = CreatePlayer((PlayerManager.PlayerIndex)i, info[i]);
-                currentPlayers[i] = player;
-                activePlayers[i] = true;
+                SpawnPlayer(i);
             }
         }
     }
 
-    void CreatePlayers(int playerAmount)
+    void SpawnPlayer(int playerIndex)
     {
-        currentPlayers = new PlayerManager[playerAmount];
-        for (int i = 0; i < playerAmount; i++)
-        {
-            amountOfPlayers++;
-            PlayerManager player = CreatePlayer((PlayerManager.PlayerIndex)i, new PlayerMenu.PlayerInfo(0, playerColours[i]));
-            currentPlayers[i] = player;
-            activePlayers[i] = true;
-        }
+        PlayerManager player = currentPlayers[playerIndex];
+        playerInfo[playerIndex]._active = true;
+        player.SetPlayerActive(true);
+        spawnPoint.SpawnPlayer(player);
+        instance.camera.RegisterTransform(player.transform);
+        player.Start();
     }
 
-    void SpawnPlayers(int playerAmount)
+    void SpawnPlayerAtCentre(int playerIndex)
     {
-        for (int i = 0; i < playerAmount; i++)
-        {
-            if (activePlayers[i])
-            {
-                PlayerManager player = currentPlayers[i];
-                spawnPoint.SpawnPlayer(player);
-                instance.camera.RegisterTransform(player.transform);
-                player.Start();
-            }
-        }
+        PlayerManager player = currentPlayers[playerIndex];
+        playerInfo[playerIndex]._active = true;
+        player.SetPlayerActive(true);
+        player.transform.position = GetPlayersCentre();
+        instance.camera.RegisterTransform(player.transform);
+        player.Start();
     }
+
+    void DespawnPlayer(int playerIndex)
+    {
+        PlayerManager player = currentPlayers[playerIndex];
+        playerInfo[playerIndex]._active = false;
+        player.SetPlayerActive(false);
+        instance.camera.DeregisterTransform(player.transform);
+    }
+
+    public static PlayerManager CreatePlayer(PlayerManager.PlayerIndex index, PlayerMenu.PlayerInfo info)
+    {
+        PlayerManager newPlayer = Instantiate(instance.playerPrefab);
+        newPlayer.SetPlayerActive(false);
+        newPlayer.playerColour = info._playerColour;
+        newPlayer.SetWeapon(GetWeaponPrefabs()[info._playerWeapon]._weapon);
+        newPlayer.playerIndex = index;
+        newPlayer.name = "Player " + (int)(index + 1);
+        return newPlayer;
+    }
+
 
     public void SetState(GameState state)
     {
@@ -281,29 +311,12 @@ public class GameManager : MonoBehaviour {
         return instance.weaponPrefabs;
     }
 
-    public static void SetPlayerActive(int i, bool active)
-    {
-        if(i > 0 && i < 4)
-        {
-            instance.activePlayers[i] = active;
-        }
-    }
-
     public static CameraTracking GetCamera()
     {
         return instance.camera;
     }
 
-    public static PlayerManager CreatePlayer(PlayerManager.PlayerIndex index, PlayerMenu.PlayerInfo info)
-    {
-        PlayerManager newPlayer = Instantiate(instance.playerPrefab);
-        newPlayer.playerColour = info._playerColour;
-        newPlayer.SetWeapon(GetWeaponPrefabs()[info._playerWeapon]._weapon);
-        newPlayer.playerIndex = index;
-        newPlayer.name = "Player " + (int)(index+1);
-        return newPlayer;
-    }
-
+   
     public static PlayerManager GetPlayer(PlayerManager.PlayerIndex index)
     {
         return instance.currentPlayers[(int)index];

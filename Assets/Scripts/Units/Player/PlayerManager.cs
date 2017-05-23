@@ -138,6 +138,11 @@ public class PlayerManager : ControlledUnitManager, IActivatableObject {
 
     }
 
+    public void SetPlayerActive(bool active)
+    {
+        gameObject.SetActive(active);
+    }
+
     public void SetWeapon(Weapon weapon)
     {
         playerShooting.SetWeapon(weapon);
