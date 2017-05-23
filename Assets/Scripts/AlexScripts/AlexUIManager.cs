@@ -16,14 +16,24 @@ public class AlexUIManager : MonoBehaviour {
     private static AlexPlayerUI[] staticPlayerUIs;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
         staticPlayerUIs = playerUis;
+        for (int i = 0; i < 4; i++)
+        {
+            SetPlayerUIActive(i, false);
+        }
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
 	}
+
+    public static void SetPlayerUIActive(int playerIndex, bool active)
+    {
+        Image healthBar = GetPlayerHealthBar(playerIndex);
+        healthBar.transform.parent.parent.gameObject.SetActive(active);
+    }
 
     public static void SetPlayerHealthBar(int playerIndex, float health)
     {

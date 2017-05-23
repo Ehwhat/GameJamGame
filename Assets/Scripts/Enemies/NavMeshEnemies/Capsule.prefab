@@ -27,7 +27,7 @@ GameObject:
   - component: {fileID: 114502345668411394}
   - component: {fileID: 82232096886163574}
   - component: {fileID: 54083581076734128}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -150,7 +150,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 2
       time: 0
-      value: 0
+      value: 0.499
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -209,7 +209,7 @@ MonoBehaviour:
   - {fileID: 114527601808833558, guid: 46a2b2d1459740548a18bdd71356a72e, type: 2}
   - {fileID: 114301601834172518, guid: 4caf17c75968042428158f3d9d623b7d, type: 2}
   - {fileID: 114402214817540462, guid: 9e7733b2a991c5c41be93581797b77c7, type: 2}
-  _dropchance: 0.1
+  _dropchance: 0.097
 --- !u!114 &114502345668411394
 MonoBehaviour:
   m_ObjectHideFlags: 1

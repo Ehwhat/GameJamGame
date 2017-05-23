@@ -66,4 +66,4 @@ MonoBehaviour:
   storedAmmo: 120
   ammoPackAmount: 60
   ammoPerClip: 30
-  weaponShotSound: {fileID: 0}
+  weaponShotSound: {fileID: 8300000, guid: ec35fa56241ac4a4e91357c1f4241753, type: 3}

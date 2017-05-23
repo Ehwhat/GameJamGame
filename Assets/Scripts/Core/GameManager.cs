@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour {
         }
         else if (currentState == GameState.InGame)
         {
-            
+            instance.SpawnPlayers();
         }
     }
 
@@ -150,7 +150,7 @@ public class GameManager : MonoBehaviour {
         if (levelGenerator.GenerateLevel())
         {
             instance.CreatePlayers(instance.playerInfo);
-            instance.SpawnPlayers();
+            
         }
         cam.blit.LerpCutoff(1, 0, 1.2f);
     }
@@ -190,16 +190,22 @@ public class GameManager : MonoBehaviour {
             {
                 distProduct = players[0].transform.position;
 
+                int amount = 1;
+
                 if (instance.amountOfPlayers > 1)
                 {
                     for (int i = 1; i < instance.amountOfPlayers; i++)
                     {
-                        distProduct += players[i].transform.position;
+                        if (players[i].gameObject.activeSelf)
+                        {
+                            distProduct += players[i].transform.position;
+                            amount++;
+                        }
 
                     }
                 }
 
-                distProduct /= instance.amountOfPlayers;
+                distProduct /= amount;
             }
         }
         return distProduct;
@@ -237,6 +243,7 @@ public class GameManager : MonoBehaviour {
     {
         PlayerManager player = currentPlayers[playerIndex];
         playerInfo[playerIndex]._active = true;
+        AlexUIManager.SetPlayerUIActive(playerIndex, true);
         player.SetPlayerActive(true);
         spawnPoint.SpawnPlayer(player);
         instance.camera.RegisterTransform(player.transform);
@@ -246,9 +253,10 @@ public class GameManager : MonoBehaviour {
     void SpawnPlayerAtCentre(int playerIndex)
     {
         PlayerManager player = currentPlayers[playerIndex];
+        player.transform.position = GetPlayersCentre();
+        AlexUIManager.SetPlayerUIActive(playerIndex, true);
         playerInfo[playerIndex]._active = true;
         player.SetPlayerActive(true);
-        player.transform.position = GetPlayersCentre();
         instance.camera.RegisterTransform(player.transform);
         player.Start();
     }
@@ -256,6 +264,7 @@ public class GameManager : MonoBehaviour {
     void DespawnPlayer(int playerIndex)
     {
         PlayerManager player = currentPlayers[playerIndex];
+        AlexUIManager.SetPlayerUIActive(playerIndex, false);
         playerInfo[playerIndex]._active = false;
         player.SetPlayerActive(false);
         instance.camera.DeregisterTransform(player.transform);

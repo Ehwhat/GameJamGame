@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class WaterShaderController : MonoBehaviour {
 
 	public Material waterMaterial;
+    public Material overrideMat;
 
 	public AnimationCurve resolutionCurve;
 
@@ -27,7 +28,7 @@ public class WaterShaderController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		//rp.center = new Vector3(waterSquares*waterSquareSizeX/2,0,waterSquares*waterSquareSizeY/2);
-		Shader.SetGlobalFloat("_WaterSize",(waterSquareSizeX+waterSquareSizeY)/2);
+		//Shader.SetGlobalFloat("_WaterSize",(waterSquareSizeX+waterSquareSizeY)/2);
 		for(float x = 0; x < waterSquares; x++){
 			for(float y = 0; y < waterSquares; y++){
 				int detailMod = 1;//Mathf.RoundToInt(resolutionCurve.Evaluate(((x/waterSquares)+(y/waterSquares))/2));
@@ -41,7 +42,7 @@ public class WaterShaderController : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void Update () {
+	/*void Update () {
 		Shader.SetGlobalFloat("_WaterScale", scale);
 		Shader.SetGlobalFloat("_WaterSpeed", speed);
 		Shader.SetGlobalFloat("_WaterDistance", waveDist);
@@ -50,13 +51,13 @@ public class WaterShaderController : MonoBehaviour {
 		Shader.SetGlobalFloat("_WaterNoiseWalk", noiseWalk);
 		//meshFilter.mesh.RecalculateNormals();
 		//meshCollider.sharedMesh = meshFilter.mesh;
-	}
+	}*/
 
 	void createOceanSquare(Vector3 position, int detailMod){
 		MeshFilter meshFilter = new GameObject("oceanSquare").AddComponent<MeshFilter>();
         meshFilter.gameObject.layer = gameObject.layer;
 		MeshRenderer meshRenderer = meshFilter.gameObject.AddComponent<MeshRenderer>();
-		meshRenderer.sharedMaterial = waterMaterial;
+		meshRenderer.sharedMaterial = overrideMat;
 		meshFilter.transform.parent = transform;
 		meshFilter.transform.position = position;
 		meshFilter.transform.localScale = new Vector3(waterSquareSizeX,1,waterSquareSizeY);

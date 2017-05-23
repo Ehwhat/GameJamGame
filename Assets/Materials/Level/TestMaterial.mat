@@ -103,7 +103,7 @@ Material:
     - _GlossyReflections: 1
     - _Metallic: 1
     - _Mode: 0
-    - _NoiseIntensity: 1.7
+    - _NoiseIntensity: 1.2
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _SmoothnessTextureChannel: 0
@@ -112,8 +112,8 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _BlendAColour: {r: 0.3529412, g: 0.9411765, b: 0.57606494, a: 1}
-    - _BlendBColour: {r: 1, g: 1, b: 1, a: 1}
+    - _BlendAColour: {r: 0.32855752, g: 0.75735295, b: 0.49120408, a: 1}
+    - _BlendBColour: {r: 0.9338235, g: 0.90730524, b: 0.7964965, a: 1}
     - _BlendFromTint: {r: 1, g: 1, b: 1, a: 1}
     - _BlendToTint: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}

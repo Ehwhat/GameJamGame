@@ -138,7 +138,7 @@ public class TestEnemyNavMesh : NavMeshEnemyBase, IHitTarget
     private void DropWeapon()
     {
         float randomchance = Random.value;
-        if(randomchance > _dropchance)
+        if(randomchance < _dropchance)
         {
             gunPickUp pickup = Instantiate<gunPickUp>(_gunPickups[Random.Range(0, _gunPickups.Length - 1)]);
             pickup.transform.position = transform.position;

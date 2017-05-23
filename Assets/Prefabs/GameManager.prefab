@@ -16,10 +16,10 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000010612429656}
-  - 114: {fileID: 114000010576636284}
+  - component: {fileID: 4000010612429656}
+  - component: {fileID: 114000010576636284}
   m_Layer: 0
   m_Name: PlayerInput
   m_TagString: Untagged
@@ -32,10 +32,10 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000011232818400}
-  - 114: {fileID: 114000010224974352}
+  - component: {fileID: 4000011232818400}
+  - component: {fileID: 114000010224974352}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -52,10 +52,10 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 2.740593, y: 0.14629126, z: -3.042103}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000011232818400}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4000011232818400
 Transform:
   m_ObjectHideFlags: 1
@@ -65,11 +65,11 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.6858969, y: 0.41750622, z: 2.4614558}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 4000010612429656}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &114000010224974352
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -100,6 +100,9 @@ MonoBehaviour:
   - _name: SMG
     _weapon: {fileID: 114000013566121078, guid: b9a2140e1f31c6b4ea4d0ada6a1b533c,
       type: 2}
+  - _name: AUTOMATIC
+    _weapon: {fileID: 114000013566121078, guid: ba952ac0d52a46f4384426f0cff4053a,
+      type: 2}
   levels:
   - _name: MENU
     _id: 0
@@ -107,19 +110,25 @@ MonoBehaviour:
     _id: 1
   currentState: 0
   amountOfPlayers: 0
-  playerColours:
-  - {r: 1, g: 0, b: 0, a: 1}
-  - {r: 0, g: 1, b: 0.17241383, a: 1}
-  - {r: 0, g: 0.006896496, b: 1, a: 1}
-  - {r: 0.986207, g: 1, b: 0, a: 1}
-  activePlayers: 00000000
   currentPlayers:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  playerInfo:
+  - _active: 1
+    _playerWeapon: 5
+    _playerColour: {r: 1, g: 0, b: 0, a: 1}
+  - _active: 0
+    _playerWeapon: 5
+    _playerColour: {r: 0, g: 0.006896496, b: 1, a: 1}
+  - _active: 0
+    _playerWeapon: 5
+    _playerColour: {r: 0, g: 1, b: 0.08965516, a: 1}
+  - _active: 0
+    _playerWeapon: 5
+    _playerColour: {r: 0.986207, g: 0, b: 1, a: 1}
   gameScore: 0
-  usePlayerInfo: 0
 --- !u!114 &114000010576636284
 MonoBehaviour:
   m_ObjectHideFlags: 1

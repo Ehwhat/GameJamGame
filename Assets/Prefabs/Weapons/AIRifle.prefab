@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dc362786b2fbd4489149daba07be837, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponName: 
   weaponProjectile: {fileID: 114000013974713260, guid: 5625bc04665cf6b43bfcbefe2e7f3bcc,
     type: 2}
   reloadTime: 2
@@ -65,4 +66,4 @@ MonoBehaviour:
   storedAmmo: 84
   ammoPackAmount: 0
   ammoPerClip: 32
-  weaponShotSound: {fileID: 0}
+  weaponShotSound: {fileID: 8300000, guid: ec35fa56241ac4a4e91357c1f4241753, type: 3}

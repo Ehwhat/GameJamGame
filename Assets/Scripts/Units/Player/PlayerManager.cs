@@ -199,14 +199,7 @@ public class PlayerManager : ControlledUnitManager, IActivatableObject {
 
     public void HidePlayer()
     {
-        foreach(Transform t in transform)
-        {
-            if(t == transform)
-            {
-                continue;
-            }
-            t.gameObject.SetActive(false);
-        }
+        gameObject.SetActive(false);
         playerMovement.FreezePlayer(true);
         _playerCollider.isTrigger = true;
         _playerState = PlayerState.Hiding;
@@ -214,14 +207,7 @@ public class PlayerManager : ControlledUnitManager, IActivatableObject {
 
     public void UnhidePlayer()
     {
-        foreach (Transform t in transform)
-        {
-            if (t == transform)
-            {
-                continue;
-            }
-            t.gameObject.SetActive(true);
-        }
+        gameObject.SetActive(true);
         playerMovement.FreezePlayer(false);
         _playerCollider.isTrigger = false;
         _playerState = PlayerState.Alive;
