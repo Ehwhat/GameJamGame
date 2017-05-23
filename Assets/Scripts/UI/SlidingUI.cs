@@ -51,6 +51,7 @@ public class SlidingUI : MonoBehaviour {
     static public void SendSlidingMessage(string str)
     {
         SetString(str);
+        instance.StopAllCoroutines();
         instance.StartCoroutine(TransitionUiElement());
 
 

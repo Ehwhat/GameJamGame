@@ -19,14 +19,21 @@ public class DropManager : MonoBehaviour {
         {
             return 1-((Time.time - timeAtStart) / timeToWait);
         }
-
     }
+
 
     public GameObject shieldDrop;
     public GameObject tankDrop;
     public GameObject healDrop;
+    public GameObject ammoDrop;
 
     private GameObject nextDrop;
+
+    public void DropAmmo(PlayerManager player)
+    {
+        nextDrop = ammoDrop;
+        player.EnterDropPlace(DropGameObject);
+    }
 
     public void DropShield(PlayerManager player)
     {

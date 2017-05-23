@@ -20,7 +20,7 @@ public class gunPickUp : MonoBehaviour
         if (enteredObject.tag == "Player" && !hasGiven)
         {
             PlayerManager playerManager = enteredObject.GetComponent<PlayerManager>();
-            playerManager.playerShooting.SetWeapon(weapon);
+            playerManager.SetWeapon(weapon);
             hasGiven = true;
             particles.Stop();
             particleStopTime = Time.time;

@@ -202,6 +202,14 @@ MonoBehaviour:
   _attackDistance: 12
   _weaponManager: {fileID: 114502345668411394}
   _rigidbody: {fileID: 54083581076734128}
+  _gunPickups:
+  - {fileID: 114562251539301998, guid: 304cce978883e66459d8ba1e7641d17f, type: 2}
+  - {fileID: 114048732049553296, guid: d4522ede7377e4e4a8a826de9f25d4a4, type: 2}
+  - {fileID: 114949785124404344, guid: 74696858dd6e1354da0b764803b8c643, type: 2}
+  - {fileID: 114527601808833558, guid: 46a2b2d1459740548a18bdd71356a72e, type: 2}
+  - {fileID: 114301601834172518, guid: 4caf17c75968042428158f3d9d623b7d, type: 2}
+  - {fileID: 114402214817540462, guid: 9e7733b2a991c5c41be93581797b77c7, type: 2}
+  _dropchance: 0.1
 --- !u!114 &114502345668411394
 MonoBehaviour:
   m_ObjectHideFlags: 1

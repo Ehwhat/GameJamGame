@@ -266,7 +266,7 @@ public class GameManager : MonoBehaviour {
         PlayerManager newPlayer = Instantiate(instance.playerPrefab);
         newPlayer.SetPlayerActive(false);
         newPlayer.playerColour = info._playerColour;
-        newPlayer.SetWeapon(GetWeaponPrefabs()[info._playerWeapon]._weapon);
+        newPlayer.SetWeapon(GetWeaponPrefabs()[info._playerWeapon]._weapon, false);
         newPlayer.playerIndex = index;
         newPlayer.name = "Player " + (int)(index + 1);
         return newPlayer;

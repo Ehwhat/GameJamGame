@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -28,6 +27,10 @@ public class TestEnemyNavMesh : NavMeshEnemyBase, IHitTarget
 
     public WeaponManager _weaponManager;
     public Rigidbody _rigidbody;
+
+    public gunPickUp[] _gunPickups;
+    [Range(0,1)]
+    public float _dropchance = 0.5f;
 
     Vector3 currentTarget;
 
@@ -119,6 +122,7 @@ public class TestEnemyNavMesh : NavMeshEnemyBase, IHitTarget
         _rigidbody.constraints = RigidbodyConstraints.None;
         _rigidbody.AddForceAtPosition(forceHit, hitPoint);
         StartCoroutine(DisableRotation());
+        DropWeapon();
     }
 
     IEnumerator DisableRotation()
@@ -129,5 +133,15 @@ public class TestEnemyNavMesh : NavMeshEnemyBase, IHitTarget
         _rigidbody.velocity = Vector3.zero;
         _rigidbody.useGravity = false;
         transform.GetComponent<CapsuleCollider>().enabled = false;
+    }
+
+    private void DropWeapon()
+    {
+        float randomchance = Random.value;
+        if(randomchance > _dropchance)
+        {
+            gunPickUp pickup = Instantiate<gunPickUp>(_gunPickups[Random.Range(0, _gunPickups.Length - 1)]);
+            pickup.transform.position = transform.position;
+        }
     }
 }
