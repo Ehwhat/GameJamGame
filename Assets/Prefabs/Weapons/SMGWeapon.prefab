@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dc362786b2fbd4489149daba07be837, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponName: SMG
   weaponProjectile: {fileID: 114000013974713260, guid: c60f1972bb9295e4f9bc1196af939316,
     type: 2}
   reloadTime: 2

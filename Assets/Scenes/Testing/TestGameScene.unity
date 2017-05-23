@@ -3261,7 +3261,7 @@ Camera:
     serializedVersion: 2
     m_Bits: 4294866927
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 1390485740}
+  m_TargetTexture: {fileID: 1238880764}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 0
@@ -3271,6 +3271,30 @@ Camera:
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
   m_StereoMirrorMode: 0
+--- !u!84 &1238880764
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_Width: 976
+  m_Height: 503
+  m_AntiAliasing: 1
+  m_DepthFormat: 1
+  m_ColorFormat: 0
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_TextureSettings:
+    m_FilterMode: 1
+    m_Aniso: 0
+    m_MipBias: 0
+    m_WrapMode: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
 --- !u!1 &1248335099
 GameObject:
   m_ObjectHideFlags: 0
@@ -3336,7 +3360,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9448277, g: 1, b: 0, a: 1}
+  m_Color: {r: 0.9034486, g: 0, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -3497,7 +3521,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9448277, g: 1, b: 0, a: 1}
+  m_Color: {r: 0.94482756, g: 0, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -3769,30 +3793,6 @@ MeshCollider:
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 0}
---- !u!84 &1390485740
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_Width: 1129
-  m_Height: 512
-  m_AntiAliasing: 1
-  m_DepthFormat: 1
-  m_ColorFormat: 0
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_TextureSettings:
-    m_FilterMode: 1
-    m_Aniso: 0
-    m_MipBias: 0
-    m_WrapMode: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
 --- !u!1001 &1409376251
 Prefab:
   m_ObjectHideFlags: 0
@@ -4730,7 +4730,7 @@ Prefab:
     - target: {fileID: 114000010224974352, guid: d313428f5984e084395f05a93140dbda,
         type: 2}
       propertyPath: playerInfo.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 114000010224974352, guid: d313428f5984e084395f05a93140dbda,
         type: 2}
@@ -4802,7 +4802,7 @@ Prefab:
     - target: {fileID: 114000010224974352, guid: d313428f5984e084395f05a93140dbda,
         type: 2}
       propertyPath: playerInfo.Array.data[1]._active
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114000010224974352, guid: d313428f5984e084395f05a93140dbda,
         type: 2}
@@ -4878,12 +4878,12 @@ Prefab:
     - target: {fileID: 114000010224974352, guid: d313428f5984e084395f05a93140dbda,
         type: 2}
       propertyPath: playerInfo.Array.data[2]._playerColour.g
-      value: 0.006896496
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114000010224974352, guid: d313428f5984e084395f05a93140dbda,
         type: 2}
       propertyPath: playerInfo.Array.data[2]._playerColour.b
-      value: 1
+      value: 0.08965516
       objectReference: {fileID: 0}
     - target: {fileID: 114000010224974352, guid: d313428f5984e084395f05a93140dbda,
         type: 2}
@@ -4898,7 +4898,7 @@ Prefab:
     - target: {fileID: 114000010224974352, guid: d313428f5984e084395f05a93140dbda,
         type: 2}
       propertyPath: playerInfo.Array.data[3]._playerColour.g
-      value: 0.006896496
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114000010224974352, guid: d313428f5984e084395f05a93140dbda,
         type: 2}
@@ -4909,6 +4909,26 @@ Prefab:
         type: 2}
       propertyPath: playerInfo.Array.data[3]._playerColour.a
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010224974352, guid: d313428f5984e084395f05a93140dbda,
+        type: 2}
+      propertyPath: playerInfo.Array.data[2]._active
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010224974352, guid: d313428f5984e084395f05a93140dbda,
+        type: 2}
+      propertyPath: playerInfo.Array.data[3]._active
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010224974352, guid: d313428f5984e084395f05a93140dbda,
+        type: 2}
+      propertyPath: playerInfo.Array.data[2]._playerColour.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010224974352, guid: d313428f5984e084395f05a93140dbda,
+        type: 2}
+      propertyPath: playerInfo.Array.data[3]._playerColour.r
+      value: 0.986207
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d313428f5984e084395f05a93140dbda, type: 2}

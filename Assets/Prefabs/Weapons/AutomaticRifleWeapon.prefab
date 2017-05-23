@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dc362786b2fbd4489149daba07be837, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponName: Combat Rifle
   weaponProjectile: {fileID: 114000013974713260, guid: 670a8ea52318d4742bed5ecd7a02fd03,
     type: 2}
   reloadTime: 3
